@@ -29,13 +29,13 @@
     "moduleResolution": "node",                          /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": ".",                                      /* Specify the base directory to resolve non-relative module names. */
     "paths": {
-      "@scm2019-layouts/*": [
+      "@gtam-layouts/*": [
         "src/extension/*"
       ],
-      "@scm2019-layouts/types": [
+      "@gtam-layouts/types": [
         "src/types"
       ],
-      "@scm2019-layouts/types/*": [
+      "@gtam-layouts/types/*": [
         "src/types/*"
       ],
       "nodecg/*": [

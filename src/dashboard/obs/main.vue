@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { replicantNS } from '@scm2019-layouts/browser_shared/replicant_store';
+import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
 import { RunDataActiveRunSurrounding } from '../../../../nodecg-speedcontrol/src/types/schemas';
 import { RunDataArray, RunData, Timer } from '../../../../nodecg-speedcontrol/src/types';
 

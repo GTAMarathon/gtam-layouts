@@ -1,4 +1,4 @@
-import { Configschema } from '@scm2019-layouts/types/schemas';
+import { Configschema } from '@gtam-layouts/types/schemas';
 import obsWebsocketJs from 'obs-websocket-js';
 import { get } from './nodecg';
 

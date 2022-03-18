@@ -13,8 +13,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Asset } from '@scm2019-layouts/types';
-import { replicantNS } from '@scm2019-layouts/browser_shared/replicant_store';
+import { Asset } from '@gtam-layouts/types';
+import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
 
 @Component
 export default class SponsorLogos extends Vue {

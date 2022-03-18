@@ -1,5 +1,5 @@
-import { Asset } from '@scm2019-layouts/types';
-import type { DonationTotal, Host } from '@scm2019-layouts/types/schemas';
+import { Asset } from '@gtam-layouts/types';
+import type { DonationTotal, Host } from '@gtam-layouts/types/schemas';
 import clone from 'clone';
 import type { ReplicantBrowser } from 'nodecg/types/browser';
 import Vue from 'vue';

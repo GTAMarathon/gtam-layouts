@@ -23,8 +23,8 @@
 </template>
 
 <script lang="ts">
-import { replicantModule, replicantNS } from '@scm2019-layouts/browser_shared/replicant_store';
-import { Host } from '@scm2019-layouts/types/schemas';
+import { replicantModule, replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { Host } from '@gtam-layouts/types/schemas';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 
 @Component

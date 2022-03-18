@@ -3,7 +3,7 @@
 // This must go first so we can use module aliases!
 /* eslint-disable import/first */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require('module-alias').addAlias('@scm2019-layouts', require('path').join(__dirname, '.'));
+require('module-alias').addAlias('@gtam-layouts', require('path').join(__dirname, '.'));
 
 import type { NodeCG } from 'nodecg/types/server';
 import { set } from './util/nodecg';

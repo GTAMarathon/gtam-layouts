@@ -22,8 +22,8 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { gsap } from 'gsap';
-import { DonationTotal as DonationTotalType } from '@scm2019-layouts/types/schemas';
-import { replicantNS } from '@scm2019-layouts/browser_shared/replicant_store';
+import { DonationTotal as DonationTotalType } from '@gtam-layouts/types/schemas';
+import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
 
 @Component
 export default class DonationTotal extends Vue {

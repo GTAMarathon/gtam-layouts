@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { replicantNS } from '@scm2019-layouts/browser_shared/replicant_store';
+import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { RunDataActiveRun, Timer } from '../../../../../nodecg-speedcontrol/src/types';
 

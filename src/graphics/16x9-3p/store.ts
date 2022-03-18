@@ -1,4 +1,4 @@
-import { ReplicantModule } from '@scm2019-layouts/browser_shared/replicant_store';
+import { ReplicantModule } from '@gtam-layouts/browser_shared/replicant_store';
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 

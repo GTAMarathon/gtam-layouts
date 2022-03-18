@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import type { DonationTotal, Host } from '@scm2019-layouts/types/schemas';
+import type { DonationTotal, Host } from '@gtam-layouts/types/schemas';
 import { get as nodecg } from './nodecg';
 
 /**

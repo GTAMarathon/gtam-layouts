@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { replicantNS } from '@scm2019-layouts/browser_shared/replicant_store';
+import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
 import SponsorLogos from '../_misc/components/SponsorLogos.vue';
 import DonationTotal from '../_misc/components/DonationTotal.vue';
 import Host from '../_misc/components/Host.vue';
