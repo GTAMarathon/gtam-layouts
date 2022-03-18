@@ -2,36 +2,78 @@
   <div :style="{ position: 'fixed' }">
     <transition name="fade">
       <div
-        v-if="runDataActiveRun"
-        :key="`${runDataActiveRun.game}${runDataActiveRun.category}`"
+        v-if="run"
+        :key="`${run.game}${run.category}`"
         class="Flex"
         :style="{ position: 'absolute', 'flex-direction': 'column' }"
       >
         <div
-          v-if="runDataActiveRun"
-          :style="{ 'font-size': `${1.3 * scale}em` }"
+          v-if="run"
+          :style="{ 'font-size': `${1.15 * scale}em`, 'white-space': 'normal' }"
+		  id="game"
         >
-          {{ runDataActiveRun.game }}
+          {{ run.game }}
         </div>
         <div
-          v-if="runDataActiveRun"
+          v-if="run"
           :style="{ 'font-size': `${1.1 * scale}em`, color: '#cccccc' }"
+		  id="category"
         >
-          {{ runDataActiveRun.category }}
+          {{ run.category }}
         </div>
       </div>
     </transition>
   </div>
 </template>
 
-<script lang="ts">
-import { replicantNS } from '@scm2019-layouts/browser_shared/replicant_store';
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { RunDataActiveRun } from '../../../../../nodecg-speedcontrol/src/types';
+<script>
+    import fitty from 'fitty'
 
-@Component
-export default class Game extends Vue {
-  @replicantNS.State((s) => s.reps.runDataActiveRun) readonly runDataActiveRun!: RunDataActiveRun;
-  @Prop({ default: 1 }) readonly scale!: number;
-}
+    export default {
+        name: 'Game',
+        props: {
+            scale: {
+                default: 1,
+                type: Number
+            },
+            run: {
+                default: undefined,
+                type: Object
+            }
+        },
+        data() {
+            return {
+                $_fittyGame: undefined,
+                $_fittyInfo: undefined,
+            }
+        },
+        watch: {
+            run: {
+                handler: function () {
+            setTimeout(() => {
+                this.fitText()
+            }, 200)
+                },
+                immediate: true,
+                deep: true,
+            },
+        },
+        methods: {
+            fitText() {
+                this.$data.$_fittyGame = fitty('#game', {
+                    minSize: 1,
+                    maxSize: 28,
+                })
+                this.$data.$_fittyInfo = fitty('#category', {
+                    minSize: 1,
+                    maxSize: 20,
+                })
+            },
+        },
+        mounted() {
+            setTimeout(() => {
+                this.fitText()
+            }, 200)
+        },
+    }
 </script>

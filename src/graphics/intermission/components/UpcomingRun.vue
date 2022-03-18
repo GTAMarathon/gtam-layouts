@@ -14,10 +14,10 @@
         :key="runData.id"
         class="Flex"
       >
-        <div :style="{ 'font-size': '2.5em' }">
+        <div :style="{ 'font-size': '2.5em' }" id="game">
           {{ runData.game }}
         </div>
-        <div :style="{ 'font-size': '2em' }">
+        <div :style="{ 'font-size': '2em' }" id="category">
           {{ runData.category }}
         </div>
       </div>
@@ -25,14 +25,47 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { RunData } from '../../../../../nodecg-speedcontrol/src/types';
+<script>
+    import fitty from 'fitty'
 
-@Component
-export default class UpcomingRun extends Vue {
-  @Prop(Object) readonly runData!: RunData | null;
-}
+    export default {
+        name: 'UpcomingRun',
+        props: ['runData'],
+        data() {
+            return {
+                $_fittyGame: undefined,
+                $_fittyInfo: undefined,
+            }
+        },
+        watch: {
+            runData: {
+                handler: function () {
+                    setTimeout(() => {
+                        this.fitText()
+                    })
+                },
+                immediate: true,
+                deep: true,
+            },
+        },
+        methods: {
+            fitText() {
+                this.$data.$_fittyGame = fitty('#game', {
+                    minSize: 1,
+                    maxSize: 30,
+                })
+                this.$data.$_fittyInfo = fitty('#category', {
+                    minSize: 1,
+                    maxSize: 24,
+                })
+            },
+        },
+        mounted() {
+            setTimeout(() => {
+                this.fitText()
+            }, 200)
+        },
+    }
 </script>
 
 <style scoped>

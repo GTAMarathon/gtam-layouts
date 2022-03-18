@@ -1,164 +1,55 @@
 <template>
   <div>
     <img
-      v-if="nextGameName === 'dark souls'"
-      src="./Backgrounds/ds.png"
-    >
-    <img
-      v-else-if="nextGameName === 'dark souls ii'"
-      src="./Backgrounds/ds2.png"
-    >
-    <img
-      v-else-if="nextGameName === 'dark souls iii'"
-      src="./Backgrounds/ds3.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('demon')"
-      src="./Backgrounds/des.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('bloodborne')"
-      src="./Backgrounds/bb.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('sekiro')"
-      src="./Backgrounds/sekiro.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('bayonetta')"
-      src="./Backgrounds/bayo.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('castlevania')"
-      src="./Backgrounds/castle.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('devil')"
-      src="./Backgrounds/dmc4.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('matador')"
-      src="./Backgrounds/elm.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('furi')"
-      src="./Backgrounds/furi.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('hollow')"
-      src="./Backgrounds/hk.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('hyper')"
-      src="./Backgrounds/hyper.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('land')"
-      src="./Backgrounds/land.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('london')"
-      src="./Backgrounds/london.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('solid')"
-      src="./Backgrounds/mgs.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('mulaka')"
-      src="./Backgrounds/mulaka.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('chaos')"
-      src="./Backgrounds/mwc.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('woods')"
-      src="./Backgrounds/nitw.png"
-  >
-    <img
-      v-else-if="nextGameName.includes('prince')"
-      src="./Backgrounds/pop.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('rain')"
-      src="./Backgrounds/ror.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('meat')"
-      src="./Backgrounds/smb.png"
-    >
-  <img
-      v-else-if="nextGameName === 'super mario land'"
-      src="./Backgrounds/sml.png"
-    >
-  <img
-      v-else-if="nextGameName === 'super mario odyssey'"
-      src="./Backgrounds/smo.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('vice')"
-      src="./Backgrounds/vc.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('noid')"
-      src="./Backgrounds/yo.png"
-    >
-  <img
-      v-else-if="nextGameName.includes('zelda')"
-      src="./Backgrounds/zelda.png"
-    >
-    <img
-      v-else
       src="./background.png"
     >
     <upcoming-run
       :run-data="nextRun"
       :style="{
-        left: '172px',
-        top: '220px',
-        width: '643px',
-        height: '174px',
+        left: '295px',
+        top: '320px',
+        width: '470px',
+        height: '80px',
       }"
     />
     <upcoming-run
       :run-data="onDeck"
       :style="{
-        left: '172px',
-        top: '443px',
-        width: '643px',
-        height: '174px',
+        left: '295px',
+        top: '490px',
+        width: '470px',
+        height: '80px',
       }"
     />
     <sponsor-logos
       :style="{
-        left: '865px',
-        top: '230px',
-        width: '208px',
-        height: '134px',
+        left: '804px',
+        top: '279px',
+        width: '198px',
+        height: '124px',
       }"
     />
     <host
       :style="{
-        left: '852px',
-        top: '440px',
+        left: '783px',
+        top: '432px',
         width: '240px',
         height: '76px',
       }"
     />
     <donation-total
       :style="{
-        left: '845px',
-        top: '530px',
+        left: '783px',
+        top: '512px',
         width: '240px',
         height: '76px',
       }"
     />
     <donations
       :style="{
-        left: '180px',
-        top: '625px',
-        width: '911px',
+        left: '300px',
+        top: '597px',
+        width: '700px',
         height: '59px',
       }"
     />

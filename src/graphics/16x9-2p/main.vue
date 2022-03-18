@@ -3,24 +3,25 @@
     <img src="./background.png">
     <timer
       :style="{
-        left: '646px',
-        top: '547px',
+        left: '523px',
+        top: '562px',
         width: '237px',
         height: '74px',
       }"
     />
     <game
       :style="{
-        left: '394px',
-        top: '547px',
+        left: '185px',
+        top: '564px',
         width: '237px',
         height: '74px',
       }"
+	  :run="runDataActiveRun"
     />
     <player
       :style="{
-        left: '20px',
-        top: '97px',
+        left: '40px',
+        top: '128px',
         width: '237px',
         height: '74px',
       }"
@@ -28,8 +29,8 @@
     />
     <player
       :style="{
-        left: '1020px',
-        top: '97px',
+        left: '995px',
+        top: '128px',
         width: '237px',
         height: '74px',
       }"
@@ -37,16 +38,16 @@
     />
     <host
       :style="{
-        left: '898px',
-        top: '547px',
+        left: '750px',
+        top: '562px',
         width: '237px',
         height: '74px',
       }"
     />
     <donation-total
       :style="{
-        left: '142px',
-        top: '547px',
+        left: '977px',
+        top: '562px',
         width: '237px',
         height: '74px',
       }"
@@ -54,15 +55,15 @@
     <donations
       :style="{
         left: '143px',
-        top: '633px',
-        width: '897px',
+        top: '645px',
+        width: '1000px',
         height: '74px',
       }"
     />
     <sponsor-logos
       :style="{
-        left: '1048px',
-        top: '633px',
+        left: '43px',
+        top: '22px',
         width: '90px',
         height: '74px',
       }"

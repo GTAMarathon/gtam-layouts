@@ -7,17 +7,6 @@
         class="Flex"
         :style="{ position: 'absolute' }"
       >
-        <img
-          src="../player.png"
-          :style="(small) ? {
-            'box-sizing': 'border-box',
-            height: '100%',
-            padding: '5px 0',
-            'object-fit': 'scale-down',
-          } : {
-            height: '25px',
-          }"
-        >
         <div :style="{ 'margin-left': '5px', 'font-size': (small) ? '1.1em' : '1.3em' }">
           {{ name }}
           <span

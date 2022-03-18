@@ -3,56 +3,57 @@
     <img src="./background.png">
     <timer
       :style="{
-        left: '105px',
-        top: '261px',
+        left: '948px',
+        top: '565px',
         width: '259px',
         height: '75px',
       }"
     />
     <game
       :style="{
-        left: '105px',
-        top: '352px',
-        width: '259px',
-        height: '75px',
+        left: '975px',
+        top: '491px',
+        width: '200px',
+        height: '55px',
       }"
+	  :run="runDataActiveRun"
     />
     <player
       :style="{
         left: '105px',
-        top: '441px',
+        top: '12px',
         width: '259px',
         height: '75px',
       }"
     />
     <host
       :style="{
-        left: '105px',
-        top: '530px',
+        left: '948px',
+        top: '392px',
         width: '259px',
         height: '75px',
       }"
     />
     <donation-total
       :style="{
-        left: '105px',
-        top: '619px',
+        left: '948px',
+        top: '305px',
         width: '259px',
         height: '75px',
       }"
     />
     <donations
       :style="{
-        left: '406px',
-        top: '619px',
-        width: '644px',
+        left: '140px',
+        top: '640px',
+        width: '1000px',
         height: '75px',
       }"
     />
     <sponsor-logos
       :style="{
-        left: '1061px',
-        top: '619px',
+        left: '1025px',
+        top: '194px',
         width: '112px',
         height: '79px',
       }"

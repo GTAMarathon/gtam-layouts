@@ -27,19 +27,20 @@
     "watch:extension": "tsc -b tsconfig.extension.json -w"
   },
   "dependencies": {
+    "fitty": "^2.3.5",
+    "module-alias": "^2.2.2",
     "needle": "^3.0.0",
     "obs-websocket-js": "^4.0.3",
-    "socket.io-client": "^2.4.0",
-    "module-alias": "^2.2.2"
+    "socket.io-client": "^2.4.0"
   },
   "devDependencies": {
     "@fontsource/roboto": "^4.5.1",
     "@mdi/font": "^6.3.95",
     "@types/clone": "^2.1.1",
     "@types/module-alias": "^2.0.1",
+    "@types/needle": "^2.5.2",
     "@types/node": "^14.17.29",
     "@types/webpack-env": "^1.16.3",
-    "@types/needle": "^2.5.2",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "@vue/component-compiler-utils": "^3.2.2",
@@ -115,17 +116,17 @@
         "height": 720
       },
       {
+        "file": "4x3-2p.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
         "file": "16x9-1p.html",
         "width": 1280,
         "height": 720
       },
       {
         "file": "16x9-2p.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "16x9-3p.html",
         "width": 1280,
         "height": 720
       },

@@ -3,25 +3,26 @@
     <img src="./background.png">
     <timer
       :style="{
-        left: '544px',
-        top: '504px',
+        left: '548px',
+        top: '160px',
         width: '191px',
         height: '67px',
       }"
     />
     <game
       :style="{
-        left: '544px',
-        top: '149px',
+        left: '548px',
+        top: '82px',
         width: '191px',
         height: '67px',
       }"
       :scale="0.8"
+	  :run="runDataActiveRun"
     />
     <player
       :style="{
-        left: '17px',
-        top: '12px',
+        left: '1px',
+        top: '17px',
         width: '327px',
         height: '51px',
       }"
@@ -29,8 +30,8 @@
     />
     <player
       :style="{
-        left: '933px',
-        top: '12px',
+        left: '955px',
+        top: '17px',
         width: '327px',
         height: '51px',
       }"
@@ -38,8 +39,8 @@
     />
     <player
       :style="{
-        left: '17px',
-        top: '660px',
+        left: '1px',
+        top: '590px',
         width: '327px',
         height: '51px',
       }"
@@ -47,8 +48,8 @@
     />
     <player
       :style="{
-        left: '934px',
-        top: '660px',
+        left: '955px',
+        top: '590px',
         width: '327px',
         height: '51px',
       }"
@@ -57,7 +58,7 @@
     <host
       :style="{
         left: '544px',
-        top: '581px',
+        top: '365px',
         width: '191px',
         height: '67px',
       }"
@@ -65,25 +66,25 @@
     <donation-total
       :style="{
         left: '544px',
-        top: '72px',
+        top: '443px',
         width: '191px',
         height: '67px',
       }"
     />
     <donations
       :style="{
-        left: '354px',
+        left: '40px',
         top: '660px',
-        width: '570px',
+        width: '1200px',
         height: '52px',
       }"
     />
     <sponsor-logos
       :style="{
-        left: '543px',
-        top: '368px',
-        width: '193px',
-        height: '119px',
+        left: '577px',
+        top: '543px',
+        width: '130px',
+        height: '75px',
       }"
     />
   </div>
