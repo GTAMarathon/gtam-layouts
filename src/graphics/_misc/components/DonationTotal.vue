@@ -3,10 +3,6 @@
     class="Flex"
     :style="{ 'font-size': '2em', position: 'fixed' }"
   >
-    <img
-      src="../stc.png"
-      :style="{ 'margin-right': '10px' }"
-    >
     <div id="Total">
       <span
         v-for="char in total.split('')"
@@ -21,13 +17,13 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { gsap } from 'gsap';
-import { DonationTotal as DonationTotalType } from '@gtam-layouts/types/schemas';
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { TweenLite, Linear } from 'gsap'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { State } from 'vuex-class';
+import { DonationTotal as DonationTotalType } from '../../../types/schemas';
 
 @Component
 export default class DonationTotal extends Vue {
-  @replicantNS.State((s) => s.reps.donationTotal) readonly donationTotal!: DonationTotalType;
+  @State donationTotal!: DonationTotalType;
   tweened = 0;
   created(): void {
     this.tweened = this.donationTotal;
@@ -35,13 +31,12 @@ export default class DonationTotal extends Vue {
 
   @Watch('donationTotal')
   onTotalChange(newVal: DonationTotalType, oldVal: DonationTotalType): void {
-    const data = { total: oldVal };
-    gsap.to(data, {
-      duration: 1,
+    TweenLite.to({ total: oldVal }, 1, {
       total: newVal,
-      ease: 'none',
-      onUpdate: () => {
-        this.tweened = data.total;
+      ease: Linear.easeNone,
+      onUpdateParams: ['{self}'],
+      onUpdate: (self: { target: { total: number }}) => {
+        this.tweened = self.target.total;
       },
     });
   }

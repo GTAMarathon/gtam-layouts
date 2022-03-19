@@ -1,64 +1,33 @@
 <template>
   <div>
-    <img
-      src="./background.png"
-    >
+    <img src="./background.png">
     <upcoming-run
       :run-data="nextRun"
       :style="{
-        left: '295px',
-        top: '320px',
-        width: '470px',
-        height: '80px',
+        left: '940px',
+        top: '410px',
+        width: '1000px',
+        height: '145px',
+		'font-size': '19px',
+		
       }"
-    />
+    ></upcoming-run>
     <upcoming-run
       :run-data="onDeck"
       :style="{
-        left: '295px',
-        top: '490px',
-        width: '470px',
-        height: '80px',
+        left: '940px',
+        top: '710px',
+        width: '1000px',
+        height: '145px',
+		'font-size': '19px',
       }"
-    />
-    <sponsor-logos
-      :style="{
-        left: '804px',
-        top: '279px',
-        width: '198px',
-        height: '124px',
-      }"
-    />
-    <host
-      :style="{
-        left: '783px',
-        top: '432px',
-        width: '240px',
-        height: '76px',
-      }"
-    />
-    <donation-total
-      :style="{
-        left: '783px',
-        top: '512px',
-        width: '240px',
-        height: '76px',
-      }"
-    />
-    <donations
-      :style="{
-        left: '300px',
-        top: '597px',
-        width: '700px',
-        height: '59px',
-      }"
-    />
+    ></upcoming-run>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { State } from 'vuex-class';
 import SponsorLogos from '../_misc/components/SponsorLogos.vue';
 import UpcomingRun from './components/UpcomingRun.vue';
 import DonationTotal from '../_misc/components/DonationTotal.vue';
@@ -77,20 +46,15 @@ import { RunDataActiveRunSurrounding, RunDataArray } from '../../../../nodecg-sp
   },
 })
 export default class App extends Vue {
-  @replicantNS.State((s) => s.reps.runDataArray) readonly runDataArray!: RunDataArray;
-  @replicantNS.State(
-    (s) => s.reps.runDataActiveRunSurrounding,
-  ) readonly runDataActiveRunSurrounding!: RunDataActiveRunSurrounding;
+  @State runDataArray!: RunDataArray;
+  @State runDataActiveRunSurrounding!: RunDataActiveRunSurrounding;
   nextRun: RunData | null = null;
   onDeckArr: RunData[] = [];
 
-  get nextGameName(): string {
-    return ((this.nextRun ? this.nextRun.game : undefined) || '').toLowerCase();
-  }
-
   mounted(): void {
     this.updateNextRuns();
-    nodecg.listenFor('refreshIntermission', () => this.updateNextRuns());
+    nodecg.listenFor("refreshIntermission", () => this.updateNextRuns());
+    nodecg.listenFor("nextRun", () => this.updateNextRuns());
   }
 
   updateNextRuns(): void {

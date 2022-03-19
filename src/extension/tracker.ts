@@ -1,15 +1,8 @@
-import needle from 'needle';
-import socketIO from 'socket.io-client';
-import { get } from './util/nodecg';
-import { donationTotal } from './util/replicants';
+/* import needle from 'needle'; */
 
-const nodecg = get();
-const eventShort = 'SCM2021';
-const repeaterURL = 'https://donate.speedsouls.com';
-const statsURL = 'https://donate.speedsouls.com/3?json';
-const repeater = socketIO(repeaterURL, { path: '/repeater/socket.io' });
 
-// Get donation total from HTTPS API, backup for the repeater socket server.
+
+/* // Get donation total from HTTPS API, backup for the repeater socket server.
 // We need to add both events together to get the correct total.
 async function updateDontationTotalFromAPI(): Promise<void> {
   try {
@@ -50,4 +43,4 @@ repeater.on('total', (data: { event: string; new_total: string }) => {
     donationTotal.value = parseFloat(data.new_total);
   }
   nodecg.log.info(`Updated donation total received: $${parseFloat(data.new_total).toFixed(2)}`);
-});
+}); */

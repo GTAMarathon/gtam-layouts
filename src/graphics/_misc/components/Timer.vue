@@ -7,7 +7,7 @@
       id="Time"
       :class="timer.state"
       :style="{
-        'font-size': '2.5em',
+        'font-size': '2.3em',
         transition: '1s',
         'margin-bottom': '-0.2em',
       }"
@@ -20,48 +20,18 @@
         {{ char }}
       </span>
     </div>
-    <div
-      v-if="runDataActiveRun"
-      :style="{
-        'font-size': '1.3em',
-        display: 'flex',
-        'flex-direction': 'row',
-        'justify-content': 'center',
-        width: '100%',
-      }"
-    >
-      EST.
-      <div :style="{ 'margin-left': '5px', width: estimateWidth }">
-        <transition name="fade">
-          <div
-            id="Estimate"
-            ref="Estimate"
-            :key="`${runDataActiveRun.id}${runDataActiveRun.estimate}`"
-            :style="{ position: 'absolute' }"
-          >
-            <span
-              v-for="char in runDataActiveRun.estimate.split('')"
-              :key="`${Math.random()}${char}`"
-              :class="(char === ':' ? 'Colon' : undefined)"
-            >
-              {{ char }}
-            </span>
-          </div>
-        </transition>
-      </div>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
-import { Vue, Component, Ref, Watch } from 'vue-property-decorator';
+import { Vue, Component, Ref, Watch } from 'vue-property-decorator'; // eslint-disable-line object-curly-newline, max-len
+import { State } from 'vuex-class';
 import { Timer as TimerType, RunDataActiveRun } from '../../../../../nodecg-speedcontrol/src/types';
 
 @Component
 export default class Timer extends Vue {
-  @replicantNS.State((s) => s.reps.timer) readonly timer!: TimerType;
-  @replicantNS.State((s) => s.reps.runDataActiveRun) readonly runDataActiveRun!: RunDataActiveRun;
+  @State timer!: TimerType;
+  @State runDataActiveRun!: RunDataActiveRun;
   @Ref('Estimate') readonly estimate!: HTMLElement;
   isMounted = false;
   estimateWidth = '0px';
@@ -86,23 +56,23 @@ export default class Timer extends Vue {
   /* Each character in the timer is in a span; setting width so the numbers appear monospaced. */
   #Time > span, #Estimate > span {
     display: inline-block;
-    width: 0.45em;
+    width: 0.5em;
     text-align: center;
   }
   #Time > .Colon, #Estimate > .Colon {
-    width: 0.22em;
+    width: 0.3em;
   }
 
   .stopped {
-    color: #e0c686;
+    color: #a3a3a3;
   }
   .running {
-    color: #f57f05;
+    color: #03f0fc;
   }
   .paused {
-    color: #dfb54f;
+    color: #00b1ba;
   }
   .finished {
-    color: #b07d01;
+    color: #63d760;
   }
 </style>

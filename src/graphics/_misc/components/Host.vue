@@ -9,7 +9,7 @@
       >
         <img
           src="../mic.png"
-          :style="{ 'margin-right': '10px', height: '33px' }"
+          :style="{ 'margin-right': '10px' }"
         >
         <div>{{ host }}</div>
       </div>
@@ -19,12 +19,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Host as HostType } from '@gtam-layouts/types/schemas';
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { State } from 'vuex-class';
+import { Host as HostType } from '../../../types/schemas';
 
 @Component
 export default class Host extends Vue {
-  @replicantNS.State((s) => s.reps.host) readonly host!: HostType;
+  @State host!: HostType;
 }
 </script>
 

@@ -3,103 +3,98 @@
     <img src="./background.png">
     <timer
       :style="{
-        left: '548px',
-        top: '160px',
-        width: '191px',
-        height: '67px',
+        left: '1345px',
+        top: '987px',
+        width: '259px',
+        height: '75px',
+		'font-size': '26px',
       }"
-    />
+    ></timer>
+	<estimate
+      :style="{
+        left: '1070px',
+        top: '973px',
+        width: '259px',
+        height: '85px',
+		'font-weight': regular,
+		'font-size': '24px',
+      }"
+    ></estimate>
     <game
       :style="{
-        left: '548px',
-        top: '82px',
-        width: '191px',
-        height: '67px',
+        left: '240px',
+        top: '982px',
+        width: '400px',
+        height: '100px',
+		'font-weight': bold,
+		'font-size': '30px',
+		'background-color': 'transparent',
       }"
-      :scale="0.8"
-	  :run="runDataActiveRun"
-    />
+    ></game>
+	<category
+      :style="{
+        left: '764px',
+        top: '982px',
+        width: '400px',
+        height: '100px',
+		'font-weight': bold,
+		'font-size': '22px',
+      }"
+    ></category>
     <player
       :style="{
-        left: '1px',
-        top: '17px',
-        width: '327px',
-        height: '51px',
+        left: '1476px',
+        top: '203px',
+        width: '208px',
+        height: '100px',
+		'font-size': '24px',
       }"
-      :team="1"
-    />
-    <player
+    ></player>
+	    <player2
       :style="{
-        left: '955px',
-        top: '17px',
-        width: '327px',
-        height: '51px',
+        left: '122px',
+        top: '867px',
+        width: '400px',
+        height: '100px',
+		'font-size': '24px',
       }"
-      :team="2"
-    />
-    <player
+    ></player2>
+	    <player3
       :style="{
-        left: '1px',
-        top: '590px',
-        width: '327px',
-        height: '51px',
+        left: '763px',
+        top: '867px',
+        width: '400px',
+        height: '100px',
+		'font-size': '24px',
       }"
-      :team="3"
-    />
-    <player
+    ></player3>
+	    <player4
       :style="{
-        left: '955px',
-        top: '590px',
-        width: '327px',
-        height: '51px',
+        left: '1401px',
+        top: '867px',
+        width: '400px',
+        height: '100px',
+		'font-size': '24px',
       }"
-      :team="4"
-    />
-    <host
-      :style="{
-        left: '544px',
-        top: '365px',
-        width: '191px',
-        height: '67px',
-      }"
-    />
-    <donation-total
-      :style="{
-        left: '544px',
-        top: '443px',
-        width: '191px',
-        height: '67px',
-      }"
-    />
-    <donations
-      :style="{
-        left: '40px',
-        top: '660px',
-        width: '1200px',
-        height: '52px',
-      }"
-    />
-    <sponsor-logos
-      :style="{
-        left: '577px',
-        top: '543px',
-        width: '130px',
-        height: '75px',
-      }"
-    />
+    ></player4>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { State } from 'vuex-class';
 import SponsorLogos from '../_misc/components/SponsorLogos.vue';
 import DonationTotal from '../_misc/components/DonationTotal.vue';
 import Host from '../_misc/components/Host.vue';
 import Donations from '../_misc/components/Ticker.vue';
 import Timer from '../_misc/components/Timer.vue';
+import Estimate from '../_misc/components/Estimate.vue';
 import Game from '../_misc/components/Game.vue';
+import Category from '../_misc/components/Category.vue';
 import Player from '../_misc/components/Player.vue';
+import Player2 from '../_misc/components/Player2.vue';
+import Player3 from '../_misc/components/Player3.vue';
+import Player4 from '../_misc/components/Player4.vue';
 import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
 
 @Component({
@@ -109,12 +104,17 @@ import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
     Host,
     Donations,
     Timer,
+	Estimate,
     Game,
+	Category,
     Player,
+	Player2,
+	Player3,
+	Player4,
   },
 })
 export default class App extends Vue {
-  @replicantNS.State((s) => s.reps.runDataActiveRun) readonly runDataActiveRun!: RunDataActiveRun;
+  @State runDataActiveRun!: RunDataActiveRun;
 }
 </script>
 
