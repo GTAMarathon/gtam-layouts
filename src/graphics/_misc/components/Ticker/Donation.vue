@@ -8,11 +8,15 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line object-curly-newline
 import { Vue, Component, Ref, Prop } from 'vue-property-decorator';
-import { gsap } from 'gsap';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { TweenLite, Linear } from 'gsap';
+// eslint-disable-next-line
+// @ts-ignore
+import ScrollToPlugin from 'gsap/ScrollToPlugin';
 
-gsap.registerPlugin(ScrollToPlugin);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const plugins = [ScrollToPlugin];
 
 @Component
 export default class Donation extends Vue {
@@ -30,11 +34,10 @@ export default class Donation extends Vue {
       time = ((dist / 100) > 10) ? (dist / 100) : 10;
     }
 
-    gsap.to(this.donation, {
-      duration: time,
+    TweenLite.to(this.donation, time, {
       scrollTo: { x: 'max' },
       delay: 2,
-      ease: 'none',
+      ease: Linear.easeNone,
       onComplete: () => {
         setTimeout(() => this.$emit('end'), 2 * 1000);
       },

@@ -3,73 +3,65 @@
     <img src="./background.png">
     <timer
       :style="{
-        left: '25px',
-        top: '565px',
+        left: '1210px',
+        top: '1000px',
         width: '208px',
         height: '77px',
+		'font-size': '24px',
       }"
-    />
+    ></timer>
+	<estimate
+      :style="{
+        left: '910px',
+        top: '990px',
+        width: '259px',
+        height: '75px',
+		'font-weight': regular,
+		'font-size': '24px',
+      }"
+    ></estimate>
     <game
       :style="{
-        left: '25px',
-        top: '480px',
-        width: '208px',
-        height: '74px',
+        left: '35px',
+        top: '1008px',
+        width: '500px',
+        height: '75px',
+		'font-size': '24px',
       }"
-	  :run="runDataActiveRun"
-    />
+    ></game>
+	<category
+      :style="{
+        left: '600px',
+        top: '1007px',
+        width: '400px',
+        height: '75px',
+		'font-weight': bold,
+		'font-size': '30px',
+      }"
+    ></category>
     <player
       :style="{
-        left: '1010px',
-        top: '13px',
-        width: '208px',
+        left: '1560px',
+        top: '1005px',
+        width: '400px',
         height: '75px',
+		'font-size': '18px',
       }"
-    />
-    <host
-      :style="{
-        left: '25px',
-        top: '393px',
-        width: '209px',
-        height: '75px',
-      }"
-    />
-    <donation-total
-      :style="{
-        left: '25px',
-        top: '305px',
-        width: '209px',
-        height: '75px',
-      }"
-    />
-    <donations
-      :style="{
-        left: '90px',
-        top: '635px',
-        width: '1100px',
-        height: '75px',
-      }"
-    />
-    <sponsor-logos
-      :style="{
-        left: '95px',
-        top: '193px',
-        width: '82px',
-        height: '81px',
-      }"
-    />
+    ></player>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { State } from 'vuex-class';
 import SponsorLogos from '../_misc/components/SponsorLogos.vue';
 import DonationTotal from '../_misc/components/DonationTotal.vue';
 import Host from '../_misc/components/Host.vue';
 import Donations from '../_misc/components/Ticker.vue';
 import Timer from '../_misc/components/Timer.vue';
+import Estimate from '../_misc/components/Estimate.vue';
 import Game from '../_misc/components/Game.vue';
+import Category from '../_misc/components/Category.vue';
 import Player from '../_misc/components/Player.vue';
 import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
 
@@ -80,12 +72,14 @@ import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
     Host,
     Donations,
     Timer,
+	Estimate,
     Game,
+    Category,
     Player,
   },
 })
 export default class App extends Vue {
-  @replicantNS.State((s) => s.reps.runDataActiveRun) readonly runDataActiveRun!: RunDataActiveRun;
+  @State runDataActiveRun!: RunDataActiveRun;
 }
 </script>
 

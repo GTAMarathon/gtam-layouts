@@ -34,8 +34,11 @@
     "watch:extension": "tsc -b tsconfig.extension.json -w"
   },
   "dependencies": {
+    "graphql": "^15.5.0",
+    "graphql-request": "^3.4.0",
     "fitty": "^2.3.5",
     "module-alias": "^2.2.2",
+    "moment": "^2.29.1",
     "needle": "^3.0.0",
     "obs-websocket-js": "^4.0.3",
     "socket.io-client": "^2.4.0"
@@ -94,6 +97,9 @@
   },
   "nodecg": {
     "compatibleRange": "^1.8.1",
+    "bundleDependencies": {
+      "nodecg-speedcontrol": "^2.4.0"
+    },
     "dashboardPanels": [
       {
         "name": "obs",
@@ -108,39 +114,89 @@
         "file": "host.html",
         "workspace": "SCM2019",
         "width": 2
+      },
+      {
+        "name": "4 Players Coop",
+        "title": "4 Players Coop",
+        "file": "focus.html",
+        "workspace": "SCM2019",
+        "width": 4
+      },
+      {
+        "name": "streamAssign",
+        "title": "streamAssign",
+        "file": "streamAssign.html",
+        "workspace": "SCM2019",
+        "width": 4
       }
     ],
     "graphics": [
       {
         "file": "intermission.html",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
       },
       {
         "file": "4x3-1p.html",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
       },
       {
         "file": "4x3-2p.html",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4x3-3p.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4x3-bingo.html",
+        "width": 1920,
+        "height": 1080
       },
       {
         "file": "16x9-1p.html",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
       },
       {
         "file": "16x9-2p.html",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16x9-3p.html",
+        "width": 1920,
+        "height": 1080
       },
       {
         "file": "16x9-4p.html",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16x9-4p2.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16x9-4p3.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16x9-4p4.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16x9-bingo.html",
+        "width": 1920,
+        "height": 1080
       }
+	  
     ],
     "assetCategories": [
       {

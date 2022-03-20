@@ -5,7 +5,7 @@
         v-if="name"
         :key="name"
         class="Flex"
-        :style="{ position: 'absolute' }"
+        :style="{ position: 'absolute', 'font-size': '1.5em' }"
       >
         <div :style="{ 'margin-left': '5px', 'font-size': (small) ? '1.1em' : '1.3em' }">
           {{ name }}
@@ -22,14 +22,14 @@
 </template>
 
 <script lang="ts">
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'; // eslint-disable-line object-curly-newline, max-len
+import { State } from 'vuex-class';
 import { RunDataActiveRun, Timer } from '../../../../../nodecg-speedcontrol/src/types';
 
 @Component
 export default class Player extends Vue {
-  @replicantNS.State((s) => s.reps.runDataActiveRun) readonly run!: RunDataActiveRun;
-  @replicantNS.State((s) => s.reps.timer) readonly timer!: Timer;
+  @State('runDataActiveRun') run!: RunDataActiveRun;
+  @State timer!: Timer;
   @Prop(Boolean) readonly small!: boolean;
   @Prop({ default: 1 }) readonly team!: number;
   timeout?: number;

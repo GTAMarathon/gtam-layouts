@@ -3,84 +3,80 @@
     <img src="./background.png">
     <timer
       :style="{
-        left: '516px',
-        top: '578px',
+        left: '950px',
+        top: '907px',
         width: '259px',
         height: '75px',
+		'font-size': '26px',
       }"
-    />
+    ></timer>
+	<estimate
+      :style="{
+        left: '680px',
+        top: '960px',
+        width: '259px',
+        height: '75px',
+		'font-weight': regular,
+		'font-size': '22px',
+      }"
+    ></estimate>
     <game
       :style="{
-        left: '100px',
-        top: '578px',
+        left: '520px',
+        top: '770px',
         width: '400px',
-        height: '75px',
+        height: '100px',
+		'font-weight': bold,
+		'font-size': '32px',
+		'background-color': 'transparent',
       }"
-	  :run="runDataActiveRun"
-    />
+    ></game>
+	<category
+      :style="{
+        left: '1050px',
+        top: '770px',
+        width: '300px',
+        height: '100px',
+		'font-weight': bold,
+		'font-size': '32px',
+      }"
+    ></category>
     <player
       :style="{
-        left: '60px',
-        top: '73px',
-        width: '259px',
-        height: '75px',
+        left: '100px',
+        top: '770px',
+        width: '300px',
+        height: '100px',
+		'font-weight': bold,
+		'font-size': '24px',
       }"
-      :team="1"
-    />
-    <player
+    ></player>
+	<player2
       :style="{
-        left: '960px',
-        top: '73px',
-        width: '259px',
-        height: '75px',
+        left: '1520px',
+        top: '770px',
+        width: '300px',
+        height: '100px',
+		'font-weight': bold,
+		'font-size': '24px',
       }"
-      :team="2"
-    />
-    <host
-      :style="{
-        left: '741px',
-        top: '578px',
-        width: '259px',
-        height: '75px',
-      }"
-    />
-    <donation-total
-      :style="{
-        left: '970px',
-        top: '578px',
-        width: '259px',
-        height: '75px',
-      }"
-    />
-    <donations
-      :style="{
-        left: '130px',
-        top: '638px',
-        width: '1000px',
-        height: '75px',
-      }"
-    />
-    <sponsor-logos
-      :style="{
-        left: '61px',
-        top: '5px',
-        width: '112px',
-        height: '79px',
-      }"
-    />
+    ></player2>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { State } from 'vuex-class';
 import SponsorLogos from '../_misc/components/SponsorLogos.vue';
 import DonationTotal from '../_misc/components/DonationTotal.vue';
 import Host from '../_misc/components/Host.vue';
 import Donations from '../_misc/components/Ticker.vue';
 import Timer from '../_misc/components/Timer.vue';
+import Estimate from '../_misc/components/Estimate.vue';
 import Game from '../_misc/components/Game.vue';
+import Category from '../_misc/components/Category.vue';
 import Player from '../_misc/components/Player.vue';
+import Player2 from '../_misc/components/Player2.vue';
 import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
 
 @Component({
@@ -90,12 +86,15 @@ import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
     Host,
     Donations,
     Timer,
+	Estimate,
     Game,
+	Category,
     Player,
+	Player2,
   },
 })
 export default class App extends Vue {
-  @replicantNS.State((s) => s.reps.runDataActiveRun) readonly runDataActiveRun!: RunDataActiveRun;
+  @State runDataActiveRun!: RunDataActiveRun;
 }
 </script>
 

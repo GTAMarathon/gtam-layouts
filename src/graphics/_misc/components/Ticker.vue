@@ -19,7 +19,7 @@
         :key="text"
         :text="text"
         @end="onEnd"
-      />
+      ></component>
     </transition>
   </div>
 </template>

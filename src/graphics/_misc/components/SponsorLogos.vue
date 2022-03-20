@@ -13,12 +13,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Asset } from '@gtam-layouts/types';
-import { replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
+import { State } from 'vuex-class';
+import { Asset } from '../../../types';
 
 @Component
 export default class SponsorLogos extends Vue {
-  @replicantNS.State((s) => s.reps.assetsSponsorLogos) readonly logos!: Asset[];
+  @State('assets:sponsor-logos') logos!: Asset[];
   index = 0;
   currentSum = '';
   currentURL = '';

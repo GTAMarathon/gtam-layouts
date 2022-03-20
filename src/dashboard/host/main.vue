@@ -8,7 +8,7 @@
         filled
         :spellcheck="false"
         @keyup.enter="updateHost"
-      />
+      ></v-text-field>
       <v-btn
         height="56px"
         :style="{ 'min-width': '0', 'margin-left': '5px' }"
@@ -23,15 +23,15 @@
 </template>
 
 <script lang="ts">
-import { replicantModule, replicantNS } from '@gtam-layouts/browser_shared/replicant_store';
-import { Host } from '@gtam-layouts/types/schemas';
 import { Vue, Component, Watch } from 'vue-property-decorator';
+import { State, Mutation } from 'vuex-class';
 
 @Component
 export default class App extends Vue {
   name = '';
   saved = false;
-  @replicantNS.State((s) => s.reps.host) readonly host!: Host;
+  @State host!: string;
+  @Mutation('updateHost') updateHostMutation!: (value: string) => void;
 
   @Watch('host', { immediate: true })
   onHostChange(val: string): void {
@@ -39,7 +39,7 @@ export default class App extends Vue {
   }
 
   updateHost(): void {
-    replicantModule.setReplicant<Host>({ name: 'host', val: this.name });
+    this.updateHostMutation(this.name);
     this.saved = true;
     setTimeout(() => { this.saved = false; }, 1000);
   }
