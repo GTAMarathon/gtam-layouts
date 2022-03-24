@@ -54,7 +54,7 @@
         'font-size': '24px'
       }"
     ></player>
-    <player2
+    <player
       :style="{
         left: '725px',
         top: '560px',
@@ -63,8 +63,9 @@
         'font-weight': bold,
         'font-size': '24px'
       }"
-    ></player2>
-    <player3
+      :team="2"
+    ></player>
+    <player
       :style="{
         left: '880px',
         top: '940px',
@@ -73,7 +74,8 @@
         'font-weight': bold,
         'font-size': '24px'
       }"
-    ></player3>
+      :team="3"
+    ></player>
   </div>
 </template>
 
@@ -85,8 +87,6 @@ import Estimate from "../_misc/components/Estimate.vue";
 import Game from "../_misc/components/Game.vue";
 import Category from "../_misc/components/Category.vue";
 import Player from "../_misc/components/Player.vue";
-import Player2 from "../_misc/components/Player2.vue";
-import Player3 from "../_misc/components/Player3.vue";
 import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
 
 @Component({
@@ -96,8 +96,6 @@ import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
     Game,
     Category,
     Player,
-    Player2,
-    Player3
   }
 })
 export default class App extends Vue {

@@ -44,7 +44,7 @@
         'font-size': '22px'
       }"
     ></category>
-    <player2
+    <player
       :style="{
         left: '1445px',
         top: '203px',
@@ -52,7 +52,8 @@
         height: '100px',
         'font-size': '24px'
       }"
-    ></player2>
+      :team="2"
+    ></player>
     <player
       :style="{
         left: '122px',
@@ -62,7 +63,7 @@
         'font-size': '24px'
       }"
     ></player>
-    <player3
+    <player
       :style="{
         left: '763px',
         top: '867px',
@@ -70,8 +71,9 @@
         height: '100px',
         'font-size': '24px'
       }"
-    ></player3>
-    <player4
+      :team="3"
+    ></player>
+    <player
       :style="{
         left: '1401px',
         top: '867px',
@@ -79,7 +81,8 @@
         height: '100px',
         'font-size': '24px'
       }"
-    ></player4>
+      :team="4"
+    ></player>
   </div>
 </template>
 
@@ -91,9 +94,6 @@ import Estimate from "../_misc/components/Estimate.vue";
 import Game from "../_misc/components/Game.vue";
 import Category from "../_misc/components/Category.vue";
 import Player from "../_misc/components/Player.vue";
-import Player2 from "../_misc/components/Player2.vue";
-import Player3 from "../_misc/components/Player3.vue";
-import Player4 from "../_misc/components/Player4.vue";
 import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
 
 @Component({
@@ -103,9 +103,6 @@ import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
     Game,
     Category,
     Player,
-    Player2,
-    Player3,
-    Player4
   }
 })
 export default class App extends Vue {
