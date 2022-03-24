@@ -67,4 +67,8 @@ export interface Configschema {
 			twitchAccount: string;
 		}[];
 	};
+	betting: {
+		enable: boolean;
+		broadcaster_id: string;
+	};
 }

@@ -42,6 +42,7 @@
     "moment": "^2.29.1",
     "needle": "^3.0.0",
     "obs-websocket-js": "^4.0.3",
+    "parse-duration": "^1.0.2",
     "socket.io-client": "^2.4.0"
   },
   "devDependencies": {
