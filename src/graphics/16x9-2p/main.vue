@@ -1,6 +1,9 @@
 <template>
   <div>
-    <img src="./background.png" />
+    <div id="backgrounds">
+      <img class="bg" src="../_misc/layoutbackground.png" />
+      <img class="bg" src="./background.png" />
+    </div>
     <timer
       :style="{
         left: '955px',
