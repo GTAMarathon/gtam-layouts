@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'; // eslint-disable-line object-curly-newline, max-len
 import { State } from 'vuex-class';
-import { RunDataActiveRun, Timer } from '../../../../../nodecg-speedcontrol/src/types';
+import { RunDataActiveRun, Timer } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
 
 @Component
 export default class Player4 extends Vue {

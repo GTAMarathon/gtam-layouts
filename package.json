@@ -17,7 +17,8 @@
     "EnglishBen",
     "gaeldemarseille",
     "bbrosef",
-    "hossel"
+    "hossel",
+    "zoton2"
   ],
   "scripts": {
     "autofix": "run-s autofix:*",

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="./background.png">
+    <img src="./background.png" />
     <upcoming-run
       :run-data="nextRun"
       :style="{
@@ -8,8 +8,7 @@
         top: '410px',
         width: '1000px',
         height: '145px',
-		'font-size': '19px',
-		
+        'font-size': '19px'
       }"
     ></upcoming-run>
     <upcoming-run
@@ -19,31 +18,26 @@
         top: '710px',
         width: '1000px',
         height: '145px',
-		'font-size': '19px',
+        'font-size': '19px'
       }"
     ></upcoming-run>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator';
-import { State } from 'vuex-class';
-import SponsorLogos from '../_misc/components/SponsorLogos.vue';
-import UpcomingRun from './components/UpcomingRun.vue';
-import DonationTotal from '../_misc/components/DonationTotal.vue';
-import Host from '../_misc/components/Host.vue';
-import Donations from '../_misc/components/Ticker.vue';
-import { RunData } from '../../../../nodecg-speedcontrol/src/types';
-import { RunDataActiveRunSurrounding, RunDataArray } from '../../../../nodecg-speedcontrol/src/types/schemas';
+import { Vue, Component, Watch } from "vue-property-decorator";
+import { State } from "vuex-class";
+import UpcomingRun from "./components/UpcomingRun.vue";
+import { RunData } from "nodecg/bundles/nodecg-speedcontrol/src/types";
+import {
+  RunDataActiveRunSurrounding,
+  RunDataArray
+} from "nodecg/bundles/nodecg-speedcontrol/src/types/schemas";
 
 @Component({
   components: {
-    SponsorLogos,
     UpcomingRun,
-    DonationTotal,
-    Host,
-    Donations,
-  },
+  }
 })
 export default class App extends Vue {
   @State runDataArray!: RunDataArray;
@@ -58,11 +52,12 @@ export default class App extends Vue {
   }
 
   updateNextRuns(): void {
-    let runIndex = this.runDataArray
-      .findIndex((run) => run.id === this.runDataActiveRunSurrounding.next);
+    let runIndex = this.runDataArray.findIndex(
+      run => run.id === this.runDataActiveRunSurrounding.next
+    );
     this.nextRun = this.runDataArray[runIndex] || null;
     if (this.runDataActiveRunSurrounding.next) {
-      runIndex = (runIndex < 0) ? 1 : runIndex + 1;
+      runIndex = runIndex < 0 ? 1 : runIndex + 1;
       this.onDeckArr = this.runDataArray.slice(runIndex, runIndex + 3);
     } else {
       this.onDeckArr = [];
@@ -73,7 +68,7 @@ export default class App extends Vue {
   onDeck: RunData | null = null;
   onDeckIndex = 0;
   onDeckInterval?: number;
-  @Watch('onDeckArr', { immediate: true })
+  @Watch("onDeckArr", { immediate: true })
   onDeckChange(): void {
     window.clearInterval(this.onDeckInterval);
     this.onDeckIndex = 0;
@@ -95,7 +90,7 @@ export default class App extends Vue {
 </script>
 
 <style>
-  @import url('../_misc/common.css');
-  @import url('../_misc/Fade.css');
-  @import url('../_misc/Flex.css');
+@import url("../_misc/common.css");
+@import url("../_misc/Fade.css");
+@import url("../_misc/Flex.css");
 </style>

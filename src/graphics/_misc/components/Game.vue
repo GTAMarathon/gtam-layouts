@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { State } from 'vuex-class';
-import { RunDataActiveRun } from '../../../../../nodecg-speedcontrol/src/types';
+import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
 
 @Component
 export default class Game extends Vue {
