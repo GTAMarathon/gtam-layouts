@@ -25,55 +25,54 @@
     ></estimate>
     <game
       :style="{
-        left: '998px',
-        top: '544px',
-        width: '250px',
-        height: '75px',
-        'font-weight': bold,
-        'font-size': '26px',
-        'background-color': 'transparent'
+        left: '1034px',
+        top: '554px',
+        width: '180px',
+        height: '50px',
+        fontWeight: 'bold'
       }"
+      :size="40"
     ></game>
     <category
       :style="{
-        left: '1275px',
-        top: '542px',
-        width: '400px',
-        height: '75px',
-        'font-weight': bold,
-        'font-size': '30px'
+        left: '1380px',
+        top: '553px',
+        width: '195px',
+        height: '52px',
+        fontWeight: 'bold'
       }"
+      :size="42"
     ></category>
     <player
       :style="{
-        left: '955px',
-        top: '990px',
-        width: '300px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '16px'
+        left: '968px',
+        top: '1015px',
+        width: '270px',
+        height: '52px',
+        fontWeight: 'bold'
       }"
+      :size="40"
     ></player>
     <player
       :style="{
-        left: '1290px',
-        top: '990px',
-        width: '300px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '16px'
+        left: '1300px',
+        top: '1015px',
+        width: '270px',
+        height: '52px',
+        fontWeight: 'bold'
       }"
+      :size="40"
       :team="2"
     ></player>
     <player
       :style="{
-        left: '1620px',
-        top: '990px',
-        width: '300px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '16px'
+        left: '1630px',
+        top: '1015px',
+        width: '270px',
+        height: '52px',
+        fontWeight: 'bold'
       }"
+      :size="40"
       :team="3"
     ></player>
   </div>
@@ -95,7 +94,7 @@ import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
     Estimate,
     Game,
     Category,
-    Player,
+    Player
   }
 })
 export default class App extends Vue {

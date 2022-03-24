@@ -10,7 +10,7 @@
         top: '913px',
         width: '259px',
         height: '77px',
-        'font-size': '26px'
+        fontSize: '26px'
       }"
     ></timer>
     <estimate
@@ -19,29 +19,26 @@
         top: '952px',
         width: '259px',
         height: '100px',
-        'font-weight': regular,
-        'font-size': '24px'
+        fontWeight: 'regular',
+        fontSize: '24px'
       }"
     ></estimate>
     <game
       :style="{
-        left: '980px',
-        top: '806px',
-        width: '500px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '22px',
-        'background-color': 'transparent'
+        left: '1080px',
+        top: '828px',
+        width: '330px',
+        height: '58px',
+        fontWeight: 'bold'
       }"
     ></game>
     <category
       :style="{
-        left: '1555px',
-        top: '817px',
-        width: '400px',
-        height: '75px',
-        'font-weight': bold,
-        'font-size': '26px'
+        left: '1605px',
+        top: '827px',
+        width: '300px',
+        height: '54px',
+        fontWeight: 'bold'
       }"
     ></category>
     <player
@@ -49,18 +46,18 @@
         left: '1000px',
         top: '40px',
         width: '300px',
-        height: '100px',
-        'font-size': '24px'
+        height: '100px'
       }"
+      :size="46"
     ></player>
     <player
       :style="{
         left: '1000px',
         top: '950px',
         width: '300px',
-        height: '100px',
-        'font-size': '24px'
+        height: '100px'
       }"
+      :size="46"
       :team="2"
     ></player>
     <player
@@ -68,9 +65,9 @@
         left: '1540px',
         top: '160px',
         width: '300px',
-        height: '100px',
-        'font-size': '24px'
+        height: '100px'
       }"
+      :size="46"
       :team="3"
     ></player>
   </div>
@@ -92,7 +89,7 @@ import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
     Estimate,
     Game,
     Category,
-    Player,
+    Player
   }
 })
 export default class App extends Vue {

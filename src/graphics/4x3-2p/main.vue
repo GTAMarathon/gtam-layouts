@@ -25,44 +25,43 @@
     ></estimate>
     <game
       :style="{
-        left: '520px',
+        left: '500px',
         top: '770px',
-        width: '400px',
+        width: '450px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '32px',
-        'background-color': 'transparent'
+        fontWeight: 'bold'
       }"
+      :size="55"
     ></game>
     <category
       :style="{
-        left: '1050px',
+        left: '975px',
         top: '770px',
-        width: '300px',
+        width: '450px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '32px'
+        fontWeight: 'bold'
       }"
+      :size="55"
     ></category>
     <player
       :style="{
-        left: '100px',
+        left: '30px',
         top: '770px',
-        width: '300px',
+        width: '450px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '24px'
+        fontWeight: 'bold'
       }"
+      :size="50"
     ></player>
     <player
       :style="{
-        left: '1520px',
+        left: '1445px',
         top: '770px',
-        width: '300px',
+        width: '450px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '24px'
+        fontWeight: 'bold'
       }"
+      :size="50"
       :team="2"
     ></player>
   </div>
@@ -84,7 +83,7 @@ import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
     Estimate,
     Game,
     Category,
-    Player,
+    Player
   }
 })
 export default class App extends Vue {

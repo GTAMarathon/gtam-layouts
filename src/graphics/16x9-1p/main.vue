@@ -10,7 +10,7 @@
         top: '1000px',
         width: '208px',
         height: '77px',
-        'font-size': '24px'
+        fontSize: '24px'
       }"
     ></timer>
     <estimate
@@ -19,37 +19,37 @@
         top: '990px',
         width: '259px',
         height: '75px',
-        'font-weight': regular,
-        'font-size': '24px'
+        fontWeight: regular,
+        fontSize: '24px'
       }"
     ></estimate>
     <game
       :style="{
-        left: '35px',
-        top: '1008px',
-        width: '500px',
-        height: '75px',
-        'font-size': '24px'
+        left: '110px',
+        top: '1022px',
+        width: '345px',
+        height: '50px',
       }"
+      :size="40"
     ></game>
     <category
       :style="{
-        left: '600px',
-        top: '1007px',
-        width: '400px',
-        height: '75px',
-        'font-weight': bold,
-        'font-size': '30px'
+        left: '651px',
+        top: '1020px',
+        width: '290px',
+        height: '50px',
+        fontWeight: bold,
       }"
+      :size="40"
     ></category>
     <player
       :style="{
-        left: '1560px',
-        top: '1005px',
-        width: '400px',
-        height: '75px',
-        'font-size': '18px'
+        left: '1620px',
+        top: '1020px',
+        width: '285px',
+        height: '50px',
       }"
+      :size="40"
     ></player>
   </div>
 </template>

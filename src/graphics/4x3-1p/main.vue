@@ -25,34 +25,33 @@
     ></estimate>
     <game
       :style="{
-        left: '35px',
+        left: '15px',
         top: '335px',
-        width: '400px',
+        width: '450px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '30px',
-        'background-color': 'transparent'
+        fontWeight: 'bold'
       }"
+      :size="56"
     ></game>
     <category
       :style="{
-        left: '35px',
+        left: '15px',
         top: '535px',
-        width: '400px',
+        width: '450px',
         height: '75px',
-        'font-weight': bold,
-        'font-size': '30px'
+        fontWeight: 'bold'
       }"
+      :size="56"
     ></category>
     <player
       :style="{
-        left: '70px',
+        left: '15px',
         top: '905px',
-        width: '310px',
+        width: '450px',
         height: '75px',
-        'font-weight': bold,
-        'font-size': '24px'
+        fontWeight: 'bold'
       }"
+      :size="56"
     ></player>
   </div>
 </template>

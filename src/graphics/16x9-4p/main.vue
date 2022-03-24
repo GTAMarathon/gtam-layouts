@@ -25,62 +25,61 @@
     ></estimate>
     <game
       :style="{
-        left: '240px',
-        top: '982px',
-        width: '400px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '30px',
-        'background-color': 'transparent'
+        left: '280px',
+        top: '1006px',
+        width: '338px',
+        height: '50px',
+        fontWeight: 'bold',
       }"
+      :size="40"
     ></game>
     <category
       :style="{
-        left: '764px',
-        top: '982px',
-        width: '400px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '22px'
+        left: '812px',
+        top: '1008px',
+        width: '298px',
+        height: '50px',
+        fontWeight: 'bold',
       }"
+      :size="40"
     ></category>
     <player
       :style="{
-        left: '1476px',
-        top: '203px',
-        width: '208px',
-        height: '100px',
-        'font-size': '24px'
+        left: '1437px',
+        top: '230px',
+        width: '280px',
+        height: '55px',
       }"
+      :size="45"
     ></player>
     <player
       :style="{
-        left: '122px',
-        top: '867px',
-        width: '400px',
-        height: '100px',
-        'font-size': '24px'
+        left: '182px',
+        top: '891px',
+        width: '280px',
+        height: '55px',
       }"
+      :size="45"
       :team="2"
     ></player>
     <player
       :style="{
-        left: '763px',
-        top: '867px',
-        width: '400px',
-        height: '100px',
-        'font-size': '24px'
+        left: '823px',
+        top: '887px',
+        width: '280px',
+        height: '55px',
       }"
+      :size="45"
       :team="3"
     ></player>
     <player
       :style="{
-        left: '1401px',
-        top: '867px',
-        width: '400px',
-        height: '100px',
-        'font-size': '24px'
+        left: '1461px',
+        top: '887px',
+        width: '280px',
+        height: '55px',
       }"
+      :size="45"
       :team="4"
     ></player>
   </div>

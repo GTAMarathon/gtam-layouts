@@ -10,7 +10,7 @@
         top: '900px',
         width: '259px',
         height: '77px',
-        'font-size': '26px'
+        fontSize: '26px'
       }"
     ></timer>
     <estimate
@@ -19,44 +19,48 @@
         top: '950px',
         width: '208px',
         height: '74px',
-        'font-size': '24px'
+        fontSize: '24px'
       }"
     ></estimate>
     <game
       :style="{
-        left: '770px',
+        left: '750px',
         top: '595px',
-        width: '400px',
+        width: '445px',
         height: '100px',
-        'font-size': '30px'
+        fontSize: '30px',
       }"
+      :size="50"
     ></game>
     <category
       :style="{
-        left: '870px',
-        top: '785px',
-        width: '208px',
-        height: '100px',
-        'font-size': '32px'
+        left: '750px',
+        top: '765px',
+        width: '448px',
+        height: '122px',
+        fontSize: '32px',
       }"
+      :size="52"
     ></category>
     <player
       :style="{
-        left: '90px',
+        left: '20px',
         top: '595px',
-        width: '300px',
+        width: '450px',
         height: '100px',
-        'font-size': '24px'
+        fontSize: '24px',
       }"
+      :size="46"
     ></player>
     <player
       :style="{
-        left: '1520px',
+        left: '1447px',
         top: '595px',
-        width: '300px',
+        width: '450px',
         height: '100px',
-        'font-size': '24px'
+        fontSize: '24px',
       }"
+      :size="46"
       :team="2"
     ></player>
   </div>

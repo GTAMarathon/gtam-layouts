@@ -19,61 +19,61 @@
         top: '325px',
         width: '259px',
         height: '75px',
-        'font-weight': regular,
+        fontWeight: 'regular',
         'font-size': '24px'
       }"
     ></estimate>
     <game
       :style="{
-        left: '760px',
+        left: '740px',
         top: '210px',
-        width: '400px',
+        width: '440px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '30px',
-        'background-color': 'transparent'
+        fontWeight: 'bold',
+        
       }"
+      :size="56"
     ></game>
     <category
       :style="{
-        left: '760px',
+        left: '740px',
         top: '380px',
-        width: '400px',
+        width: '440px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '30px'
+        fontWeight: 'bold',
       }"
+      :size="56"
     ></category>
     <player
       :style="{
-        left: '725px',
+        left: '717px',
         top: '40px',
-        width: '300px',
+        width: '330px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '24px'
+        fontWeight: 'bold',
       }"
+      :size="50"
     ></player>
     <player
       :style="{
-        left: '725px',
+        left: '717px',
         top: '560px',
-        width: '300px',
+        width: '330px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '24px'
+        fontWeight: 'bold',
       }"
+      :size="50"
       :team="2"
     ></player>
     <player
       :style="{
-        left: '880px',
+        left: '870px',
         top: '940px',
-        width: '300px',
+        width: '330px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '24px'
+        fontWeight: 'bold',
       }"
+      :size="50"
       :team="3"
     ></player>
   </div>
@@ -95,7 +95,7 @@ import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
     Estimate,
     Game,
     Category,
-    Player,
+    Player
   }
 })
 export default class App extends Vue {

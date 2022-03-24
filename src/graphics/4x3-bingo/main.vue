@@ -25,55 +25,54 @@
     ></estimate>
     <game
       :style="{
-        left: '30px',
+        left: '15px',
         top: '650px',
-        width: '400px',
+        width: '440px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '30px',
-        'background-color': 'transparent'
+        fontWeight: 'bold'
       }"
+      :size="55"
     ></game>
     <category
       :style="{
-        left: '30px',
+        left: '15px',
         top: '815px',
-        width: '400px',
+        width: '440px',
         height: '100px',
-        'font-weight': bold,
-        'font-size': '40px'
+        fontWeight: 'bold'
       }"
+      :size="55"
     ></category>
     <player
       :style="{
         left: '20px',
-        top: '480px',
-        width: '300px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '20px'
+        top: '490px',
+        width: '320px',
+        height: '80px',
+        fontWeight: 'bold'
       }"
+      :size="50"
     ></player>
     <player
       :style="{
-        left: '660px',
-        top: '480px',
-        width: '300px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '20px'
+        left: '655px',
+        top: '490px',
+        width: '320px',
+        height: '80px',
+        fontWeight: 'bold'
       }"
+      :size="50"
       :team="2"
     ></player>
     <player
       :style="{
-        left: '1300px',
-        top: '480px',
-        width: '300px',
-        height: '100px',
-        'font-weight': bold,
-        'font-size': '20px'
+        left: '1290px',
+        top: '490px',
+        width: '320px',
+        height: '80px',
+        fontWeight: 'bold'
       }"
+      :size="50"
       :team="3"
     ></player>
   </div>
@@ -95,7 +94,7 @@ import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
     Estimate,
     Game,
     Category,
-    Player,
+    Player
   }
 })
 export default class App extends Vue {
