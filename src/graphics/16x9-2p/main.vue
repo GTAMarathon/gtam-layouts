@@ -1,13 +1,16 @@
 <template>
   <div>
-    <img src="./background.png">
+    <div id="backgrounds">
+      <img class="bg" src="../_misc/layoutbackground.png" />
+      <img class="bg" src="./background.png" />
+    </div>
     <timer
       :style="{
         left: '955px',
         top: '900px',
         width: '259px',
         height: '77px',
-		'font-size': '26px',
+        fontSize: '26px'
       }"
     ></timer>
     <estimate
@@ -16,76 +19,71 @@
         top: '950px',
         width: '208px',
         height: '74px',
-		'font-size': '24px',
+        fontSize: '24px'
       }"
     ></estimate>
     <game
       :style="{
-        left: '770px',
+        left: '750px',
         top: '595px',
-        width: '400px',
+        width: '445px',
         height: '100px',
-		'font-size': '30px',
+        fontSize: '30px',
       }"
+      :size="50"
     ></game>
     <category
       :style="{
-        left: '870px',
-        top: '785px',
-        width: '208px',
-        height: '100px',
-		'font-size': '32px',
+        left: '750px',
+        top: '765px',
+        width: '448px',
+        height: '122px',
+        fontSize: '32px',
       }"
+      :size="52"
     ></category>
     <player
       :style="{
-        left: '90px',
+        left: '20px',
         top: '595px',
-        width: '300px',
+        width: '450px',
         height: '100px',
-		'font-size': '24px',
+        fontSize: '24px',
       }"
+      :size="46"
     ></player>
-	<player2
+    <player
       :style="{
-        left: '1520px',
+        left: '1447px',
         top: '595px',
-        width: '300px',
+        width: '450px',
         height: '100px',
-		'font-size': '24px',
+        fontSize: '24px',
       }"
-    ></player2>
+      :size="46"
+      :team="2"
+    ></player>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { State } from 'vuex-class';
-import SponsorLogos from '../_misc/components/SponsorLogos.vue';
-import DonationTotal from '../_misc/components/DonationTotal.vue';
-import Host from '../_misc/components/Host.vue';
-import Donations from '../_misc/components/Ticker.vue';
-import Timer from '../_misc/components/Timer.vue';
-import Estimate from '../_misc/components/Estimate.vue';
-import Game from '../_misc/components/Game.vue';
-import Category from '../_misc/components/Category.vue';
-import Player from '../_misc/components/Player.vue';
-import Player2 from '../_misc/components/Player2.vue';
-import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
+import { Vue, Component } from "vue-property-decorator";
+import { State } from "vuex-class";
+import Timer from "../_misc/components/Timer.vue";
+import Estimate from "../_misc/components/Estimate.vue";
+import Game from "../_misc/components/Game.vue";
+import Category from "../_misc/components/Category.vue";
+import Player from "../_misc/components/Player.vue";
+import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
 
 @Component({
   components: {
-    SponsorLogos,
-    DonationTotal,
-    Host,
-    Donations,
     Timer,
-	Estimate,
+    Estimate,
     Game,
-	Category,
+    Category,
     Player,
-	Player2,
-  },
+  }
 })
 export default class App extends Vue {
   @State runDataActiveRun!: RunDataActiveRun;
@@ -93,7 +91,7 @@ export default class App extends Vue {
 </script>
 
 <style>
-  @import url('../_misc/common.css');
-  @import url('../_misc/Fade.css');
-  @import url('../_misc/Flex.css');
+@import url("../_misc/common.css");
+@import url("../_misc/Fade.css");
+@import url("../_misc/Flex.css");
 </style>

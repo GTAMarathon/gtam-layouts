@@ -17,7 +17,8 @@
     "EnglishBen",
     "gaeldemarseille",
     "bbrosef",
-    "hossel"
+    "hossel",
+    "zoton2"
   ],
   "scripts": {
     "autofix": "run-s autofix:*",
@@ -105,28 +106,21 @@
         "name": "obs",
         "title": "OBS Panel",
         "file": "obs.html",
-        "workspace": "SCM2019",
+        "workspace": "GTAM",
         "width": 3
-      },
-      {
-        "name": "host",
-        "title": "Host",
-        "file": "host.html",
-        "workspace": "SCM2019",
-        "width": 2
       },
       {
         "name": "4 Players Coop",
         "title": "4 Players Coop",
         "file": "focus.html",
-        "workspace": "SCM2019",
+        "workspace": "GTAM",
         "width": 4
       },
       {
         "name": "streamAssign",
         "title": "streamAssign",
         "file": "streamAssign.html",
-        "workspace": "SCM2019",
+        "workspace": "GTAM",
         "width": 4
       }
     ],

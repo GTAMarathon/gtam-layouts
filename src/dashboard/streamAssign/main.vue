@@ -57,7 +57,7 @@ import { State } from "vuex-class";
 import {
   RunDataActiveRun,
   Timer,
-} from "../../../../nodecg-speedcontrol/src/types/schemas";
+} from "nodecg/bundles/nodecg-speedcontrol/src/types/schemas";
 
 interface Player {
   name: string;

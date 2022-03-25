@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Vue, Component, Ref, Watch } from 'vue-property-decorator'; // eslint-disable-line object-curly-newline, max-len
 import { State } from 'vuex-class';
-import { Timer as TimerType, RunDataActiveRun } from '../../../../../nodecg-speedcontrol/src/types';
+import { Timer as TimerType, RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
 
 @Component
 export default class Timer extends Vue {

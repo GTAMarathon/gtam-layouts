@@ -1,109 +1,101 @@
 <template>
   <div>
-    <img src="./background.png">
+    <div id="backgrounds">
+      <img class="bg" src="../_misc/layoutbackground.png" />
+      <img class="bg" src="./background.png" />
+    </div>
     <timer
       :style="{
         left: '140px',
         top: '972px',
         width: '259px',
         height: '75px',
-		'font-size': '22px',
+        'font-size': '22px'
       }"
     ></timer>
-	<estimate
+    <estimate
       :style="{
         left: '-55px',
         top: '965px',
         width: '259px',
         height: '75px',
-		'font-weight': regular,
-		'font-size': '20px',
+        'font-weight': regular,
+        'font-size': '20px'
       }"
     ></estimate>
     <game
       :style="{
-        left: '30px',
+        left: '15px',
         top: '650px',
-        width: '400px',
+        width: '440px',
         height: '100px',
-		'font-weight': bold,
-		'font-size': '30px',
-		'background-color': 'transparent',
+        fontWeight: 'bold'
       }"
+      :size="55"
     ></game>
-	<category
+    <category
       :style="{
-        left: '30px',
+        left: '15px',
         top: '815px',
-        width: '400px',
+        width: '440px',
         height: '100px',
-		'font-weight': bold,
-		'font-size': '40px',
+        fontWeight: 'bold'
       }"
+      :size="55"
     ></category>
     <player
       :style="{
         left: '20px',
-        top: '480px',
-        width: '300px',
-        height: '100px',
-		'font-weight': bold,
-		'font-size': '20px',
+        top: '490px',
+        width: '320px',
+        height: '80px',
+        fontWeight: 'bold'
       }"
+      :size="50"
     ></player>
-	    <player2
+    <player
       :style="{
-        left: '660px',
-        top: '480px',
-        width: '300px',
-        height: '100px',
-		'font-weight': bold,
-		'font-size': '20px',
+        left: '655px',
+        top: '490px',
+        width: '320px',
+        height: '80px',
+        fontWeight: 'bold'
       }"
-    ></player2>
-	    <player3
+      :size="50"
+      :team="2"
+    ></player>
+    <player
       :style="{
-        left: '1300px',
-        top: '480px',
-        width: '300px',
-        height: '100px',
-		'font-weight': bold,
-		'font-size': '20px',
+        left: '1290px',
+        top: '490px',
+        width: '320px',
+        height: '80px',
+        fontWeight: 'bold'
       }"
-    ></player3>
+      :size="50"
+      :team="3"
+    ></player>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { State } from 'vuex-class';
-import SponsorLogos from '../_misc/components/SponsorLogos.vue';
-import DonationTotal from '../_misc/components/DonationTotal.vue';
-import Host from '../_misc/components/Host.vue';
-import Donations from '../_misc/components/Ticker.vue';
-import Timer from '../_misc/components/Timer.vue';
-import Estimate from '../_misc/components/Estimate.vue';
-import Game from '../_misc/components/Game.vue';
-import Category from '../_misc/components/Category.vue';
-import Player from '../_misc/components/Player.vue';
-import Player2 from '../_misc/components/Player2.vue';
-import Player3 from '../_misc/components/Player3.vue';
-import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types';
+import { Vue, Component } from "vue-property-decorator";
+import { State } from "vuex-class";
+import Timer from "../_misc/components/Timer.vue";
+import Estimate from "../_misc/components/Estimate.vue";
+import Game from "../_misc/components/Game.vue";
+import Category from "../_misc/components/Category.vue";
+import Player from "../_misc/components/Player.vue";
+import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
 
 @Component({
   components: {
-    SponsorLogos,
-    DonationTotal,
-    Host,
-    Donations,
     Timer,
-	Estimate,
+    Estimate,
     Game,
-	Category,
-    Player,
-    Player2,
-    Player3,
-  },
+    Category,
+    Player
+  }
 })
 export default class App extends Vue {
   @State runDataActiveRun!: RunDataActiveRun;
@@ -111,7 +103,7 @@ export default class App extends Vue {
 </script>
 
 <style>
-  @import url('../_misc/common.css');
-  @import url('../_misc/Fade.css');
-  @import url('../_misc/Flex.css');
+@import url("../_misc/common.css");
+@import url("../_misc/Fade.css");
+@import url("../_misc/Flex.css");
 </style>
