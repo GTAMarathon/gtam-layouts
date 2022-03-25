@@ -37,8 +37,8 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { State } from 'vuex-class';
-import { RunDataActiveRunSurrounding } from '../../../../nodecg-speedcontrol/src/types/schemas';
-import { RunDataArray, RunData, Timer } from '../../../../nodecg-speedcontrol/src/types';
+import { RunDataActiveRunSurrounding } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+import { RunDataArray, RunData, Timer } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
 
 @Component
 export default class App extends Vue {

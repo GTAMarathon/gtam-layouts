@@ -15,7 +15,7 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { State } from "vuex-class";
-import { RunDataActiveRun } from "../../../../nodecg-speedcontrol/src/types/schemas";
+import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types/schemas";
 
 @Component
 export default class App extends Vue {
