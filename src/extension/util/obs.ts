@@ -9,8 +9,11 @@ import { setStartHighlight, setEndAndCreateHighlight } from './twitch-highlight'
 
 enum VideoFolder {
   III = 'III',
+  IIIDE = 'IIIDE',
   VC = 'VC',
+  VCDE = 'VCDE',
   SA = 'SA',
+  SADE = 'SADE',
   LCS = 'LCS',
   VCS = 'VCS',
   IV = 'IVEFLC',
@@ -184,12 +187,28 @@ class OBSUtility extends obsWebsocketJs {
             videoFolder = VideoFolder.III;
             musicFolder = MusicFolder.III;
             break;
+          case 'Grand Theft Auto III: The Definitive Edition':
+          case 'Grand Theft Auto III - The Definitive Edition':
+          case 'Grand Theft Auto III – The Definitive Edition':
+            videoFolder = VideoFolder.IIIDE;
+            musicFolder = MusicFolder.III;
+            break;
           case 'Grand Theft Auto: Vice City':
             videoFolder = VideoFolder.VC;
             musicFolder = MusicFolder.VC;
             break;
+          case 'Grand Theft Auto: Vice City - The Definitive Edition':
+          case 'Grand Theft Auto: Vice City – The Definitive Edition':
+            videoFolder = VideoFolder.VCDE;
+            musicFolder = MusicFolder.VC;
+            break;
           case 'Grand Theft Auto: San Andreas':
             videoFolder = VideoFolder.SA;
+            musicFolder = MusicFolder.SA;
+            break;
+          case 'Grand Theft Auto: San Andreas - The Definitive Edition':
+          case 'Grand Theft Auto: San Andreas – The Definitive Edition':
+            videoFolder = VideoFolder.SADE;
             musicFolder = MusicFolder.SA;
             break;
           case 'Grand Theft Auto: Liberty City Stories':
@@ -250,7 +269,7 @@ class OBSUtility extends obsWebsocketJs {
             'shuffle': true
           }
         }).catch((err) => {
-          nodecg.log.warn('couldnt set video', err);
+          nodecg.log.warn("[OBS] Couldn't set intermission video", err);
         });
 
 
@@ -266,7 +285,7 @@ class OBSUtility extends obsWebsocketJs {
             'shuffle': true
           }
         }).catch((err) => {
-          nodecg.log.warn('couldnt set music', err);
+          nodecg.log.warn("[OBS] Couldn't set intermission music", err);
         });
       }
     } catch (err) {
@@ -345,7 +364,7 @@ if (config.enable) {
         'sourceName': config.names.sources.intermissionVideo,
         'timestamp': Math.floor(Math.random() * 360000) // random from 0 to 6:00
       }).catch((err) => {
-        nodecg.log.warn('couldnt set timestamp', err);
+        nodecg.log.warn("[OBS] Couldn't set intermission video timestamp", err);
       });
     }
   });
