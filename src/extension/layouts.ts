@@ -2,6 +2,7 @@ import { Configschema } from '../types/schemas/configschema';
 import { ExtensionReturn, RunData, Timer } from '../../../nodecg-speedcontrol/src/types';
 import { get } from './util/nodecg';
 import obs from './util/obs';
+import { updateOengusScheduleOnSwitchingRun } from './scheduling';
 
 const nodecg = get();
 const { sendMessage } = nodecg.extensions['nodecg-speedcontrol'] as unknown as ExtensionReturn;
@@ -22,6 +23,7 @@ nodecg.listenFor('endOfMarathonnextRun', async (data, ack) => {
 });
 
 nodecg.listenFor('nextRun', async (data, ack) => {
+  await sendMessage('importOengusSchedule', { marathonShort: config.schedule.marathonShort, useJapanese: false }).catch(() => { });
   nodecg.sendMessage('clearIntermission');
 
   sendMessage('twitchStartCommercial', { duration: 180 })
@@ -35,6 +37,9 @@ nodecg.listenFor('nextRun', async (data, ack) => {
   setTimeout(() => sendMessage('changeToNextRun').catch(() => { }), 1000);
   obs.muteAudio();
   obs.unmuteAudio();
+
+  await updateOengusScheduleOnSwitchingRun();
+
   if (ack && !ack.handled) {
     ack(null);
   }

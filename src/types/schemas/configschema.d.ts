@@ -71,4 +71,8 @@ export interface Configschema {
 		enable: boolean;
 		broadcaster_id: string;
 	};
+	schedule: {
+		enable: boolean;
+		marathonShort: string;
+	};
 }
