@@ -11,12 +11,20 @@ const config = (nodecg.bundleConfig as Configschema);
 
 timer.on('change', (newVal, oldVal) => {
   if (oldVal && oldVal.state !== 'finished' && newVal.state === 'finished') {
-    nodecg.sendMessage('refreshIntermission');
+    nodecg.sendMessage('clearIntermission');
+  }
+});
+nodecg.listenFor('endOfMarathonnextRun', async (data, ack) => {
+  obs.changeToIntermission().catch(() => { });
+    if (ack && !ack.handled) {
+    ack(null);
   }
 });
 
-nodecg.listenFor('nextRun', (data, ack) => {
-  sendMessage('twitchStartCommercial', {duration: 180})
+nodecg.listenFor('nextRun', async (data, ack) => {
+  nodecg.sendMessage('clearIntermission');
+
+  sendMessage('twitchStartCommercial', { duration: 180 })
     .then(() => {
       nodecg.log.info('played ads');
     })
@@ -24,10 +32,9 @@ nodecg.listenFor('nextRun', (data, ack) => {
       nodecg.log.warn('Cannot play ads: ', err);
     });
   obs.changeToIntermission().catch(() => { });
-  setTimeout(() => sendMessage('changeToNextRun'), 2500);
+  setTimeout(() => sendMessage('changeToNextRun').catch(() => { }), 1000);
   obs.muteAudio();
   obs.unmuteAudio();
-
   if (ack && !ack.handled) {
     ack(null);
   }
