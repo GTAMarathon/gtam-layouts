@@ -10,4 +10,5 @@ export = (nodecg: NodeCG): void => {
   /* require('./tracker'); */
   require('./layouts');
   require('./featured');
+  require('./pollsandpredictions');
 };

@@ -289,12 +289,31 @@
         "playerUrl",
         "streams"
       ]
+    },
+    "betting": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": false
+        },
+        "broadcaster_id": {
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "enable",
+        "broadcaster_id"
+      ]
     }
   },
   "required": [
     "twitchExt",
     "obs",
     "highlight",
-    "feeds"
+    "feeds",
+    "betting"
   ]
 }
