@@ -307,6 +307,24 @@
         "enable",
         "broadcaster_id"
       ]
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": false
+        },
+        "marathonShort": {
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "enable",
+        "marathonShort"
+      ]
     }
   },
   "required": [
@@ -314,6 +332,7 @@
     "obs",
     "highlight",
     "feeds",
+    "schedule",
     "betting"
   ]
 }
