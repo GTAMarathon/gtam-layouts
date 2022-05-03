@@ -35,9 +35,11 @@
     "watch:extension": "tsc -b tsconfig.extension.json -w"
   },
   "dependencies": {
+    "@types/humanize-duration": "^3.27.1",
+    "fitty": "^2.3.5",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
-    "fitty": "^2.3.5",
+    "humanize-duration": "^3.27.1",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
     "needle": "^3.0.0",
@@ -191,7 +193,6 @@
         "width": 1920,
         "height": 1080
       }
-	  
     ],
     "assetCategories": [
       {

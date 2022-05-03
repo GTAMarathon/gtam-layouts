@@ -2,14 +2,14 @@
   <v-app>
     <v-btn
       block
-      :disabled="disableChange || !nextRun"
+      :disabled="disableChange"
       @click="playNextRun"
     >
       <span v-if="nextRun">
         <v-icon left>mdi-play</v-icon>{{ nextRunGameName }}
       </span>
       <span v-else-if="runDataArray.length">
-        No Runs Left
+        End of marathon
       </span>
       <span v-else>
         No Runs Added
@@ -23,14 +23,6 @@
     >
       Cannot change run while timer is {{ timer.state }}.
     </v-alert>
-    <v-btn
-      :style="{ 'margin-top': '5px' }"
-      :disabled="refreshing"
-      :loading="refreshing"
-      @click="forceRefreshIntermission"
-    >
-      Force Refresh Intermission
-    </v-btn>
   </v-app>
 </template>
 
@@ -67,13 +59,9 @@ export default class App extends Vue {
         // run change unsuccessful
       });
     }
-  }
-
-  refreshing = false;
-  forceRefreshIntermission(): void {
-    this.refreshing = true;
-    nodecg.sendMessage('refreshIntermission');
-    setTimeout(() => { this.refreshing = false; }, 1000);
+    else{
+      nodecg.sendMessage('endOfMarathon').then(() => {}).catch(() => {});
+    }
   }
 }
 </script>
