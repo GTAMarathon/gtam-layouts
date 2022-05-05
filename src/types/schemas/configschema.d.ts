@@ -26,6 +26,8 @@ export interface Configschema {
 		names: {
 			scenes: {
 				intermission: string;
+				quiz: string;
+				_1p32: string;
 				_1p43: string;
 				_2p43: string;
 				_3p43: string;
@@ -36,9 +38,9 @@ export interface Configschema {
 				_4p169_2: string;
 				_4p169_3: string;
 				_4p169_4: string;
-				_2bingo: string;
 				vcbingo: string;
-				vcsbingo: string;
+				vchundo: string;
+				vbingo: string;
 			};
 			sources: {
 				intermissionVideo: string;
@@ -47,6 +49,7 @@ export interface Configschema {
 				runner2_169: string;
 				runner3_169: string;
 				runner4_169: string;
+				runner1_32: string;
 				runner1_43: string;
 				runner2_43: string;
 				runner3_43: string;

@@ -204,7 +204,7 @@
     @Watch('upNext', { immediate: true })
     onUpNextChange(): void {
       window.clearInterval(this.upNextCountDownCycle);
-      if (this.type =='END OF DAY' || this.type == 'START OF DAY') {
+      if (this.type =='START OF MARATHON' || this.type =='END OF DAY' || this.type == 'START OF DAY') {
         this.updateUpNextTimer();
         this.upNextCountDownCycle = window.setInterval(this.updateUpNextTimer, 10000);
       }

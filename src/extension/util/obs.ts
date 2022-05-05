@@ -159,6 +159,9 @@ class OBSUtility extends obsWebsocketJs {
     try {
       let index = runDataArray.value.findIndex((run: RunData) => run.id === runDataActiveRunSurrounding.value.next)
       let nextRun = runDataArray.value[index] || null;
+      if(nextRun && nextRun.gameTwitch == 'Just Chatting'){
+        nextRun = runDataArray.value[index + 1] || null;
+      }
       let videoFolder;
       let musicFolder;
       if (nextRun) {

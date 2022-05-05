@@ -54,6 +54,7 @@ nodecg.listenFor('focusOnRunner', (data, ack) => {
 });
 
 nodecg.listenFor('assignStreamToRunner', (data, ack) => {
+  var source32: string | undefined;
   var source43: string | undefined;
   var source169: string | undefined;
 
@@ -69,6 +70,7 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
 
     switch (index) {
       case 0:
+        source32 = config.obs.names.sources.runner1_43;
         source43 = config.obs.names.sources.runner1_43;
         source169 = config.obs.names.sources.runner1_169;
         break;
@@ -90,9 +92,17 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
         nodecg.log.warn('players: ', players);
         break;
     }
-    if (source43 && source169) {
+    if (source43) {
       var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), data.stream.twitchAccount);
-      obs.setUrlToSources(url, [source43, source169]).catch(() => { });
+      obs.setUrlToSources(url, [source43]).catch(() => { });
+    }
+    if (source169) {
+      var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), data.stream.twitchAccount);
+      obs.setUrlToSources(url, [source169]).catch(() => { });
+    }
+    if (source32) {
+      var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), data.stream.twitchAccount);
+      obs.setUrlToSources(url, [source32]).catch(() => { });
     }
 
     if (ack && !ack.handled) {
