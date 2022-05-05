@@ -114,7 +114,7 @@ export default class Player extends Vue {
   mounted(): void {
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 }
 </script>

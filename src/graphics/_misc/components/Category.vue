@@ -50,7 +50,7 @@ export default class Category extends Vue {
   onRunChange() {
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 }
 </script>
