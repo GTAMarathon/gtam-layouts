@@ -64,3 +64,4 @@ typings/
 /dashboard/
 /extension/
 /graphics/
+.DS_Store
