@@ -98,7 +98,7 @@ export default class Player extends Vue {
 
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 
   showNextName(): void {

@@ -31,6 +31,7 @@
         height: '58px',
         fontWeight: 'bold'
       }"
+      :size="34"
     ></game>
     <category
       :style="{
@@ -40,6 +41,7 @@
         height: '54px',
         fontWeight: 'bold'
       }"
+      :size="34"
     ></category>
     <player
       :style="{

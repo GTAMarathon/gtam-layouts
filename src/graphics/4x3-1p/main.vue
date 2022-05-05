@@ -31,7 +31,7 @@
         height: '100px',
         fontWeight: 'bold'
       }"
-      :size="50"
+      :size="46"
     ></game>
     <category
       :style="{

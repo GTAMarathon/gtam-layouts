@@ -30,7 +30,7 @@
         height: '100px',
         fontSize: '30px',
       }"
-      :size="50"
+      :size="40"
     ></game>
     <category
       :style="{

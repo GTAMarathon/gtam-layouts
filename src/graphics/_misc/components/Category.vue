@@ -35,7 +35,7 @@ export default class Category extends Vue {
   fit(): void {
     this.categoryFitty = fitty(this.category, {
       maxSize: this.size,
-      minSize: 16,
+      minSize: 1,
       multiLine: true
     });
   }
@@ -43,7 +43,7 @@ export default class Category extends Vue {
   mounted() {
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 
   @Watch("runDataActiveRun", { immediate: true })

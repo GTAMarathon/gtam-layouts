@@ -30,7 +30,7 @@
         width: '345px',
         height: '50px',
       }"
-      :size="40"
+      :size="25"
     ></game>
     <category
       :style="{
@@ -40,7 +40,7 @@
         height: '50px',
         fontWeight: bold,
       }"
-      :size="40"
+      :size="28"
     ></category>
     <player
       :style="{

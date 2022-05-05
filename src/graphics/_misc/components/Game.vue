@@ -39,7 +39,7 @@ export default class Game extends Vue {
   fit(): void {
     this.gameFitty = fitty(this.game, {
       maxSize: this.size,
-      minSize: 16,
+      minSize: 1,
       multiLine: true
     });
   }
@@ -47,14 +47,14 @@ export default class Game extends Vue {
   mounted(): void {
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 
   @Watch("runDataActiveRun")
   onRunChange() {
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 }
 </script>
