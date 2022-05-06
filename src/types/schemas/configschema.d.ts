@@ -80,6 +80,7 @@ export interface Configschema {
 		marathonShort: string;
 	};
 	hundo: {
+		enabled: boolean;
 		port: number;
 	};
 }

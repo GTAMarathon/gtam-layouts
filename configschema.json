@@ -350,12 +350,17 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
         "port": {
           "type": "number",
           "default": 5353
         }
       },
       "required": [
+        "enabled",
         "port"
       ]
     }
