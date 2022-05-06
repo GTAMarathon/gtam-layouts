@@ -45,11 +45,11 @@ export interface Configschema {
 			sources: {
 				intermissionVideo: string;
 				intermissionMusic: string;
-				runner1_32: string;
 				runner1_169: string;
 				runner2_169: string;
 				runner3_169: string;
 				runner4_169: string;
+				runner1_32: string;
 				runner1_43: string;
 				runner2_43: string;
 				runner3_43: string;

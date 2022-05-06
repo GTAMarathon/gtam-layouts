@@ -183,10 +183,6 @@
                   "type": "string",
                   "default": "Music"
                 },
-                "runner1_32": {
-                  "type": "string",
-                  "default": "runner1_32"
-                },
                 "runner1_169": {
                   "type": "string",
                   "default": "16:9 Feed 1"
@@ -240,8 +236,7 @@
                 "runner1_169",
                 "runner2_169",
                 "runner3_169",
-                "runner4_169",
-                "runner5_43"
+                "runner4_169"
               ]
             },
             "paths": {
