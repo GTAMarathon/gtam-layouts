@@ -91,6 +91,14 @@
                   "type": "string",
                   "default": "Intermission"
                 },
+                "quiz": {
+                  "type": "string",
+                  "default": "quiz"
+                },
+                "_1p32": {
+                  "type": "string",
+                  "default": "1p32"
+                },
                 "_1p43": {
                   "type": "string",
                   "default": "1p43"
@@ -142,10 +150,20 @@
                 "vcsbingo": {
                   "type": "string",
                   "default": "vcsbingo"
+                },
+                "vbingo": {
+                  "type": "string",
+                  "default": "vbingo"
+                },
+                "vchundo": {
+                  "type": "string",
+                  "default": "vchundo"
                 }
               },
               "required": [
                 "intermission",
+                "quiz",
+                "_1p32",
                 "_1p43",
                 "_2p43",
                 "_3p43",
@@ -158,7 +176,9 @@
                 "_4p169_4",
                 "_2bingo",
                 "vcbingo",
-                "vcsbingo"
+                "vcsbingo",
+                "vbingo",
+                "vchundo"
               ]
             },
             "sources": {
@@ -172,6 +192,10 @@
                 "intermissionMusic": {
                   "type": "string",
                   "default": "intermissionMusic"
+                },
+                "runner1_32": {
+                  "type": "string",
+                  "default": "runner1_32"
                 },
                 "runner1_169": {
                   "type": "string",
@@ -204,11 +228,16 @@
                 "runner4_43": {
                   "type": "string",
                   "default": "runner4_43"
+                },
+                "runner5_43": {
+                  "type": "string",
+                  "default": "runner45_43"
                 }
               },
               "required": [
                 "intermissionVideo",
                 "intermissionMusic",
+                "runner1_32",
                 "runner1_43",
                 "runner2_43",
                 "runner3_43",
@@ -216,7 +245,8 @@
                 "runner1_169",
                 "runner2_169",
                 "runner3_169",
-                "runner4_169"
+                "runner4_169",
+                "runner5_43"
               ]
             },
             "paths": {
@@ -325,6 +355,19 @@
         "enable",
         "marathonShort"
       ]
+    },
+    "hundo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "type": "number",
+          "default": 5353
+        }
+      },
+      "required": [
+        "port"
+      ]
     }
   },
   "required": [
@@ -333,6 +376,7 @@
     "highlight",
     "feeds",
     "schedule",
-    "betting"
+    "betting",
+    "hundo"
   ]
 }

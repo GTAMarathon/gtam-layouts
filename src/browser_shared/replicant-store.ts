@@ -4,7 +4,7 @@ import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 import { RunDataActiveRunSurrounding } from '../../../nodecg-speedcontrol/src/types/schemas';
 import { RunDataActiveRun, RunDataArray, Timer } from '../../../nodecg-speedcontrol/src/types';
-import { DonationTotal, Host } from '../types/schemas';
+import { DonationTotal, Host, HundoTrackerData } from '../types/schemas';
 import { Asset } from '../types';
 
 Vue.use(Vuex);
@@ -13,6 +13,7 @@ const replicantList: { name: string; bundle?: string }[] = [
   { name: 'host' },
   { name: 'donationTotal' },
   { name: 'assets:sponsor-logos' },
+  { name: 'hundoTrackerData' },
   { name: 'runDataActiveRun', bundle: 'nodecg-speedcontrol' },
   { name: 'runDataArray', bundle: 'nodecg-speedcontrol' },
   { name: 'runDataActiveRunSurrounding', bundle: 'nodecg-speedcontrol' },
@@ -24,6 +25,7 @@ interface StoreTypes {
   host: Host;
   donationTotal: DonationTotal;
   'assets:sponsor-logos': Asset[];
+  hundoTrackerData: HundoTrackerData;
   runDataActiveRun: RunDataActiveRun;
   runDataArray: RunDataArray;
   runDataActiveRunSurrounding: RunDataActiveRunSurrounding;
@@ -44,7 +46,7 @@ export const store = new Vuex.Store<StoreTypes>({
 });
 
 replicantList.forEach((obj) => {
-  const replicant = nodecg.Replicant(obj.name, obj.bundle || 'scm2019-layouts');
+  const replicant = nodecg.Replicant(obj.name, obj.bundle || 'gtam-layouts');
 
   replicant.on('change', (newVal) => {
     store.commit('updateReplicant', {

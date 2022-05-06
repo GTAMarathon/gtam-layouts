@@ -26,6 +26,8 @@ export interface Configschema {
 		names: {
 			scenes: {
 				intermission: string;
+				quiz: string;
+				_1p32: string;
 				_1p43: string;
 				_2p43: string;
 				_3p43: string;
@@ -39,10 +41,13 @@ export interface Configschema {
 				_2bingo: string;
 				vcbingo: string;
 				vcsbingo: string;
+				vbingo: string;
+				vchundo: string;
 			};
 			sources: {
 				intermissionVideo: string;
 				intermissionMusic: string;
+				runner1_32: string;
 				runner1_169: string;
 				runner2_169: string;
 				runner3_169: string;
@@ -51,6 +56,7 @@ export interface Configschema {
 				runner2_43: string;
 				runner3_43: string;
 				runner4_43: string;
+				runner5_43: string;
 			};
 			paths: {
 				intermissionVideo: string;
@@ -74,5 +80,8 @@ export interface Configschema {
 	schedule: {
 		enable: boolean;
 		marathonShort: string;
+	};
+	hundo: {
+		port: number;
 	};
 }
