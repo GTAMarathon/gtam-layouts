@@ -125,6 +125,13 @@
         "file": "streamAssign.html",
         "workspace": "GTAM",
         "width": 4
+      },
+      {
+        "name": "vchundoselector",
+        "title": "vchundoselector",
+        "file": "vchundoselector.html",
+        "workspace": "GTAM",
+        "width": 4
       }
     ],
     "graphics": [
