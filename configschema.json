@@ -218,6 +218,10 @@
                 "runner4_43": {
                   "type": "string",
                   "default": "4:3 Feed 4"
+                },
+                "runner5_43": {
+                  "type": "string",
+                  "default": "4:3 Feed 5"
                 }
               },
               "required": [
@@ -228,6 +232,7 @@
                 "runner2_43",
                 "runner3_43",
                 "runner4_43",
+                "runner5_43",
                 "runner1_169",
                 "runner2_169",
                 "runner3_169",

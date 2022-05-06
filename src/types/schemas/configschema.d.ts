@@ -54,6 +54,7 @@ export interface Configschema {
 				runner2_43: string;
 				runner3_43: string;
 				runner4_43: string;
+				runner5_43: string;
 			};
 			paths: {
 				intermissionVideo: string;

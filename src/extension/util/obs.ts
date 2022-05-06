@@ -4,7 +4,7 @@ import obsWebsocketJs from 'obs-websocket-js';
 import { Configschema } from '../../types/schemas/configschema';
 import { get } from './nodecg';
 import { RunData } from '../../../../nodecg-speedcontrol/src/types';
-import { RunDataActiveRunSurrounding, RunDataArray } from '../../../../nodecg-speedcontrol/src/types/schemas';
+import { RunDataActiveRunSurrounding, RunDataArray, RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types/schemas';
 import { setStartHighlight, setEndAndCreateHighlight } from './twitch-highlight';
 
 enum VideoFolder {
@@ -38,7 +38,8 @@ enum MusicFolder {
 const nodecg = get();
 const runDataActiveRunSurrounding = nodecg.Replicant<RunDataActiveRunSurrounding>('runDataActiveRunSurrounding', 'nodecg-speedcontrol');
 const runDataArray = nodecg.Replicant<RunDataArray>('runDataArray', 'nodecg-speedcontrol');
-const config = (nodecg.bundleConfig as Configschema).obs;
+const runDataActiveRun = nodecg.Replicant<RunDataActiveRun>('runDataActiveRun', 'nodecg-speedcontrol');
+const config = (nodecg.bundleConfig as Configschema);
 
 // Extending the OBS library with some of our own functions.
 class OBSUtility extends obsWebsocketJs {
@@ -63,7 +64,7 @@ class OBSUtility extends obsWebsocketJs {
       await this.changeIntermissionVid();
       await new Promise(r => setTimeout(r, 500));
 
-      await this.changeScene(config.names.scenes.intermission);
+      await this.changeScene(config.obs.names.scenes.intermission);
 
       await this.setStudioModeOnTheNextGameScene();
 
@@ -76,7 +77,7 @@ class OBSUtility extends obsWebsocketJs {
   async setStudioModeOnTheNextGameScene(): Promise<void> {
     let index = runDataArray.value.findIndex((run: RunData) => run.id === runDataActiveRunSurrounding.value.next);
     let nextRun = runDataArray.value[index] || null;
-    var allScenes = Object.values(config.names.scenes);
+    var allScenes = Object.values(config.obs.names.scenes);
 
     await new Promise(r => setTimeout(r, 500));
 
@@ -101,50 +102,105 @@ class OBSUtility extends obsWebsocketJs {
     }
   }
 
-  async setUrlToSources(url: string, sources: string[]): Promise<void> {
+  async setTwitchUrlToSources(twitch: string|undefined, sources: (string | undefined)[]): Promise<void> {
     for (var source of sources) {
-      await this.send('SetSourceSettings', {
-        'sourceName': source,
-        'sourceType': 'browser_source',
-        'sourceSettings': { 'url': url }
-      }).catch((err) => {
-        nodecg.log.warn('url not set to source', err);
-      });
+      if (source && twitch) {
+        var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), twitch);
+        await this.send('SetSourceSettings', {
+          'sourceName': source,
+          'sourceType': 'browser_source',
+          'sourceSettings': { 'url': url }
+        }).catch((err) => {
+          nodecg.log.warn('url not set to source', err);
+        });
+      }
+    }
+  }
+
+  async changeRunnersOnVCHundo(data: { feed1: RunDataActiveRun['teams'][number], feed2: RunDataActiveRun['teams'][number], feed3: RunDataActiveRun['teams'][number], feed4: RunDataActiveRun['teams'][number], feed5: RunDataActiveRun['teams'][number], }): Promise<void> {
+    nodecg.log.warn('data');
+    nodecg.log.warn(JSON.stringify(data));
+
+    var index = -1;
+    var array = runDataActiveRun.value.teams.filter(team => team.id == data.feed5.id);
+    if (array.length) {
+      index = runDataActiveRun.value.teams.indexOf(array[0]);
+      if (index > -1) {
+        runDataActiveRun.value.teams.splice(index, 1);
+        runDataActiveRun.value.teams.unshift(data.feed5);
+        this.setTwitchUrlToSources(data.feed5.players[0].social.twitch || undefined, [config.obs.names.sources.runner5_43]);
+      }
+    }
+    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed4.id);
+    if (array.length) {
+      index = runDataActiveRun.value.teams.indexOf(array[0]);
+      if (index > -1) {
+        runDataActiveRun.value.teams.splice(index, 1);
+        runDataActiveRun.value.teams.unshift(data.feed4);
+        this.setTwitchUrlToSources(data.feed4.players[0].social.twitch || undefined, [config.obs.names.sources.runner4_43]);
+      }
+    }
+    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed3.id);
+    if (array.length) {
+      index = runDataActiveRun.value.teams.indexOf(array[0]);
+      if (index > -1) {
+        runDataActiveRun.value.teams.splice(index, 1);
+        runDataActiveRun.value.teams.unshift(data.feed3);
+        this.setTwitchUrlToSources(data.feed3.players[0].social.twitch || undefined, [config.obs.names.sources.runner3_43]);
+      }
+    }
+    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed2.id);
+    if (array.length) {
+      index = runDataActiveRun.value.teams.indexOf(array[0]);
+      if (index > -1) {
+        runDataActiveRun.value.teams.splice(index, 1);
+        runDataActiveRun.value.teams.unshift(data.feed2);
+        this.setTwitchUrlToSources(data.feed2.players[0].social.twitch || undefined, [config.obs.names.sources.runner2_43]);
+      }
+    }
+    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed1.id);
+    if (array.length) {
+      index = runDataActiveRun.value.teams.indexOf(array[0]);
+      if (index > -1) {
+        runDataActiveRun.value.teams.splice(index, 1);
+        runDataActiveRun.value.teams.unshift(data.feed1);
+        this.setTwitchUrlToSources(data.feed1.players[0].social.twitch || undefined, [config.obs.names.sources.runner1_43]);
+      }
     }
   }
 
   async focusOnRunnerX(runnerNumber: number): Promise<void> {
     switch (runnerNumber) {
       case 1: {
-        await this.changeScene(config.names.scenes._4p169_1);
-        this.toggleSourceAudio(config.names.sources.runner1_169, false).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner2_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner3_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner4_169, true).catch(() => { });
+        await this.changeScene(config.obs.names.scenes._4p169_1);
+        this.toggleSourceAudio(config.obs.names.sources.runner1_169, false).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner2_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner3_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner4_169, true).catch(() => { });
         break;
       }
       case 2: {
-        await this.changeScene(config.names.scenes._4p169_2);
-        this.toggleSourceAudio(config.names.sources.runner1_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner2_169, false).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner3_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner4_169, true).catch(() => { });
+        await this.changeScene(config.obs.names.scenes._4p169_2);
+        this.toggleSourceAudio(config.obs.names.sources.runner1_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner2_169, false).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner3_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner4_169, true).catch(() => { });
         break;
       }
       case 3: {
-        await this.changeScene(config.names.scenes._4p169_3);
-        this.toggleSourceAudio(config.names.sources.runner1_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner2_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner3_169, false).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner4_169, true).catch(() => { });
+        await this.changeScene(config.obs.names.scenes._4p169_3);
+        this.toggleSourceAudio(config.obs.names.sources.runner1_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner2_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner3_169, false).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner4_169, true).catch(() => { });
         break;
       }
       case 4: {
-        await this.changeScene(config.names.scenes._4p169_4);
-        this.toggleSourceAudio(config.names.sources.runner1_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner2_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner3_169, true).catch(() => { });
-        this.toggleSourceAudio(config.names.sources.runner4_169, false).catch(() => { });
+        await this.changeScene(config.obs.names.scenes._4p169_4);
+        this.toggleSourceAudio(config.obs.names.sources.runner1_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner2_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner3_169, true).catch(() => { });
+        this.toggleSourceAudio(config.obs.names.sources.runner4_169, false).catch(() => { });
         break;
       }
       default: {
@@ -159,7 +215,7 @@ class OBSUtility extends obsWebsocketJs {
     try {
       let index = runDataArray.value.findIndex((run: RunData) => run.id === runDataActiveRunSurrounding.value.next)
       let nextRun = runDataArray.value[index] || null;
-      if(nextRun && nextRun.gameTwitch == 'Just Chatting'){
+      if (nextRun && nextRun.gameTwitch == 'Just Chatting') {
         nextRun = runDataArray.value[index + 1] || null;
       }
       let videoFolder;
@@ -265,10 +321,10 @@ class OBSUtility extends obsWebsocketJs {
         }
 
         await this.send('SetSourceSettings', {
-          'sourceName': config.names.sources.intermissionVideo,
+          'sourceName': config.obs.names.sources.intermissionVideo,
           'sourceType': 'vlc_source',
           'sourceSettings': {
-            'playlist': [{ 'hidden': false, 'selected': false, 'value': config.names.paths.intermissionVideo + '/' + videoFolder }],
+            'playlist': [{ 'hidden': false, 'selected': false, 'value': config.obs.names.paths.intermissionVideo + '/' + videoFolder }],
             'shuffle': true
           }
         }).catch((err) => {
@@ -281,10 +337,10 @@ class OBSUtility extends obsWebsocketJs {
           musicFolder = MusicFolder.Mix;
         }
         await this.send('SetSourceSettings', {
-          'sourceName': config.names.sources.intermissionMusic,
+          'sourceName': config.obs.names.sources.intermissionMusic,
           'sourceType': 'vlc_source',
           'sourceSettings': {
-            'playlist': [{ 'hidden': false, 'selected': false, 'value': config.names.paths.intermissionMusic + '/' + musicFolder }],
+            'playlist': [{ 'hidden': false, 'selected': false, 'value': config.obs.names.paths.intermissionMusic + '/' + musicFolder }],
             'shuffle': true
           }
         }).catch((err) => {
@@ -314,7 +370,7 @@ class OBSUtility extends obsWebsocketJs {
    * Mute all audio sources listed in the config.
    */
   async muteAudio(): Promise<void> {
-    config.names.audioToMute.forEach((source) => {
+    config.obs.names.audioToMute.forEach((source) => {
       this.toggleSourceAudio(source, true).catch(() => { });
     });
   }
@@ -323,7 +379,7 @@ class OBSUtility extends obsWebsocketJs {
    * Unmute all audio sources listed in the config.
    */
   async unmuteAudio(): Promise<void> {
-    config.names.audioToUnmute.forEach((source) => {
+    config.obs.names.audioToUnmute.forEach((source) => {
       this.toggleSourceAudio(source, false).catch(() => { });
     });
   }
@@ -331,8 +387,8 @@ class OBSUtility extends obsWebsocketJs {
 
 const obs = new OBSUtility();
 const settings = {
-  address: config.address,
-  password: config.password,
+  address: config.obs.address,
+  password: config.obs.password,
 };
 
 function connect(): void {
@@ -344,7 +400,7 @@ function connect(): void {
   });
 }
 
-if (config.enable) {
+if (config.obs.enable) {
   nodecg.log.info('Setting up OBS connection.');
   connect();
   obs.on('ConnectionClosed', () => {
@@ -361,10 +417,10 @@ if (config.enable) {
   // @ts-ignore: 
   obs.on('MediaStarted', (data) => {
     // @ts-ignore: 
-    if (data['sourceName'] == config.names.sources.intermissionVideo) {
+    if (data['sourceName'] == config.obs.names.sources.intermissionVideo) {
       // @ts-ignore: 
       obs.send('SetMediaTime', {
-        'sourceName': config.names.sources.intermissionVideo,
+        'sourceName': config.obs.names.sources.intermissionVideo,
         'timestamp': Math.floor(Math.random() * 360000) // random from 0 to 6:00
       }).catch((err) => {
         nodecg.log.warn("[OBS] Couldn't set intermission video timestamp", err);
@@ -373,7 +429,7 @@ if (config.enable) {
   });
 
   obs.on('TransitionBegin', (data) => {
-    if (data['from-scene'] == config.names.scenes.intermission) {
+    if (data['from-scene'] == config.obs.names.scenes.intermission) {
       setStartHighlight();
     }
   });

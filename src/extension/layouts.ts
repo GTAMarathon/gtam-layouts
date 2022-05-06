@@ -17,7 +17,7 @@ timer.on('change', (newVal, oldVal) => {
 });
 nodecg.listenFor('endOfMarathonnextRun', async (data, ack) => {
   obs.changeToIntermission().catch(() => { });
-    if (ack && !ack.handled) {
+  if (ack && !ack.handled) {
     ack(null);
   }
 });
@@ -47,6 +47,14 @@ nodecg.listenFor('nextRun', async (data, ack) => {
 
 nodecg.listenFor('focusOnRunner', (data, ack) => {
   obs.focusOnRunnerX(data).catch(() => { });
+
+  if (ack && !ack.handled) {
+    ack(null);
+  }
+});
+
+nodecg.listenFor('changeRunnersOnVCHundo', (data, ack) => {
+  obs.changeRunnersOnVCHundo(data).catch(() => { });
 
   if (ack && !ack.handled) {
     ack(null);
@@ -92,18 +100,7 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
         nodecg.log.warn('players: ', players);
         break;
     }
-    if (source43) {
-      var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), data.stream.twitchAccount);
-      obs.setUrlToSources(url, [source43]).catch(() => { });
-    }
-    if (source169) {
-      var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), data.stream.twitchAccount);
-      obs.setUrlToSources(url, [source169]).catch(() => { });
-    }
-    if (source32) {
-      var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), data.stream.twitchAccount);
-      obs.setUrlToSources(url, [source32]).catch(() => { });
-    }
+    obs.setTwitchUrlToSources(data.stream.twitchAccount, [source32, source43, source169]).catch(() => { });
 
     if (ack && !ack.handled) {
       ack(null);
