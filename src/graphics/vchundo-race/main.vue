@@ -2,7 +2,6 @@
   <div>
     <div id="backgrounds">
       <img class="bg" src="./img/annual_hundo.png" />
-      <img class="bg" src="./img/annual_hundo_back.png" />
       <img class="bg" src="./img/annual_hundo_plates.png" />
     </div>
     <timer
