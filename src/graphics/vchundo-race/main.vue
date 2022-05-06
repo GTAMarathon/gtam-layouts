@@ -79,7 +79,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { State } from "vuex-class";
 import Timer from "./components/Timer.vue";
-import Player from "./components/Player.vue";
+import Player from "../_misc/components/Player.vue";
 import CompletionTable from "./components/CompletionTable.vue";
 import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
 import { HundoTrackerData } from "@gtam-layouts/types/schemas";
