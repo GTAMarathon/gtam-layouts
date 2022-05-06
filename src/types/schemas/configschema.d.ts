@@ -45,6 +45,7 @@ export interface Configschema {
 			sources: {
 				intermissionVideo: string;
 				intermissionMusic: string;
+				runner1_32: string;
 				runner1_169: string;
 				runner2_169: string;
 				runner3_169: string;
@@ -78,5 +79,8 @@ export interface Configschema {
 	schedule: {
 		enable: boolean;
 		marathonShort: string;
+	};
+	hundo: {
+		port: number;
 	};
 }

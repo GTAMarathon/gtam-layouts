@@ -88,14 +88,14 @@ export default class UpcomingRun extends Vue {
   mounted(): void {
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 
   @Watch("runData")
   onRunChange(val: RunData | null): void {
     setTimeout(() => {
       this.fit();
-    }, 100);
+    }, 500);
   }
 
 }

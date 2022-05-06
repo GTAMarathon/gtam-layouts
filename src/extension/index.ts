@@ -11,4 +11,5 @@ export = (nodecg: NodeCG): void => {
   require('./layouts');
   require('./featured');
   require('./pollsandpredictions');
+  require('./hundo');
 };
