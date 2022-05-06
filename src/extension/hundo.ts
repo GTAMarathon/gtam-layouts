@@ -23,5 +23,4 @@ updateData();
 
 setInterval(() => {
   updateData();
-  console.log(hundoTrackerData.value)
 }, 3000);
