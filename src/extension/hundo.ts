@@ -3,7 +3,7 @@ import { get } from "./util/nodecg";
 import { Configschema, HundoTrackerData } from "@gtam-layouts/types/schemas";
 
 const nodecg = get();
-const port = (nodecg.bundleConfig as Configschema).hundo.port;
+const config = (nodecg.bundleConfig as Configschema).hundo;
 const hundoTrackerData = nodecg.Replicant<HundoTrackerData>(
   "hundoTrackerData",
   { defaultValue: [] }
@@ -11,7 +11,10 @@ const hundoTrackerData = nodecg.Replicant<HundoTrackerData>(
 
 async function updateData(): Promise<void> {
   try {
-    const resp = await needle("get", `http://localhost:${port}/playerdata`);
+    const resp = await needle(
+      "get",
+      `http://localhost:${config.port}/playerdata`
+    );
     hundoTrackerData.value = resp.body;
   } catch (err) {
     nodecg.log.warn("[Hundo Tracker] Error updating data");
@@ -19,8 +22,12 @@ async function updateData(): Promise<void> {
   }
 }
 
-updateData();
-
-setInterval(() => {
+if (config.enabled) {
   updateData();
-}, 3000);
+}
+
+if (config.enabled) {
+  setInterval(() => {
+    updateData();
+  }, 3000);
+}
