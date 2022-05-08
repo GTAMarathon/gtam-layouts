@@ -2,6 +2,7 @@ import { Configschema } from '@gtam-layouts/types/schemas';
 import parseDuration from 'parse-duration';
 import { ExtensionReturn, RunDataTeam, SendMessageArgsMap, RunDataActiveRun, Timer } from '../../../nodecg-speedcontrol/src/types';
 import { get } from './util/nodecg';
+import needle, { NeedleResponse } from 'needle';
 
 const nodecg = get();
 const timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
@@ -15,6 +16,8 @@ const pollEndpoint = '/polls';
 const currentPrediction = nodecg.Replicant<Prediction | undefined>('currentPrediction', { defaultValue: undefined, persistent: true, persistenceInterval: 10000 });
 const currentPollX = nodecg.Replicant<Poll | undefined>('currentPoll', { defaultValue: undefined, persistent: true, persistenceInterval: 10000 });
 
+const config2 = (nodecg.bundleConfig as Configschema).highlight;
+
 currentPrediction.on('change', (newValue, oldValue) => {
   if (newValue as any == '') {
     currentPrediction.value = undefined;
@@ -27,8 +30,8 @@ currentPollX.on('change', (newValue, oldValue) => {
 });
 
 enum PredictionType {
-  SologoalTime,
-  DuoWinner,
+  GoalTime,
+  Winner,
 }
 enum PredictionStatus {
   ACTIVE = 'ACTIVE',
@@ -41,10 +44,7 @@ type Prediction = {
   id: string;
   runId: string;
   type: PredictionType;
-  outcome1Id: string;
-  outcome2Id: string;
-  team1Id: string;
-  team2Id?: string;
+  outcomes: { id: string, teamId: string }[]
   goalTime?: number;
   status: PredictionStatus
 };
@@ -82,35 +82,21 @@ type Poll = {
           nodecg.log.info('[PollsAndPredictions] New Bet');
           if (newVal.teams.length == 1) {
             if (newVal.customData['goalTime']) {
-              createPrediction(
+              createPredictionGoalTime(
                 newVal.id,
                 'Final time for the run?', // 45 characters limit
-                'Under ' + newVal.customData['goalTime'],
-                newVal.customData['goalTime'] + ' or over',
+                newVal.customData['goalTime'],
                 1800,
-                PredictionType.SologoalTime,
                 newVal.teams[0].id,
-                undefined,
-                parseDuration(newVal.customData['goalTime']));
+              );
             }
-          } else if (newVal.teams.length == 2) {
-            createPrediction(
+          } else if (newVal.teams.length < 11) {
+            createPredictionWinner(
               newVal.id,
               'Who will win the race?', // 45 characters limit
-              getTeamNameForPollOrPrediction(newVal.teams[0]),
-              getTeamNameForPollOrPrediction(newVal.teams[1]),
+              newVal.teams,
               1800,
-              PredictionType.DuoWinner,
-              newVal.teams[0].id,
-              newVal.teams[1].id,
-              undefined);
-          } else if (newVal.teams.length < 6) {
-            createPoll(
-              newVal.id,
-              'Who will win the race?', // 60 characters limit
-              newVal.teams.map((team) => { return getTeamNameForPollOrPrediction(team) }),
-              1800,
-            )
+            );
           }
         }
       }
@@ -122,38 +108,32 @@ type Poll = {
   timer.on('change', (newVal, oldVal) => {
     if (newVal) {
       if (currentPrediction.value) {
-        if (currentPrediction.value.type == PredictionType.SologoalTime && currentPrediction.value.goalTime) {
+        if (currentPrediction.value.type == PredictionType.GoalTime && currentPrediction.value.goalTime) {
           if ((newVal.milliseconds >= currentPrediction.value.goalTime)
-            || (newVal.state === 'finished' && newVal.teamFinishTimes[currentPrediction.value.team1Id] && newVal.teamFinishTimes[currentPrediction.value.team1Id].state === 'forfeit')) {
+            || (newVal.state === 'finished' && newVal.teamFinishTimes[currentPrediction.value.outcomes[0].teamId] && newVal.teamFinishTimes[currentPrediction.value.outcomes[0].teamId].state === 'forfeit')) {
             // LOSER
-            resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcome2Id);
+            resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcomes[1].id);
           }
           else if (newVal.state == 'finished' && newVal.milliseconds < currentPrediction.value.goalTime) {
             // GG
-            resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcome1Id);
+            resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcomes[0].id);
           }
-        } else if (currentPrediction.value.type == PredictionType.DuoWinner && currentPrediction.value.team2Id) {
-          if (oldVal && oldVal.state !== 'finished' && newVal.state === 'finished' && newVal.teamFinishTimes[currentPrediction.value.team1Id] && newVal.teamFinishTimes[currentPrediction.value.team2Id]) {
+        } else if (currentPrediction.value.type == PredictionType.Winner) {
+          if (oldVal && oldVal.state !== 'finished' && newVal.state === 'finished') {
 
-            const team1FinishTimes = newVal.teamFinishTimes[currentPrediction.value.team1Id];
-            const team2FinishTimes = newVal.teamFinishTimes[currentPrediction.value.team2Id];
-            if ((team1FinishTimes.state === 'forfeit' && team2FinishTimes.state === 'forfeit')
-              || (team1FinishTimes.milliseconds == team2FinishTimes.milliseconds)) {
-              // Both Losers (or tied) REFUND BETS
+            var teamFinishTimes = currentPrediction.value.outcomes.map(outcome => { return newVal.teamFinishTimes[outcome.teamId] });
+            teamFinishTimes = teamFinishTimes.filter(teamFinishTime => teamFinishTime && teamFinishTime.state === 'completed');
+            teamFinishTimes.sort((a, b) => a.milliseconds - b.milliseconds);
+            if (teamFinishTimes.length < 2 || teamFinishTimes[0].milliseconds == teamFinishTimes[1].milliseconds) {
               cancelPrediction(currentPrediction.value.id);
-            }
-            else if (team2FinishTimes.state === 'forfeit') {
-              // GG Player 1
-              resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcome1Id);
-            } else if (team1FinishTimes.state === 'forfeit') {
-              // GG Player 2
-              resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcome2Id);
-            } else if (team2FinishTimes.milliseconds > team1FinishTimes.milliseconds) {
-              // GG Player 1
-              resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcome1Id);
             } else {
-              // GG Player 2
-              resolvePrediction(currentPrediction.value.id, currentPrediction.value.outcome2Id);
+              var teamId = Object.keys(newVal.teamFinishTimes).find(key => newVal.teamFinishTimes[key] === teamFinishTimes[0]);
+              var winningOutcome = currentPrediction.value.outcomes.filter(outcome => outcome.teamId == teamId);
+              if (winningOutcome.length > 0) {
+                resolvePrediction(currentPrediction.value.id, winningOutcome[0].id);
+              } else {
+                cancelPrediction(currentPrediction.value.id);
+              }
             }
           }
         }
@@ -244,7 +224,14 @@ async function getPredictionStatus(predictionId: string): Promise<PredictionStat
     nodecg.log.error('[PollsAndPredictions] Failed to get the Prediction', err);
   }
 }
-async function createPrediction(runId: string, title: string, outcome1: string, outcome2: string, duration: number, type: PredictionType, team1Id: string, team2Id?: string, goalTime?: number): Promise<void> {
+async function createPredictionWinner(runId: string, title: string, teams: RunDataTeam[], duration: number): Promise<void> {
+  if(teams.length == 2){
+    await createPredictionWinnerWithAPI(runId,title,teams,duration);
+  }else if (teams.length<11){
+    await createPredictionWinnerWithGQL(runId,title,teams,duration);
+  }
+}
+async function createPredictionWinnerWithAPI(runId: string, title: string, teams: RunDataTeam[], duration: number) {
   try {
     var data: SendMessageArgsMap['twitchAPIRequest'] = {
       method: 'post',
@@ -252,7 +239,112 @@ async function createPrediction(runId: string, title: string, outcome1: string, 
       data: {
         broadcaster_id: config.broadcaster_id,
         title: title,
-        outcomes: [{ 'title': outcome1 }, { 'title': outcome2 }],
+        outcomes: teams.map((team) => { return { title: getTeamNameForPollOrPrediction(team) }; }),
+        prediction_window: duration
+      },
+      newAPI: true,
+    };
+    var resp = await speedcontrol.sendMessage('twitchAPIRequest', data);
+    currentPrediction.value = {
+      id: resp.body.data[0].id,
+      runId: runId,
+      type: PredictionType.Winner,
+      outcomes: teams.map((team, index) => { return { id: resp.body.data[0].outcomes[index].id, teamId: team.id }; }),
+      status: PredictionStatus.ACTIVE,
+    };
+    nodecg.log.info('[PollsAndPredictions] Prediction created');
+  }
+  catch (err) {
+    nodecg.log.error('[PollsAndPredictions] Failed to create a new Prediction', err);
+    currentPrediction.value = undefined;
+  }
+}
+async function createPredictionWinnerWithGQL(runId: string, title: string, teams: RunDataTeam[], duration: number) {
+  try {
+    if (!config2.gqlOAuth || !config2.clientID) {
+      throw new Error(`config2.gqlOAuth || !config2.clientID`);
+    }
+
+    var data = [
+      {
+        operationName: 'createPredictionEvent',
+        variables: {
+          input: {
+            title: title,
+            channelID: config.broadcaster_id,
+            outcomes: teams.map((team) => { return { title: getTeamNameForPollOrPrediction(team), color: 'BLUE' }; }),
+            predictionWindowSeconds: duration
+          }
+        },
+        extensions: {
+          persistedQuery: {
+            version: 1,
+            sha256Hash: '92268878ac4abe722bcdcba85a4e43acdd7a99d86b05851759e1d8f385cc32ea'
+          }
+        }
+      }
+    ];
+
+    const resp = await needle(
+      'post',
+      'https://gql.twitch.tv/gql',
+      data,
+      {
+        headers: {
+          Authorization: 'OAuth ' + config2.gqlOAuth,
+          'Client-ID': config2.clientID,
+          'User-Agent': 'gtam-layouts',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (resp.statusCode !== 200) {
+      throw new Error(`Status Code: ${resp.statusCode} - Body: ${JSON.stringify(resp.body)}`);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: parser exists but isn't in the typings
+    } else if (resp.parser !== 'json') {
+      throw new Error('Response was not JSON');
+    }
+    nodecg.log.info(JSON.stringify(resp.body));
+    if(resp.body[0].data.createPredictionEvent.error){
+      throw new Error(`Status Code: createPredictionEvent error - Body: ${JSON.stringify(resp.body)}`);
+    }
+    if(!resp.body[0].data.createPredictionEvent.predictionEvent){
+
+    }    
+    currentPrediction.value = {
+      id: resp.body[0].data.createPredictionEvent.predictionEvent.id,
+      runId: runId,
+      type: PredictionType.Winner,
+      outcomes: teams.map((team, index) => { return { id: resp.body[0].data.createPredictionEvent.predictionEvent.outcomes[index].id, teamId: team.id }; }),
+      status: PredictionStatus.ACTIVE,
+    };
+    
+    nodecg.log.info('[PollsAndPredictions] Prediction created');
+  }
+  catch (err) {
+  nodecg.log.error('[PollsAndPredictions] Failed to create a new Prediction', err);
+  currentPrediction.value = undefined;
+  if(teams.length<6){
+    createPoll(
+      runId,
+      title, // 60 characters limit
+      teams.map((team) => { return getTeamNameForPollOrPrediction(team) }),
+      1800,
+    );
+  }
+}
+}
+async function createPredictionGoalTime(runId: string, title: string, goalTimeString: string, duration: number, teamId: string): Promise<void> {
+  try {
+    var data: SendMessageArgsMap['twitchAPIRequest'] = {
+      method: 'post',
+      endpoint: predictionEndpoint,
+      data: {
+        broadcaster_id: config.broadcaster_id,
+        title: title,
+        outcomes: [{ 'title': 'Under ' + goalTimeString }, { 'title': goalTimeString + ' or over' }],
         prediction_window: duration
       },
       newAPI: true,
@@ -261,12 +353,9 @@ async function createPrediction(runId: string, title: string, outcome1: string, 
     currentPrediction.value = {
       id: resp.body.data[0].id,
       runId: runId,
-      type: type,
-      outcome1Id: resp.body.data[0].outcomes[0].id,
-      outcome2Id: resp.body.data[0].outcomes[1].id,
-      team1Id: team1Id,
-      team2Id: team2Id,
-      goalTime: goalTime,
+      type: PredictionType.GoalTime,
+      outcomes: [{ id: resp.body.data[0].outcomes[0].id, teamId: teamId }, { id: resp.body.data[0].outcomes[1].id, teamId: teamId }],
+      goalTime: parseDuration(goalTimeString),
       status: PredictionStatus.ACTIVE,
     }
     nodecg.log.info('[PollsAndPredictions] Prediction created');
