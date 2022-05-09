@@ -14,7 +14,7 @@ const predictionEndpoint = '/predictions';
 const pollEndpoint = '/polls';
 
 const currentPrediction = nodecg.Replicant<Prediction | undefined>('currentPrediction', { defaultValue: undefined, persistent: true, persistenceInterval: 10000 });
-const currentPollX = nodecg.Replicant<Poll | undefined>('currentPoll', { defaultValue: undefined, persistent: true, persistenceInterval: 10000 });
+const currentPoll = nodecg.Replicant<Poll | undefined>('currentPoll', { defaultValue: undefined, persistent: true, persistenceInterval: 10000 });
 
 const config2 = (nodecg.bundleConfig as Configschema).highlight;
 
@@ -23,9 +23,9 @@ currentPrediction.on('change', (newValue, oldValue) => {
     currentPrediction.value = undefined;
   }
 });
-currentPollX.on('change', (newValue, oldValue) => {
+currentPoll.on('change', (newValue, oldValue) => {
   if (newValue as any == '') {
-    currentPollX.value = undefined;
+    currentPoll.value = undefined;
   }
 });
 
@@ -72,13 +72,14 @@ type Poll = {
     try {
       if (config.enable && newVal && (!oldVal || oldVal.id != newVal.id)) {
         nodecg.log.info('[PollsAndPredictions] Run detected');
-        if (currentPollX.value && currentPollX.value.runId != newVal.id) {
-          await endPoll(currentPollX.value.id);
+        await new Promise(f => setTimeout(f, 5000)); // wait 5s to make sure the timer has been reset
+        if (currentPoll.value && currentPoll.value.runId != newVal.id) {
+          await endPoll(currentPoll.value.id);
         }
         if (currentPrediction.value && currentPrediction.value.runId != newVal.id) {
           await cancelPrediction(currentPrediction.value.id);
         }
-        if (newVal.customData['betting'] && !currentPollX.value && !currentPrediction.value && newVal.teams.length > 0 && timer.value.state === 'stopped') {
+        if (newVal.customData['betting'] && !currentPoll.value && !currentPrediction.value && newVal.teams.length > 0 && timer.value.state === 'stopped') {
           nodecg.log.info('[PollsAndPredictions] New Bet');
           if (newVal.teams.length == 1) {
             if (newVal.customData['goalTime']) {
@@ -140,8 +141,8 @@ type Poll = {
       }
 
       if (oldVal && oldVal.state === 'stopped' && newVal.state === 'running') {
-        if (currentPollX.value) {
-          endPoll(currentPollX.value.id);
+        if (currentPoll.value) {
+          endPoll(currentPoll.value.id);
         }
         if (currentPrediction.value && currentPrediction.value.status === PredictionStatus.ACTIVE) {
           lockPrediction(currentPrediction.value.id);
@@ -172,14 +173,14 @@ async function createPoll(runId: string, title: string, choices: string[], durat
       newAPI: true,
     }
     var resp = await speedcontrol.sendMessage('twitchAPIRequest', data);
-    currentPollX.value = {
+    currentPoll.value = {
       id: resp.body.data[0].id,
       runId: runId,
     };
     nodecg.log.info('[PollsAndPredictions] Poll created');
   } catch (err) {
     nodecg.log.error('[PollsAndPredictions] Failed to create a new Poll', err);
-    currentPollX.value = undefined;
+    currentPoll.value = undefined;
   }
 }
 async function endPoll(id: string): Promise<void> {
@@ -199,7 +200,7 @@ async function endPoll(id: string): Promise<void> {
   } catch (err) {
     nodecg.log.error('[PollsAndPredictions] Failed to end Poll', err);
   } finally {
-    currentPollX.value = undefined;
+    currentPoll.value = undefined;
   }
 }
 
@@ -225,10 +226,10 @@ async function getPredictionStatus(predictionId: string): Promise<PredictionStat
   }
 }
 async function createPredictionWinner(runId: string, title: string, teams: RunDataTeam[], duration: number): Promise<void> {
-  if(teams.length == 2){
-    await createPredictionWinnerWithAPI(runId,title,teams,duration);
-  }else if (teams.length<11){
-    await createPredictionWinnerWithGQL(runId,title,teams,duration);
+  if (teams.length == 2) {
+    await createPredictionWinnerWithAPI(runId, title, teams, duration);
+  } else if (teams.length < 11) {
+    await createPredictionWinnerWithGQL(runId, title, teams, duration);
   }
 }
 async function createPredictionWinnerWithAPI(runId: string, title: string, teams: RunDataTeam[], duration: number) {
@@ -306,13 +307,12 @@ async function createPredictionWinnerWithGQL(runId: string, title: string, teams
     } else if (resp.parser !== 'json') {
       throw new Error('Response was not JSON');
     }
-    nodecg.log.info(JSON.stringify(resp.body));
-    if(resp.body[0].data.createPredictionEvent.error){
+    if (resp.body[0].data.createPredictionEvent.error) {
       throw new Error(`Status Code: createPredictionEvent error - Body: ${JSON.stringify(resp.body)}`);
     }
-    if(!resp.body[0].data.createPredictionEvent.predictionEvent){
-
-    }    
+    if (!resp.body[0].data.createPredictionEvent.predictionEvent) {
+      throw new Error(`Status Code: no predictionEvent error - Body: ${JSON.stringify(resp.body)}`);
+    }
     currentPrediction.value = {
       id: resp.body[0].data.createPredictionEvent.predictionEvent.id,
       runId: runId,
@@ -320,21 +320,22 @@ async function createPredictionWinnerWithGQL(runId: string, title: string, teams
       outcomes: teams.map((team, index) => { return { id: resp.body[0].data.createPredictionEvent.predictionEvent.outcomes[index].id, teamId: team.id }; }),
       status: PredictionStatus.ACTIVE,
     };
-    
+
     nodecg.log.info('[PollsAndPredictions] Prediction created');
   }
   catch (err) {
-  nodecg.log.error('[PollsAndPredictions] Failed to create a new Prediction', err);
-  currentPrediction.value = undefined;
-  if(teams.length<6){
-    createPoll(
-      runId,
-      title, // 60 characters limit
-      teams.map((team) => { return getTeamNameForPollOrPrediction(team) }),
-      1800,
-    );
+    nodecg.log.error('[PollsAndPredictions] Failed to create a new Prediction', err);
+    currentPrediction.value = undefined;
+    if (teams.length < 6) {
+      nodecg.log.info('[PollsAndPredictions] Creating a poll instead');
+      createPoll(
+        runId,
+        title, // 60 characters limit
+        teams.map((team) => { return getTeamNameForPollOrPrediction(team) }),
+        1800,
+      );
+    }
   }
-}
 }
 async function createPredictionGoalTime(runId: string, title: string, goalTimeString: string, duration: number, teamId: string): Promise<void> {
   try {
