@@ -287,6 +287,7 @@ class OBSUtility extends obsWebsocketJs {
             musicFolder = MusicFolder.CW;
             break;
           case 'Grand Theft Auto: The Lost and Damned':
+          case 'Grand Theft Auto IV: The Lost and Damned':
             videoFolder = VideoFolder.IV;
             musicFolder = MusicFolder.EFLC;
             break;
