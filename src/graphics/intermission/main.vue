@@ -181,8 +181,9 @@
         this.onDeckArr.push(nextRun);
         var index = this.runDataArray.findIndex(run => run.id === nextRun?.id);
         this.onDeckArr = this.onDeckArr.concat(
-          this.runDataArray.slice(index + 1, index + 3)
-            .filter(run => run.scheduledS && run.gameTwitch === 'Just Chatting' && run.scheduledS < (Math.floor(Date.now() / 1000) + 10800))
+          this.runDataArray.slice(index + 1)
+            .filter(run => run.scheduledS && run.gameTwitch != 'Just Chatting' && run.scheduledS < (Math.floor(Date.now() / 1000) + 10800))
+            .slice(0,2)
         );
       }
     }
