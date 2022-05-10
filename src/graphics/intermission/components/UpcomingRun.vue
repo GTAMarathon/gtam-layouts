@@ -95,7 +95,7 @@ export default class UpcomingRun extends Vue {
   onRunChange(val: RunData | null): void {
     setTimeout(() => {
       this.fit();
-    }, 500);
+    }, 30);
   }
 
 }
