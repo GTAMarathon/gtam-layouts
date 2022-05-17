@@ -15,7 +15,7 @@ timer.on('change', (newVal, oldVal) => {
     nodecg.sendMessage('clearIntermission');
   }
 });
-nodecg.listenFor('endOfMarathonnextRun', async (data, ack) => {
+nodecg.listenFor('endOfMarathon', async (data, ack) => {
   obs.changeToIntermission().catch(() => { });
   if (ack && !ack.handled) {
     ack(null);
