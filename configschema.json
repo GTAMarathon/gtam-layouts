@@ -143,9 +143,25 @@
                   "type": "string",
                   "default": "GTA VC Bingo"
                 },
-                "vchundo": {
+                "_5p43_score": {
                   "type": "string",
-                  "default": "GTA VC Bingo"
+                  "default": "4:3 5p with score"
+                },
+                "_4p43_score": {
+                  "type": "string",
+                  "default": "4:3 4p with score"
+                },
+                "_3p43_score": {
+                  "type": "string",
+                  "default": "4:3 3p with score"
+                },
+                "_2p43_score": {
+                  "type": "string",
+                  "default": "4:3 2p with score"
+                },
+                "_1p43_score": {
+                  "type": "string",
+                  "default": "4:3 1p with score"
                 },
                 "vbingo": {
                   "type": "string",
@@ -167,7 +183,11 @@
                 "_4p169_3",
                 "_4p169_4",
                 "vcbingo",
-                "vchundo",
+                "_1p43_score",
+                "_2p43_score",
+                "_3p43_score",
+                "_4p43_score",
+                "_5p43_score",
                 "vbingo"
               ]
             },
@@ -346,22 +366,24 @@
         "marathonShort"
       ]
     },
-    "hundo": {
+    "scoreTracking": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": true
+          "default": false
         },
-        "port": {
-          "type": "number",
-          "default": 5353
+        "scorePath": {
+          "type": "string"
+        },
+        "suffix": {
+          "type": "string"
         }
       },
       "required": [
         "enabled",
-        "port"
+        "scorePath"
       ]
     }
   },
@@ -372,6 +394,6 @@
     "feeds",
     "schedule",
     "betting",
-    "hundo"
+    "scoreTracking"
   ]
 }

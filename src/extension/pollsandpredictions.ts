@@ -70,7 +70,12 @@ type Poll = {
 
   runDataActiveRun.on('change', async (newVal, oldVal) => {
     try {
-      if (config.enable && newVal && (!oldVal || oldVal.id != newVal.id)) {
+      if (config.enable &&
+        newVal &&
+        (!oldVal ||
+          oldVal.id != newVal.id ||
+          oldVal.teams.length != newVal.teams.length ||
+          checkDifferentRunners())) {            
         nodecg.log.info('[PollsAndPredictions] Run detected');
         await new Promise(f => setTimeout(f, 5000)); // wait 5s to make sure the timer has been reset
         if (currentPoll.value && currentPoll.value.runId != newVal.id) {
@@ -103,6 +108,11 @@ type Poll = {
       }
     } catch (err) {
       nodecg.log.error('[PollsAndPredictions] error', err);
+    }
+
+    function checkDifferentRunners(): boolean {
+      return !(oldVal?.teams.map(team => team.players[0]?.name).every(name =>  newVal?.teams.map(team => team.players[0]?.name).includes(name)) &&
+      newVal?.teams.map(team => team.players[0]?.name).every(name =>  oldVal?.teams.map(team => team.players[0]?.name).includes(name)));
     }
   });
 

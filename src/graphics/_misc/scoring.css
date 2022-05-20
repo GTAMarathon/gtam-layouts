@@ -1,0 +1,105 @@
+@import url("./fonts/fonts.css");
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: white;
+  font-weight: bold;
+  font-family: 'Alte Haas Grotesk';
+  line-height: 1;
+}
+
+#backgrounds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+#backgrounds .bg {
+  position: absolute;
+}
+
+.playerColBig {
+  height: 180px;
+}
+.playerColSmall {
+  height: 120px;
+}
+.playerCol {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: normal;
+  color: white;
+}
+
+.table>:not(caption)>*>* {
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+}
+
+table.table-bordered {
+  table-layout: fixed;
+  margin: 0px;
+}
+
+table.table-bordered th {
+  border-left: 1px solid white;
+  border-right: 0px;
+  border-top: 0px;
+  border-bottom: 0px;
+}
+
+table.table-bordered .borderTop {
+  border-top: 1px solid white !important;
+}
+
+
+table.table-bordered th .table_pos {
+  font-size: 36px;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+table.table-bordered th .table_name {
+  font-size: 30px;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+}
+table.table-bordered th .table_score {
+  font-size: 36px;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.playerInfo {
+  display: flex;
+  flex-direction: column; 
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  text-align: center;
+}
+.playerInfoBig {
+  height: 58px;
+}
+.playerInfoSmall {
+  height: 38px;
+}

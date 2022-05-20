@@ -44,6 +44,7 @@
     "moment": "^2.29.1",
     "needle": "^3.0.0",
     "obs-websocket-js": "^4.0.3",
+    "ordinal": "^1.0.3",
     "parse-duration": "^1.0.2",
     "socket.io-client": "^2.4.0"
   },
@@ -127,9 +128,9 @@
         "width": 4
       },
       {
-        "name": "vchundoselector",
-        "title": "vchundoselector",
-        "file": "vchundoselector.html",
+        "name": "Change Runners On Screen (4:3 with Score)",
+        "title": "Change Runners On Screen (4:3 with Score)",
+        "file": "changeRunnersOnScreen.html",
         "workspace": "GTAM",
         "width": 4
       }
@@ -201,7 +202,27 @@
         "height": 1080
       },
       {
-        "file": "vchundo-race.html",
+        "file": "4x3-1p-score.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4x3-2p-score.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4x3-3p-score.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4x3-4p-score.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "4x3-5p-score.html",
         "width": 1920,
         "height": 1080
       }

@@ -7,7 +7,7 @@
     <timer
       :style="{
         left: '1345px',
-        top: '987px',
+        top: '993px',
         width: '259px',
         height: '75px',
         'font-size': '26px'

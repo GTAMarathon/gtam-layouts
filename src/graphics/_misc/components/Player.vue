@@ -5,12 +5,13 @@
         v-if="name"
         :key="name"
         class="Flex"
-        :style="{ position: 'absolute', 'font-size': '1.5em' }"
+        :style="[background ?
+          {'background-color': 'rgba(43, 120, 228, 1)', 'border-radius': '0.5em', 'position': 'absolute', 'font-size': '1.5em'} :
+          {'position': 'absolute', 'font-size': '1.5em'}]"
       >
         <div
           :style="{
-            'margin-left': '5px',
-            'font-size': small ? '1.1em' : '1.3em'
+            'font-size': small ? '1.1em' : '1.3em', 'padding-left': '0.1em', 'padding-right': '0.1em'
           }"
           ref="player"
         >
@@ -39,6 +40,8 @@ export default class Player extends Vue {
   @State timer!: Timer;
   @Prop({ default: 64 }) readonly size!: number;
   @Prop({ default: 1 }) readonly team!: number;
+  @Prop({ default: true }) readonly finishTimes!: boolean;
+  @Prop({ default: false }) readonly background!: boolean;
   @Ref("player") player!: HTMLDivElement;
   timeout?: number;
   teamI = 0;
@@ -55,7 +58,7 @@ export default class Player extends Vue {
   }
 
   get finishTime(): string | undefined {
-    if (!this.run || this.run.teams.length <= 1) {
+    if (!this.run || this.run.teams.length <= 1 || !this.finishTimes) {
       return undefined;
     }
     const teamFinishTime = this.timer.teamFinishTimes[
@@ -98,7 +101,7 @@ export default class Player extends Vue {
 
     setTimeout(() => {
       this.fit();
-    }, 500);
+    }, 30);
   }
 
   showNextName(): void {

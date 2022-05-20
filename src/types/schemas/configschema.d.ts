@@ -39,7 +39,11 @@ export interface Configschema {
 				_4p169_3: string;
 				_4p169_4: string;
 				vcbingo: string;
-				vchundo: string;
+				_5p43_score: string;
+				_4p43_score: string;
+				_3p43_score: string;
+				_2p43_score: string;
+				_1p43_score: string;
 				vbingo: string;
 			};
 			sources: {
@@ -79,8 +83,9 @@ export interface Configschema {
 		enable: boolean;
 		marathonShort: string;
 	};
-	hundo: {
+	scoreTracking: {
 		enabled: boolean;
-		port: number;
+		scorePath: string;
+		suffix?: string;
 	};
 }

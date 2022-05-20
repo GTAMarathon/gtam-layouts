@@ -4,11 +4,11 @@
       <div
         v-if="runDataActiveRun"
         :key="`${runDataActiveRun.category}`"
-        class="Flex"
+        :class="[multiline ? 'text-centered' : 'Flex']"
       >
         <div
           v-if="runDataActiveRun"
-          :style="{ 'font-size': '1.3em' }"
+          :style="{ 'padding-left': '0.1em', 'padding-right': '0.1em', 'font-size': size+'px', }"
           ref="category"
         >
           {{ runDataActiveRun.category }}
@@ -28,6 +28,7 @@ import fitty, { FittyInstance } from "fitty";
 export default class Category extends Vue {
   @State runDataActiveRun!: RunDataActiveRun;
   @Prop({ default: 64 }) readonly size!: number;
+  @Prop({ default: false }) readonly multiline!: boolean;
   @Ref("category") category!: HTMLDivElement;
 
   categoryFitty: FittyInstance | undefined;
@@ -41,16 +42,20 @@ export default class Category extends Vue {
   }
 
   mounted() {
-    setTimeout(() => {
-      this.fit();
-    }, 500);
+    if(!this.multiline){
+      setTimeout(() => {
+        this.fit();
+      }, 500);
+    }
   }
 
   @Watch("runDataActiveRun", { immediate: true })
   onRunChange() {
-    setTimeout(() => {
-      this.fit();
-    }, 500);
+    if(!this.multiline){
+      setTimeout(() => {
+        this.fit();
+      }, 30);
+    }
   }
 }
 </script>

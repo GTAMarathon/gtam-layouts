@@ -1,4 +1,4 @@
-@import url("./fonts/alte_bebas.css");
+@import url("./fonts/fonts.css");
 	
 
 body {
@@ -20,4 +20,8 @@ body {
 
 #backgrounds .bg {
   position: absolute;
+}
+
+.text-centered {
+  text-align: center;
 }

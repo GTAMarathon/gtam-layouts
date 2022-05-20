@@ -117,56 +117,91 @@ class OBSUtility extends obsWebsocketJs {
     }
   }
 
-  async changeRunnersOnVCHundo(data: { feed1: RunDataActiveRun['teams'][number], feed2: RunDataActiveRun['teams'][number], feed3: RunDataActiveRun['teams'][number], feed4: RunDataActiveRun['teams'][number], feed5: RunDataActiveRun['teams'][number], }): Promise<void> {
-    nodecg.log.warn('data');
-    nodecg.log.warn(JSON.stringify(data));
-
+  async changeRunnersFeedOnScreenWithScore(data: { feeds: RunDataActiveRun['teams'][number][], numberOfFeeds: number }): Promise<void> {
+    if (data.numberOfFeeds != data.feeds.length) {
+      nodecg.log.error('[changeRunnersFeedOnScreenWithScore] error number of feeds doesnt match');
+      return;
+    }
     var index = -1;
-    var array = runDataActiveRun.value.teams.filter(team => team.id == data.feed5.id);
-    if (array.length) {
-      index = runDataActiveRun.value.teams.indexOf(array[0]);
-      if (index > -1) {
-        runDataActiveRun.value.teams.splice(index, 1);
-        runDataActiveRun.value.teams.unshift(data.feed5);
-        this.setTwitchUrlToSources(data.feed5.players[0].social.twitch || undefined, [config.obs.names.sources.runner5_43]);
-      }
+    var scene: string = '';
+    var array: RunDataActiveRun['teams'][number][];
+    switch (data.numberOfFeeds) {
+      case 5:
+        array = runDataActiveRun.value.teams.filter(team => team.id == data.feeds[4].id);
+        if (array.length) {
+          index = runDataActiveRun.value.teams.indexOf(array[0]);
+          if (index > -1) {
+            runDataActiveRun.value.teams.splice(index, 1);
+            runDataActiveRun.value.teams.unshift(data.feeds[4]);
+            this.setTwitchUrlToSources(data.feeds[4].players[0].social.twitch || undefined, [config.obs.names.sources.runner5_43]);
+            if (!scene) { scene = config.obs.names.scenes._5p43_score; }
+          }
+        } else {
+          nodecg.log.error('[changeRunnersFeedOnScreenWithScore] Feed 5 not found');
+          return;
+        }
+      case 4:
+        array = runDataActiveRun.value.teams.filter(team => team.id == data.feeds[3].id);
+        if (array.length) {
+          index = runDataActiveRun.value.teams.indexOf(array[0]);
+          if (index > -1) {
+            runDataActiveRun.value.teams.splice(index, 1);
+            runDataActiveRun.value.teams.unshift(data.feeds[3]);
+            this.setTwitchUrlToSources(data.feeds[3].players[0].social.twitch || undefined, [config.obs.names.sources.runner4_43]);
+            if (!scene) { scene = config.obs.names.scenes._4p43_score; }
+          }
+        } else {
+          nodecg.log.error('[changeRunnersFeedOnScreenWithScore] Feed 4 not found');
+          return;
+        }
+      case 3:
+        array = runDataActiveRun.value.teams.filter(team => team.id == data.feeds[2].id);
+        if (array.length) {
+          index = runDataActiveRun.value.teams.indexOf(array[0]);
+          if (index > -1) {
+            runDataActiveRun.value.teams.splice(index, 1);
+            runDataActiveRun.value.teams.unshift(data.feeds[2]);
+            this.setTwitchUrlToSources(data.feeds[2].players[0].social.twitch || undefined, [config.obs.names.sources.runner3_43]);
+            if (!scene) { scene = config.obs.names.scenes._3p43_score; }
+          }
+        } else {
+          nodecg.log.error('[changeRunnersFeedOnScreenWithScore] Feed 3 not found');
+          return;
+        }
+      case 2:
+        array = runDataActiveRun.value.teams.filter(team => team.id == data.feeds[1].id);
+        if (array.length) {
+          index = runDataActiveRun.value.teams.indexOf(array[0]);
+          if (index > -1) {
+            runDataActiveRun.value.teams.splice(index, 1);
+            runDataActiveRun.value.teams.unshift(data.feeds[1]);
+            this.setTwitchUrlToSources(data.feeds[1].players[0].social.twitch || undefined, [config.obs.names.sources.runner2_43]);
+            if (!scene) { scene = config.obs.names.scenes._2p43_score; }
+          }
+        } else {
+          nodecg.log.error('[changeRunnersFeedOnScreenWithScore] Feed 2 not found');
+          return;
+        }
+      case 1:
+        array = runDataActiveRun.value.teams.filter(team => team.id == data.feeds[0].id);
+        if (array.length) {
+          index = runDataActiveRun.value.teams.indexOf(array[0]);
+          if (index > -1) {
+            runDataActiveRun.value.teams.splice(index, 1);
+            runDataActiveRun.value.teams.unshift(data.feeds[0]);
+            this.setTwitchUrlToSources(data.feeds[0].players[0].social.twitch || undefined, [config.obs.names.sources.runner1_43]);
+            if (!scene) { scene = config.obs.names.scenes._1p43_score; }
+          }
+        } else {
+          nodecg.log.error('[changeRunnersFeedOnScreenWithScore] Feed 1 not found');
+          return;
+        }
+        break;
+      default:
+        nodecg.log.error('[changeRunnersFeedOnScreenWithScore] error number of feeds not valid');
+        return;
     }
-    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed4.id);
-    if (array.length) {
-      index = runDataActiveRun.value.teams.indexOf(array[0]);
-      if (index > -1) {
-        runDataActiveRun.value.teams.splice(index, 1);
-        runDataActiveRun.value.teams.unshift(data.feed4);
-        this.setTwitchUrlToSources(data.feed4.players[0].social.twitch || undefined, [config.obs.names.sources.runner4_43]);
-      }
-    }
-    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed3.id);
-    if (array.length) {
-      index = runDataActiveRun.value.teams.indexOf(array[0]);
-      if (index > -1) {
-        runDataActiveRun.value.teams.splice(index, 1);
-        runDataActiveRun.value.teams.unshift(data.feed3);
-        this.setTwitchUrlToSources(data.feed3.players[0].social.twitch || undefined, [config.obs.names.sources.runner3_43]);
-      }
-    }
-    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed2.id);
-    if (array.length) {
-      index = runDataActiveRun.value.teams.indexOf(array[0]);
-      if (index > -1) {
-        runDataActiveRun.value.teams.splice(index, 1);
-        runDataActiveRun.value.teams.unshift(data.feed2);
-        this.setTwitchUrlToSources(data.feed2.players[0].social.twitch || undefined, [config.obs.names.sources.runner2_43]);
-      }
-    }
-    array = runDataActiveRun.value.teams.filter(team => team.id == data.feed1.id);
-    if (array.length) {
-      index = runDataActiveRun.value.teams.indexOf(array[0]);
-      if (index > -1) {
-        runDataActiveRun.value.teams.splice(index, 1);
-        runDataActiveRun.value.teams.unshift(data.feed1);
-        this.setTwitchUrlToSources(data.feed1.players[0].social.twitch || undefined, [config.obs.names.sources.runner1_43]);
-      }
-    }
+    await this.changeScene(scene);
   }
 
   async focusOnRunnerX(runnerNumber: number): Promise<void> {

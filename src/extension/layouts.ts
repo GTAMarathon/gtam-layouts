@@ -54,8 +54,8 @@ nodecg.listenFor('focusOnRunner', (data, ack) => {
   }
 });
 
-nodecg.listenFor('changeRunnersOnVCHundo', (data, ack) => {
-  obs.changeRunnersOnVCHundo(data).catch(() => { });
+nodecg.listenFor('changeRunnersFeedOnScreenWithScore', (data, ack) => {
+  obs.changeRunnersFeedOnScreenWithScore(data).catch(() => { });
 
   if (ack && !ack.handled) {
     ack(null);

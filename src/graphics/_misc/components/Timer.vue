@@ -9,7 +9,6 @@
       :style="{
         'font-size': '2.3em',
         transition: '1s',
-        'margin-bottom': '-0.2em',
       }"
     >
       <span
@@ -26,25 +25,11 @@
 <script lang="ts">
 import { Vue, Component, Ref, Watch } from 'vue-property-decorator'; // eslint-disable-line object-curly-newline, max-len
 import { State } from 'vuex-class';
-import { Timer as TimerType, RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+import { Timer as TimerType } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
 
 @Component
 export default class Timer extends Vue {
   @State timer!: TimerType;
-  @State runDataActiveRun!: RunDataActiveRun;
-  @Ref('Estimate') readonly estimate!: HTMLElement;
-  isMounted = false;
-  estimateWidth = '0px';
-
-  @Watch('runDataActiveRun', { immediate: true })
-  onRunChange(newVal: TimerType, oldVal?: TimerType): void {
-    if (!oldVal && newVal) {
-      Vue.nextTick()
-        .then(() => {
-          this.estimateWidth = `${this.estimate.clientWidth}px`;
-        });
-    }
-  }
 }
 </script>
 

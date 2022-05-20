@@ -3,20 +3,19 @@
     <transition name="fade">
       <div
         v-if="runDataActiveRun"
-        :key="`${runDataActiveRun.customData.gameShort}`"
+        :key="`${gameName}`"
         class="Flex"
         :style="{
           position: 'absolute',
           'flex-direction': 'column',
-          'font-size': '1em'
         }"
       >
         <div
           v-if="runDataActiveRun"
-          :style="{ 'font-size': `${1.3 * scale}em` }"
+          :style="{ 'padding-left': '0.1em', 'padding-right': '0.1em'}"
           ref="game"
         >
-          {{ runDataActiveRun.customData.gameShort }}
+          {{ gameName }}
         </div>
       </div>
     </transition>
@@ -36,6 +35,9 @@ export default class Game extends Vue {
   @Ref("game") game!: HTMLDivElement;
   gameFitty: FittyInstance | undefined;
 
+  get gameName(): string | undefined {
+    return this.runDataActiveRun?.customData['gameShort'] ? this.runDataActiveRun?.customData['gameShort'] : this.runDataActiveRun?.game;
+  }
   fit(): void {
     this.gameFitty = fitty(this.game, {
       maxSize: this.size,
@@ -54,7 +56,7 @@ export default class Game extends Vue {
   onRunChange() {
     setTimeout(() => {
       this.fit();
-    }, 500);
+    }, 30);
   }
 }
 </script>
