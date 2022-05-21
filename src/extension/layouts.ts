@@ -23,7 +23,10 @@ nodecg.listenFor('endOfMarathon', async (data, ack) => {
 });
 
 nodecg.listenFor('nextRun', async (data, ack) => {
-  await sendMessage('importOengusSchedule', { marathonShort: config.schedule.marathonShort, useJapanese: false }).catch(() => { });
+  var config = (nodecg.bundleConfig as Configschema);
+  if(config.schedule.enable){
+    await sendMessage('importOengusSchedule', { marathonShort: config.schedule.marathonShort, useJapanese: false }).catch(() => { });
+  }
   nodecg.sendMessage('clearIntermission');
   await new Promise(f => setTimeout(f, 60));
 
