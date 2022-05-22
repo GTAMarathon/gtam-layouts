@@ -16,7 +16,7 @@
     }">
       <img v-if="type == 'START OF MARATHON' || type == 'START OF DAY'" src='./background_start.png'>
       <img v-else-if="type == 'END OF DAY'" src='./background_end.png'>
-      <img v-else-if="type == 'INTERMISSION' || type == 'FINAL RUN'" src='./background_intermission.png'>
+      <img v-else-if="type == 'INTERMISSION' || type == 'FINAL RUN'" src='./background_start.png'>
       <img v-else-if="type == 'END OF MARATHON'" src='./background_end_marathon.png'>
     </div>
 
@@ -185,6 +185,8 @@
             .filter(run => run.scheduledS && run.gameTwitch != 'Just Chatting' && run.scheduledS < (Math.floor(Date.now() / 1000) + 10800))
             .slice(0,2)
         );
+      } else {
+        this.type = 'FINAL RUN';
       }
     }
 
