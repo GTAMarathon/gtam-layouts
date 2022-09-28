@@ -118,6 +118,8 @@ class OBSUtility extends obsWebsocketJs {
   }
 
   async changeRunnersFeedOnScreenWithScore(data: { feeds: RunDataActiveRun['teams'][number][], numberOfFeeds: number }): Promise<void> {
+    var currentScenePromise = this.send('GetCurrentScene');
+
     if (data.numberOfFeeds != data.feeds.length) {
       nodecg.log.error('[changeRunnersFeedOnScreenWithScore] error number of feeds doesnt match');
       return;
@@ -201,7 +203,9 @@ class OBSUtility extends obsWebsocketJs {
         nodecg.log.error('[changeRunnersFeedOnScreenWithScore] error number of feeds not valid');
         return;
     }
-    await this.changeScene(scene);
+    if((await currentScenePromise).name != config.obs.names.scenes.intermission && scene){
+      await this.changeScene(scene);
+    }
   }
 
   async focusOnRunnerX(runnerNumber: number): Promise<void> {
