@@ -50,6 +50,7 @@
   "devDependencies": {
     "@fontsource/roboto": "^4.5.1",
     "@mdi/font": "^6.5.95",
+    "@nodecg/types": "^2.0.3",
     "@types/clone": "^2.1.1",
     "@types/module-alias": "^2.0.1",
     "@types/needle": "^2.5.2",
