@@ -3,7 +3,9 @@ import clone from 'clone';
 import { get } from './nodecg';
 import { Configschema } from '../../types/schemas/configschema';
 import { GraphQLClient } from 'graphql-request'
-import { RunData, Timer } from '../../../../nodecg-speedcontrol/src/types';
+import { RunData } from '../../../../nodecg-speedcontrol/src/types';
+import { timer } from './replicants';
+import NodeCG from '@nodecg/types';
 
 const nodecg = get();
 const config = (nodecg.bundleConfig as Configschema).highlight;
@@ -22,10 +24,9 @@ if (config.enable) {
 }
 
 var highlightRecording = nodecg.Replicant<Boolean>('twitchHighlightRecording', { defaultValue: false });
-var startTimestamp = nodecg.Replicant<Moment | null>('twitchHighlightStartTimestamp', { defaultValue: null });
-var highlightRunData = nodecg.Replicant<RunData | null>('twitchHighlightRunData', { defaultValue: null });
+var startTimestamp = nodecg.Replicant<Moment | null>('twitchHighlightStartTimestamp', { defaultValue: null }) as unknown as NodeCG.ServerReplicant<Moment | null>;
+var highlightRunData = nodecg.Replicant<RunData | null>('twitchHighlightRunData', { defaultValue: null }) as unknown as NodeCG.ServerReplicant<RunData | null>;
 var highlightProcessing = nodecg.Replicant<Boolean>('twitchHighlightProcessing', { defaultValue: false, persistent: false });
-const timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
 var runDataActiveRun = nodecg.Replicant<RunData>('runDataActiveRun', 'nodecg-speedcontrol');
 
 // Store the currently set run when the timer first starts if a highlight is being recorded, which we will use for the highlight info.

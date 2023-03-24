@@ -1,11 +1,10 @@
 import needle from 'needle';
 import { get } from './util/nodecg';
 import { Configschema } from '../types/schemas/configschema';
-import { RunDataActiveRun } from '../../../nodecg-speedcontrol/src/types/schemas';
+import { runDataActiveRun as currentRun } from './util/replicants';
 
 const nodecg = get();
 const config = (nodecg.bundleConfig as Configschema).twitchExt;
-const currentRun = nodecg.Replicant<RunDataActiveRun>('runDataActiveRun', 'nodecg-speedcontrol');
 
 async function setChannels(usernames: string): Promise<void> {
   nodecg.log.info('[Twitch Ext] Attempting to update');

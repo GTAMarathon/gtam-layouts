@@ -1,16 +1,15 @@
 import { Configschema } from '../types/schemas/configschema';
-import { ExtensionReturn, RunData, Timer } from '../../../nodecg-speedcontrol/src/types';
+import { ExtensionReturn } from '../../../nodecg-speedcontrol/src/types';
 import { get } from './util/nodecg';
 import obs from './util/obs';
 import { updateOengusScheduleOnSwitchingRun } from './scheduling';
+import { timer as timerRep, runDataActiveRun as activeRun } from './util/replicants';
 
 const nodecg = get();
 const { sendMessage } = nodecg.extensions['nodecg-speedcontrol'] as unknown as ExtensionReturn;
-const timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
-const runDataActiveRun = nodecg.Replicant<RunData>('runDataActiveRun', 'nodecg-speedcontrol');
 const config = (nodecg.bundleConfig as Configschema);
 
-timer.on('change', (newVal, oldVal) => {
+timerRep.on('change', (newVal, oldVal) => {
   if (oldVal && oldVal.state !== 'finished' && newVal.state === 'finished') {
     nodecg.sendMessage('clearIntermission');
   }
@@ -67,9 +66,9 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
   var source43: string | undefined;
   var source169: string | undefined;
 
-  if (data.runner && data.stream.twitchAccount && data.stream && runDataActiveRun.value && runDataActiveRun.value.teams) {
+  if (data.runner && data.stream.twitchAccount && data.stream && activeRun.value && activeRun.value.teams) {
     var players = [];
-    for (var team of runDataActiveRun.value.teams) {
+    for (var team of activeRun.value.teams) {
       for (var player of team.players) {
         players.push(player);
       }
