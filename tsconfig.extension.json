@@ -116,6 +116,7 @@
     "../../types/server.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/types/augment-window.d.ts"
   ]
 }

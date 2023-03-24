@@ -1,16 +1,10 @@
 import { Configschema } from '@gtam-layouts/types/schemas';
-import { ExtensionReturn, OengusLine, RunData, RunDataArray, RunFinishTimes, Timer } from '../../../nodecg-speedcontrol/src/types';
-import { OengusImportStatus } from '../../../nodecg-speedcontrol/src/types/schemas/oengusImportStatus';
-import { RunDataActiveRunSurrounding } from '../../../nodecg-speedcontrol/src/types/schemas/runDataActiveRunSurrounding';
+import { ExtensionReturn, OengusLine, RunData } from '../../../nodecg-speedcontrol/src/types';
 import { get } from './util/nodecg';
+import { timer, runDataArray, runDataActiveRunSurrounding, runFinishTimes, oengusImportStatus } from './util/replicants';
 
 const nodecg = get();
 const { sendMessage } = nodecg.extensions['nodecg-speedcontrol'] as unknown as ExtensionReturn;
-const timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
-const runDataArray = nodecg.Replicant<RunDataArray>('runDataArray', 'nodecg-speedcontrol');
-const runDataActiveRunSurrounding = nodecg.Replicant<RunDataActiveRunSurrounding>('runDataActiveRunSurrounding', 'nodecg-speedcontrol');
-const runFinishTimes = nodecg.Replicant<RunFinishTimes>('runFinishTimes', 'nodecg-speedcontrol');
-const oengusImportStatus = nodecg.Replicant<OengusImportStatus>('oengusImportStatus', 'nodecg-speedcontrol');
 const config = (nodecg.bundleConfig as Configschema).schedule;
 
 const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([

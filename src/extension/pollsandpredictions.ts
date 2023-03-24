@@ -1,12 +1,11 @@
 import { Configschema } from '@gtam-layouts/types/schemas';
 import parseDuration from 'parse-duration';
-import { ExtensionReturn, RunDataTeam, SendMessageArgsMap, RunDataActiveRun, Timer } from '../../../nodecg-speedcontrol/src/types';
+import { ExtensionReturn, RunDataTeam, SendMessageArgsMap } from '../../../nodecg-speedcontrol/src/types';
+import { timer, runDataActiveRun } from './util/replicants';
 import { get } from './util/nodecg';
 import needle, { NeedleResponse } from 'needle';
 
 const nodecg = get();
-const timer = nodecg.Replicant<Timer>('timer', 'nodecg-speedcontrol');
-const runDataActiveRun = nodecg.Replicant<RunDataActiveRun>('runDataActiveRun', 'nodecg-speedcontrol');
 const config = (nodecg.bundleConfig as Configschema).betting;
 const speedcontrol = nodecg.extensions['nodecg-speedcontrol'] as unknown as ExtensionReturn;
 

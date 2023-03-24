@@ -50,6 +50,7 @@
   "devDependencies": {
     "@fontsource/roboto": "^4.5.1",
     "@mdi/font": "^6.5.95",
+    "@nodecg/types": "^2.0.3",
     "@types/clone": "^2.1.1",
     "@types/module-alias": "^2.0.1",
     "@types/needle": "^2.5.2",
@@ -100,7 +101,7 @@
     "webpack-livereload-plugin": "^3.0.2"
   },
   "nodecg": {
-    "compatibleRange": "^1.8.1",
+    "compatibleRange": "^2.0.0",
     "bundleDependencies": {
       "nodecg-speedcontrol": "^2.4.0"
     },

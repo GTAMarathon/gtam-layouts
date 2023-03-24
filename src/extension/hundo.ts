@@ -1,13 +1,10 @@
 import needle from "needle";
 import { get } from "./util/nodecg";
-import { Configschema, HundoTrackerData } from "@gtam-layouts/types/schemas";
+import { Configschema } from "@gtam-layouts/types/schemas";
+import { hundoTrackerData } from "./util/replicants";
 
 const nodecg = get();
 const config = (nodecg.bundleConfig as Configschema).hundo;
-const hundoTrackerData = nodecg.Replicant<HundoTrackerData>(
-  "hundoTrackerData",
-  { defaultValue: [] }
-);
 
 async function updateData(): Promise<void> {
   try {

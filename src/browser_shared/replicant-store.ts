@@ -1,5 +1,5 @@
 import clone from 'clone';
-import { ReplicantBrowser } from 'nodecg/types/browser'; // eslint-disable-line import/no-unresolved
+import NodeCGTypes from '@nodecg/types';
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 import { RunDataActiveRunSurrounding } from '../../../nodecg-speedcontrol/src/types/schemas';
@@ -19,7 +19,7 @@ const replicantList: { name: string; bundle?: string }[] = [
   { name: 'runDataActiveRunSurrounding', bundle: 'nodecg-speedcontrol' },
   { name: 'timer', bundle: 'nodecg-speedcontrol' },
 ];
-const replicants: ReplicantBrowser<unknown>[] = [];
+const replicants: NodeCGTypes.ClientReplicant<unknown>[] = [];
 
 interface StoreTypes {
   host: Host;
@@ -38,7 +38,7 @@ export const store = new Vuex.Store<StoreTypes>({
       Vue.set(state, name, value);
     },
     updateHost(state, value): void {
-      const rep = replicants.find((repObj) => repObj.name === 'host') as ReplicantBrowser<Host>;
+      const rep = replicants.find((repObj) => repObj.name === 'host') as NodeCGTypes.ClientReplicant<Host>;
       Vue.set(state, 'host', value);
       rep.value = value;
     },
