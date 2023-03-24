@@ -3,12 +3,8 @@
     <div v-if="enableChange">
       <div>
         <div v-if="!selectedRunner">
-          <v-btn
-            v-for="runner in runners"
-            :key="runner.id"
-            :style="{ 'margin-right': '5px' }"
-            v-on:click="select(runner)"
-          >
+          <v-btn v-for="runner in runners" :key="runner.id" :style="{ 'margin-right': '5px' }"
+            v-on:click="select(runner)">
             {{ runner.name }}
           </v-btn>
         </div>
@@ -19,28 +15,18 @@
         </div>
       </div>
       <div v-if="selectedRunner">
-        <v-btn
-          v-for="stream in streams"
-          :key="stream"
-          @click="assign(stream)"
-          color="primary"
-          :style="{
-            'margin-top': '5px',
-            'margin-right': '5px',
-          }"
-        >
+        <v-btn v-for="stream in streams" :key="stream" @click="assign(stream)" color="primary" :style="{
+          'margin-top': '5px',
+          'margin-right': '5px',
+        }">
           {{ stream.name }}
           <br />
           ({{ stream.twitchAccount }})
         </v-btn>
-        <v-btn
-          v-on:click="select(undefined)"
-          color="secondary"
-          :style="{
-            'margin-top': '5px',
-            'margin-right': '5px',
-          }"
-        >
+        <v-btn v-on:click="select(undefined)" color="secondary" :style="{
+          'margin-top': '5px',
+          'margin-right': '5px',
+        }">
           CANCEL
         </v-btn>
       </div>
@@ -75,11 +61,15 @@ interface Stream {
   twitchAccount: string;
 }
 
+type Mutable<Type> = {
+  -readonly [Key in keyof Type]: Type[Key];
+};
+
 @Component
 export default class App extends Vue {
   @State runDataActiveRun!: RunDataActiveRun;
   @State timer!: Timer;
-  streams: Stream[] = nodecg.bundleConfig.feeds.streams;
+  streams: Mutable<Stream[]> = nodecg.bundleConfig.feeds.streams as Mutable<Stream[]>;
   model = {
     selectedRunner: undefined,
   };
@@ -114,8 +104,8 @@ export default class App extends Vue {
     };
     nodecg
       .sendMessage("assignStreamToRunner", data)
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
 
     this.$set(this.model, "selectedRunner", undefined);
   }
