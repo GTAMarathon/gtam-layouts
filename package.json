@@ -101,7 +101,7 @@
     "webpack-livereload-plugin": "^3.0.2"
   },
   "nodecg": {
-    "compatibleRange": "^1.8.1",
+    "compatibleRange": "^2.0.0",
     "bundleDependencies": {
       "nodecg-speedcontrol": "^2.4.0"
     },
