@@ -1,50 +1,55 @@
 <template>
-  <v-app>
+  <div>
     <div>
       <div>
         <div v-if="!feedNumber">
-          <v-btn
+          <QBtn
             :disabled="model.feed1 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(1)"
+            color="black"
           >
             Feed 1
-          </v-btn>
-          <v-btn
+          </QBtn>
+          <QBtn
             :disabled="model.feed2 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(2)"
+            color="black"
           >
             Feed 2
-          </v-btn>
-          <v-btn
+          </QBtn>
+          <QBtn
             :disabled="model.feed3 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(3)"
+            color="black"
           >
             Feed 3
-          </v-btn>
-          <v-btn
+          </QBtn>
+          <QBtn
             :disabled="model.feed4 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(4)"
+            color="black"
           >
             Feed 4
-          </v-btn>
-          <v-btn
+          </QBtn>
+          <QBtn
             :disabled="model.feed5 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(5)"
+            color="black"
           >
             Feed 5
-          </v-btn>
+          </QBtn>
         </div>
         <div v-else>
-          <v-btn color="accent" disabled> Feed {{ feedNumber }} </v-btn>
+          <QBtn color="accent" disabled> Feed {{ feedNumber }} </QBtn>
         </div>
       </div>
       <div v-if="feedNumber">
-        <v-btn
+        <QBtn
           v-for="runner in runners"
           :key="runner.id"
           @click="assign(runner)"
@@ -55,27 +60,29 @@
           }"
         >
           {{ runner.players[0].name }}
-        </v-btn>
+        </QBtn>
       </div>
 
       <div>
-        <v-btn
+        <QBtn
           :disabled="disableSend"
           :style="{ 'margin-top': '5px', 'margin-right': '5px' }"
           v-on:click="send()"
+          color="primary"
         >
           SEND
-        </v-btn>
-        <v-btn
+        </QBtn>
+        <QBtn
           :disabled="feedNumber != undefined"
           :style="{ 'margin-top': '5px', 'margin-right': '5px' }"
           v-on:click="cancel()"
+          color="red"
         >
           CANCEL
-        </v-btn>
+        </QBtn>
       </div>
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script lang="ts">

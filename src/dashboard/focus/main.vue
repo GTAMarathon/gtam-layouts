@@ -1,15 +1,15 @@
 <template>
-  <v-app>
+  <div>
     <div v-if="fourPlayers" :key="fourPlayers.toString()">
-      <v-btn @click="focusOnRunner(1)">{{ runner(0) }} </v-btn>
-      <v-btn @click="focusOnRunner(2)">{{ runner(1) }} </v-btn>
-      <v-btn @click="focusOnRunner(3)">{{ runner(2) }} </v-btn>
-      <v-btn @click="focusOnRunner(4)">{{ runner(3) }} </v-btn>
+      <QBtn color="black" @click="focusOnRunner(1)">{{ runner(0) }} </QBtn>
+      <QBtn color="black" @click="focusOnRunner(2)">{{ runner(1) }} </QBtn>
+      <QBtn color="black" @click="focusOnRunner(3)">{{ runner(2) }} </QBtn>
+      <QBtn color="black" @click="focusOnRunner(4)">{{ runner(3) }} </QBtn>
     </div>
-    <v-alert v-else dense type="info">
+    <QBanner v-else class="bg-primary text-white">
       Come back when it's a 4 players run.
-    </v-alert>
-  </v-app>
+    </QBanner>
+  </div>
 </template>
 
 <script lang="ts">

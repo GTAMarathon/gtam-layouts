@@ -1,4 +1,4 @@
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -17,7 +17,7 @@ export default defineConfig({
   },
   plugins: [
     vue({ template: { transformAssetUrls } }),
-    vuetify(),
+    quasar({ autoImportComponentCase: 'combined' }),
     checker({ vueTsc: { tsconfigPath: 'tsconfig.browser.json' } }),
     NodeCGPlugin(),
   ],

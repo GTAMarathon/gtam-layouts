@@ -1,25 +1,26 @@
 <template>
-  <v-app>
+  <div>
     <div v-if="enableChange">
       <div>
         <div v-if="!selectedRunner">
-          <v-btn
+          <QBtn
             v-for="runner in runners"
             :key="runner.id"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(runner)"
+            color="black"
           >
             {{ runner.name }}
-          </v-btn>
+        </QBtn>
         </div>
         <div v-else>
-          <v-btn color="accent" disabled>
+          <QBtn color="accent" disabled>
             {{ selectedRunner.name }}
-          </v-btn>
+          </QBtn>
         </div>
       </div>
       <div v-if="selectedRunner">
-        <v-btn
+        <QBtn
           v-for="stream in streams"
           :key="stream.name"
           @click="assign(stream)"
@@ -28,12 +29,13 @@
             'margin-top': '5px',
             'margin-right': '5px',
           }"
+          size="14px"
         >
           {{ stream.name }}
           <br />
           ({{ stream.twitchAccount }})
-        </v-btn>
-        <v-btn
+        </QBtn>
+        <QBtn
           v-on:click="select(undefined)"
           color="secondary"
           :style="{
@@ -42,13 +44,13 @@
           }"
         >
           CANCEL
-        </v-btn>
+        </QBtn>
       </div>
     </div>
-    <v-alert v-else dense type="info">
+    <QBanner v-else class="bg-primary text-white">
       Cannot change runners' feeds while the timer is running
-    </v-alert>
-  </v-app>
+    </QBanner>
+  </div>
 </template>
 
 <script lang="ts">

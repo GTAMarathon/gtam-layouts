@@ -1,21 +1,20 @@
 <template>
-  <v-app>
-    <v-btn block :disabled="disableChange" @click="playNextRun">
+  <div>
+    <QBtn color="black" block :disabled="disableChange" @click="playNextRun">
       <span v-if="nextRun">
-        <v-icon left>mdi-play</v-icon>{{ nextRunGameName }}
+        <QIcon name="mdi-play" left/>{{ nextRunGameName }}
       </span>
       <span v-else-if="runDataArray!.data!.length">End of marathon</span>
       <span v-else>No Runs Added</span>
-    </v-btn>
-    <v-alert
+    </QBtn>
+    <QBanner
       v-if="disableChange && timer && timer.data"
-      dense
-      type="info"
+      class="bg-primary text-white"
       :style="{ 'margin-top': '5px' }"
     >
       Cannot change run while timer is {{ timer.data.state }}.
-    </v-alert>
-  </v-app>
+  </QBanner>
+  </div>
 </template>
 
 <script lang="ts">
