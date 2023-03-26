@@ -10,7 +10,7 @@
         <div
           :style="{
             'margin-left': '5px',
-            'font-size': small ? '1.1em' : '1.3em'
+            'font-size': '1.3em',
           }"
           ref="player"
         >
@@ -24,97 +24,117 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop, Watch, Ref } from "vue-property-decorator"; // eslint-disable-line object-curly-newline, max-len
-import { State } from "vuex-class";
-import {
-  RunDataActiveRun,
-  Timer
-} from "nodecg/bundles/nodecg-speedcontrol/src/types";
-import fitty, { FittyInstance } from "fitty";
+<script setup lang="ts">
+  import fitty, { FittyInstance } from 'fitty';
+  import { computed, onMounted, ref, watch } from 'vue';
+  import {
+    RunDataActiveRun,
+    Timer,
+  } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { useReplicant } from 'nodecg-vue-composable';
 
-@Component
-export default class Player extends Vue {
-  @State("runDataActiveRun") run!: RunDataActiveRun;
-  @State timer!: Timer;
-  @Prop({ default: 64 }) readonly size!: number;
-  @Prop({ default: 1 }) readonly team!: number;
-  @Ref("player") player!: HTMLDivElement;
-  timeout?: number;
-  teamI = 0;
-  index = 0;
-  name: string | null = null;
-  playerFitty: FittyInstance | undefined;
-
-  fit(): void {
-    this.playerFitty = fitty(this.player, {
-      maxSize: this.size,
-      minSize: 16,
-      multiLine: true
-    });
+  interface Props {
+    size: number;
+    team: number;
   }
 
-  get finishTime(): string | undefined {
-    if (!this.run || this.run.teams.length <= 1) {
+  const props = withDefaults(defineProps<Props>(), {
+    size: 64,
+    team: 1,
+  });
+
+  const activeRun = useReplicant<RunDataActiveRun>(
+    'runDataActiveRun',
+    'nodecg-speedcontrol'
+  );
+  const timer = useReplicant<Timer>('timer', 'nodecg-speedcontrol');
+
+  let timeout = 0;
+  let teamI = 0;
+  let index = 0;
+  let name = ref<string | null>(null);
+  let playerFitty: FittyInstance | undefined = undefined;
+  const player = ref<HTMLDivElement | null>(null);
+
+  function fit() {
+    if (player.value) {
+      playerFitty = fitty(player.value, {
+        maxSize: props.size,
+        minSize: 1,
+        multiLine: true,
+      });
+    }
+  }
+
+  const finishTime = computed<string | undefined>((): string | undefined => {
+    if (activeRun && timer) {
+      if (!activeRun.data || activeRun.data.teams.length <= 1) {
+        return undefined;
+      } else if (activeRun.data && timer.data) {
+        const teamFinishTime =
+          timer.data.teamFinishTimes[activeRun.data.teams[teamI].id];
+        if (teamFinishTime) {
+          if (teamFinishTime.state === 'completed') {
+            return timer.data.teamFinishTimes[activeRun.data.teams[teamI].id]
+              .time;
+          } else if (teamFinishTime.state === 'forfeit') {
+            return 'Forfeit';
+          }
+        }
+      }
+      return undefined;
+    } else {
       return undefined;
     }
-    const teamFinishTime = this.timer.teamFinishTimes[
-      this.run.teams[this.teamI].id
-    ];
-    if (teamFinishTime) {
-      if (teamFinishTime.state === "completed") {
-        return this.timer.teamFinishTimes[this.run.teams[this.teamI].id].time;
+  });
+
+  watch(
+    () => activeRun?.data,
+    (newValue) => {
+      window.clearTimeout(timeout);
+      teamI = props.team - 1;
+      index = 0;
+      name.value = null;
+      const coop = !!(
+        newValue &&
+        newValue.teams.length === 1 &&
+        newValue.teams[0].players.length >= 2
+      );
+
+      if (newValue) {
+        if (coop && newValue.teams[0].players[teamI]) {
+          name.value = newValue.teams[0].players[teamI].name;
+        } else if (
+          !coop &&
+          newValue.teams[teamI] &&
+          newValue.teams[teamI].players.length
+        ) {
+          showNextName();
+        }
       }
-      if (teamFinishTime.state === "forfeit") {
-        return "Forfeit";
+
+      setTimeout(() => {
+        fit();
+      }, 500);
+    },
+    { immediate: true }
+  );
+
+  function showNextName(): void {
+    if (activeRun) {
+      if (!activeRun.data) {
+        return;
       }
+      const { players } = activeRun.data.teams[teamI];
+      name.value = players[index].name;
+      timeout = window.setTimeout(() => showNextName(), 30 * 1000);
+      index = players.length <= index + 1 ? 0 : index + 1;
     }
-    return undefined;
   }
 
-  @Watch("run", { immediate: true })
-  onRunChange(val: RunDataActiveRun): void {
-    window.clearTimeout(this.timeout);
-    this.teamI = this.team - 1;
-    this.index = 0;
-    this.name = null;
-    const coop = !!(
-      val &&
-      val.teams.length === 1 &&
-      val.teams[0].players.length >= 2
-    );
-
-    if (val) {
-      if (coop && val.teams[0].players[this.teamI]) {
-        this.name = val.teams[0].players[this.teamI].name;
-      } else if (
-        !coop &&
-        val.teams[this.teamI] &&
-        val.teams[this.teamI].players.length
-      ) {
-        this.showNextName();
-      }
-    }
-
+  onMounted(() => {
     setTimeout(() => {
-      this.fit();
+      fit();
     }, 500);
-  }
-
-  showNextName(): void {
-    if (!this.run) {
-      return;
-    }
-    const { players } = this.run.teams[this.teamI];
-    this.name = players[this.index].name;
-    this.timeout = window.setTimeout(() => this.showNextName(), 30 * 1000);
-    this.index = players.length <= this.index + 1 ? 0 : this.index + 1;
-  }
-
-  mounted(): void {
-    setTimeout(() => {
-      this.fit();
-    }, 500);
-  }
-}
+  });
 </script>

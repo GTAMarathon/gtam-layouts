@@ -2,59 +2,65 @@
   <div :style="{ position: 'fixed' }">
     <transition name="fade">
       <div
-        v-if="runDataActiveRun"
-        :key="`${runDataActiveRun.customData.gameShort}`"
+        v-if="activeRun && activeRun.data"
+        :key="`${activeRun.data.customData.gameShort}`"
         class="Flex"
         :style="{
           position: 'absolute',
           'flex-direction': 'column',
-          'font-size': '1em'
+          'font-size': '1em',
         }"
       >
         <div
-          v-if="runDataActiveRun"
-          :style="{ 'font-size': `${1.3 * scale}em` }"
+          v-if="activeRun && activeRun.data"
+          :style="{ 'font-size': `1.3em` }"
           ref="game"
         >
-          {{ runDataActiveRun.customData.gameShort }}
+          {{ activeRun.data.customData.gameShort }}
         </div>
       </div>
     </transition>
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop, Ref, Watch } from "vue-property-decorator";
-import { State } from "vuex-class";
-import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
-import fitty, { FittyInstance } from "fitty";
+<script setup lang="ts">
+  import fitty, { FittyInstance } from 'fitty';
+  import { ref, watch } from 'vue';
+  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { useReplicant } from 'nodecg-vue-composable';
 
-@Component
-export default class Game extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
-  @Prop({ default: 64 }) readonly size!: number;
-  @Ref("game") game!: HTMLDivElement;
-  gameFitty: FittyInstance | undefined;
-
-  fit(): void {
-    this.gameFitty = fitty(this.game, {
-      maxSize: this.size,
-      minSize: 1,
-      multiLine: true
-    });
+  interface Props {
+    size: number;
   }
 
-  mounted(): void {
-    setTimeout(() => {
-      this.fit();
-    }, 500);
+  const props = withDefaults(defineProps<Props>(), {
+    size: 64,
+  });
+
+  const activeRun = useReplicant<RunDataActiveRun>(
+    'runDataActiveRun',
+    'nodecg-speedcontrol'
+  );
+  const game = ref<HTMLDivElement | null>(null);
+  let gameFitty: FittyInstance | undefined = undefined;
+
+  function fit() {
+    if (game.value) {
+      gameFitty = fitty(game.value, {
+        maxSize: props.size,
+        minSize: 1,
+        multiLine: true,
+      });
+    }
   }
 
-  @Watch("runDataActiveRun")
-  onRunChange() {
-    setTimeout(() => {
-      this.fit();
-    }, 500);
-  }
-}
+  watch(
+    () => activeRun?.data,
+    () => {
+      setTimeout(() => {
+        fit();
+      }, 500);
+    },
+    { immediate: true }
+  );
 </script>

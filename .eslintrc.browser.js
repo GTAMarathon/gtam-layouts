@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
   root: true,
   env: {
@@ -10,7 +8,6 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     project: 'tsconfig.browser.json',
     extraFileExtensions: ['.vue'],
-    ecmaVersion: 2020,
   },
   globals: {
     nodecg: 'readonly',
@@ -33,9 +30,6 @@ module.exports = {
         // This is needed to properly resolve paths.
         project: 'tsconfig.browser.json',
       },
-      /* webpack: {
-        config: path.join(__dirname, 'webpack.config.js'),
-      }, */
     },
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
   },
@@ -43,20 +37,12 @@ module.exports = {
     // Everything is compiled for the browser so dev dependencies are fine.
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     // max-len set to ignore "import" lines (as they usually get long and messy).
-    'max-len': ['error', { code: 100, ignorePattern: '^import\\s.+\\sfrom\\s.+;$' }],
+    'max-len': ['error', { code: 100, ignorePattern: '^import\\s.+\\sfrom\\s.+;' }],
     // I mainly have this off as it ruins auto import sorting in VSCode.
     'object-curly-newline': 'off',
-    '@typescript-eslint/lines-between-class-members': 'off',
-    'vue/html-self-closing': ['error'],
-    'class-methods-use-this': 'off',
-    'no-param-reassign': ['error', {
-      props: true,
-      ignorePropertyModificationsFor: [
-        'state', // for vuex state
-        'acc', // for reduce accumulators
-        'e', // for e.returnvalue
-      ],
-    }],
+    // Allows "main.vue" files to be named as such.
+    'vue/multi-word-component-names': ['error', { 'ignores': ['main'] }],
+    // Not sure how much this is needed anymore?
     'import/extensions': ['error', 'ignorePackages', {
       js: 'never',
       jsx: 'never',

@@ -10,7 +10,7 @@
         top: '1000px',
         width: '208px',
         height: '77px',
-        fontSize: '24px'
+        fontSize: '24px',
       }"
     ></timer>
     <estimate
@@ -19,8 +19,8 @@
         top: '990px',
         width: '259px',
         height: '75px',
-        fontWeight: regular,
-        fontSize: '24px'
+        fontWeight: 'regular',
+        fontSize: '24px',
       }"
     ></estimate>
     <game
@@ -38,7 +38,7 @@
         top: '1020px',
         width: '290px',
         height: '50px',
-        fontWeight: bold,
+        fontWeight: 'bold',
       }"
       :size="40"
     ></category>
@@ -50,36 +50,24 @@
         height: '50px',
       }"
       :size="40"
+      :team="1"
     ></player>
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { State } from "vuex-class";
-import Timer from "../_misc/components/Timer.vue";
-import Estimate from "../_misc/components/Estimate.vue";
-import Game from "../_misc/components/Game.vue";
-import Category from "../_misc/components/Category.vue";
-import Player from "../_misc/components/Player.vue";
-import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
+<script setup lang="ts">
+  import { useHead } from '@vueuse/head';
+  import Timer from '../_misc/components/Timer.vue';
+  import Estimate from '../_misc/components/Estimate.vue';
+  import Game from '../_misc/components/Game.vue';
+  import Category from '../_misc/components/Category.vue';
+  import Player from '../_misc/components/Player.vue';
 
-@Component({
-  components: {
-    Timer,
-    Estimate,
-    Game,
-    Category,
-    Player
-  }
-})
-export default class App extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
-}
+  useHead({ title: '16:9 1 Player' });
 </script>
 
 <style>
-@import url("../_misc/common.css");
-@import url("../_misc/Fade.css");
-@import url("../_misc/Flex.css");
+  @import url('../_misc/common.css');
+  @import url('../_misc/Fade.css');
+  @import url('../_misc/Flex.css');
 </style>

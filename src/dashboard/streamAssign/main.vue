@@ -1,113 +1,159 @@
 <template>
-  <v-app>
+  <div>
     <div v-if="enableChange">
       <div>
         <div v-if="!selectedRunner">
-          <v-btn v-for="runner in runners" :key="runner.id" :style="{ 'margin-right': '5px' }"
-            v-on:click="select(runner)">
+          <QBtn
+            v-for="runner in runners"
+            :key="runner.id"
+            :style="{ 'margin-right': '5px' }"
+            v-on:click="select(runner)"
+            color="black"
+          >
             {{ runner.name }}
-          </v-btn>
+          </QBtn>
         </div>
         <div v-else>
-          <v-btn color="accent" disabled>
+          <QBtn color="accent" disabled>
             {{ selectedRunner.name }}
-          </v-btn>
+          </QBtn>
         </div>
       </div>
       <div v-if="selectedRunner">
-        <v-btn v-for="stream in streams" :key="stream" @click="assign(stream)" color="primary" :style="{
-          'margin-top': '5px',
-          'margin-right': '5px',
-        }">
+        <QBtn
+          v-for="stream in streams"
+          :key="stream.name"
+          @click="assign(stream)"
+          color="primary"
+          :style="{
+            'margin-top': '5px',
+            'margin-right': '5px',
+          }"
+          size="14px"
+        >
           {{ stream.name }}
           <br />
           ({{ stream.twitchAccount }})
-        </v-btn>
-        <v-btn v-on:click="select(undefined)" color="secondary" :style="{
-          'margin-top': '5px',
-          'margin-right': '5px',
-        }">
+        </QBtn>
+        <QBtn
+          v-on:click="select(undefined)"
+          color="secondary"
+          :style="{
+            'margin-top': '5px',
+            'margin-right': '5px',
+          }"
+        >
           CANCEL
-        </v-btn>
+        </QBtn>
       </div>
     </div>
-    <v-alert v-else dense type="info">
+    <QBanner v-else class="bg-primary text-white">
       Cannot change runners' feeds while the timer is running
-    </v-alert>
-  </v-app>
+    </QBanner>
+  </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { State } from "vuex-class";
-import {
-  RunDataActiveRun,
-  Timer,
-} from "nodecg/bundles/nodecg-speedcontrol/src/types/schemas";
+  import { defineComponent, computed, ref, Ref } from 'vue';
+  import { useReplicant } from 'nodecg-vue-composable';
+  import {
+    RunDataActiveRun,
+    Timer,
+  } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+  import { useHead } from '@vueuse/head';
 
-interface Player {
-  name: string;
-  id: string;
-  teamID: string;
-  country?: string;
-  pronouns?: string;
-  social: {
-    twitch?: string;
-  };
-}
-
-interface Stream {
-  name: string;
-  twitchAccount: string;
-}
-
-type Mutable<Type> = {
-  -readonly [Key in keyof Type]: Type[Key];
-};
-
-@Component
-export default class App extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
-  @State timer!: Timer;
-  streams: Mutable<Stream[]> = nodecg.bundleConfig.feeds.streams as Mutable<Stream[]>;
-  model = {
-    selectedRunner: undefined,
-  };
-
-  get enableChange(): boolean {
-    return !["running", "paused"].includes(this.timer.state);
-  }
-
-  get runners(): Player[] {
-    var players = [];
-    if (this.runDataActiveRun && this.runDataActiveRun.teams) {
-      for (var team of this.runDataActiveRun.teams) {
-        for (var player of team.players) {
-          players.push(player);
-        }
-      }
-    }
-    return players;
-  }
-  get selectedRunner(): Player | undefined {
-    return this.model.selectedRunner;
-  }
-
-  select(runner: Player): void {
-    this.$set(this.model, "selectedRunner", runner);
-  }
-
-  assign(stream: Stream): void {
-    var data = {
-      runner: this.selectedRunner,
-      stream: stream,
+  interface Player {
+    name: string;
+    id: string;
+    teamID: string;
+    country?: string;
+    pronouns?: string;
+    social: {
+      twitch?: string;
     };
-    nodecg
-      .sendMessage("assignStreamToRunner", data)
-      .then(() => { })
-      .catch(() => { });
-
-    this.$set(this.model, "selectedRunner", undefined);
   }
-}
+
+  interface Stream {
+    name: string;
+    twitchAccount: string;
+  }
+
+  type Mutable<Type> = {
+    -readonly [Key in keyof Type]: Type[Key];
+  };
+
+  interface Model {
+    selectedRunner: Player | undefined;
+  }
+
+  useHead({ title: 'Assign streams to players' });
+
+  export default defineComponent({
+    setup() {
+      const runDataActiveRun = useReplicant<RunDataActiveRun>(
+        'runDataActiveRun',
+        'nodecg-speedcontrol'
+      );
+
+      const timer = useReplicant<Timer>('timer', 'nodecg-speedcontrol');
+
+      const streams: Mutable<Stream[]> = nodecg.bundleConfig.feeds
+        .streams as Mutable<Stream[]>;
+
+      let model: Ref<Model> = ref({
+        selectedRunner: undefined,
+      });
+
+      const enableChange = computed<boolean>((): boolean => {
+        return !['running', 'paused'].includes(timer!.data!.state);
+      });
+
+      const runners = computed<Player[]>((): Player[] => {
+        var players = [];
+        if (runDataActiveRun!.data && runDataActiveRun!.data.teams) {
+          for (var team of runDataActiveRun!.data.teams) {
+            for (var player of team.players) {
+              players.push(player);
+            }
+          }
+        }
+        return players;
+      });
+
+      const selectedRunner = computed<Player | undefined>(
+        (): Player | undefined => {
+          return model.value.selectedRunner;
+        }
+      );
+
+      function select(runner: Player | undefined): void {
+        model.value.selectedRunner = runner;
+      }
+
+      function assign(stream: Stream): void {
+        var data = {
+          runner: selectedRunner.value,
+          stream: stream,
+        };
+        nodecg
+          .sendMessage('assignStreamToRunner', data)
+          .then(() => {})
+          .catch(() => {});
+
+        model.value.selectedRunner = undefined;
+      }
+
+      return {
+        streams,
+        runDataActiveRun,
+        timer,
+        model,
+        enableChange,
+        runners,
+        selectedRunner,
+        select,
+        assign,
+      };
+    },
+  });
 </script>

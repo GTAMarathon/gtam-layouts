@@ -1,46 +1,42 @@
 <template>
-  <div
-    :style="{ position: 'fixed', }">
+  <div :style="{ position: 'fixed' }">
     <transition name="fade">
-      <div
-        v-if="!runData"
-        class="Flex"
-        :style="{ 'font-size': '3em' }"
-      >
-      </div>
+      <div v-if="!run" class="Flex" :style="{ 'font-size': '3em' }"></div>
       <div
         v-else
-        :key="runData.id"
+        :key="run.id"
         class="Flex"
         :style="{
           'padding-left': '20px',
           'padding-right': '20px',
-          'font-size': small ? smallFontSize+'px' : bigFontSize+'px',
-          'width': small ? smallWidth+'px' : bigWidth+'px',
-        }">
+          'font-size': small ? smallFontSize + 'px' : bigFontSize + 'px',
+          width: small ? smallWidth + 'px' : bigWidth + 'px',
+        }"
+      >
         <div
           :style="{
             'flex-direction': 'column',
             'text-align': 'left',
             'align-items': 'normal',
-        }">
+          }"
+        >
           <div
             ref="game"
             :style="{
               'font-size': '1em',
-              'width': small ? smallWidth+'px' : bigWidth+'px',
+              width: small ? smallWidth + 'px' : bigWidth + 'px',
             }"
           >
-         {{ runData.game }}
+            {{ run.game }}
           </div>
           <div
             ref="category"
             :style="{
-              'font-size': catRatio+'em',
-              'width': small ? smallWidth+'px' : bigWidth+'px',
+              'font-size': catRatio + 'em',
+              width: small ? smallWidth + 'px' : bigWidth + 'px',
             }"
-            >
-            {{ runData.category }}
+          >
+            {{ run.category }}
           </div>
         </div>
       </div>
@@ -48,58 +44,69 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop , Ref, Watch } from 'vue-property-decorator';
-import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
-import fitty, { FittyInstance } from "fitty";
+<script setup lang="ts">
+  import fitty, { FittyInstance } from 'fitty';
+  import { onMounted, ref, watch } from 'vue';
+  import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
 
-@Component
-export default class UpcomingRun extends Vue {
-  @Prop(Object) readonly runData!: RunData | null;
-  @Prop({ default: false }) readonly small!: boolean | null;
-  @Ref("game") game!: HTMLDivElement;
-  @Ref("category") category!: HTMLDivElement;
-  gameFitty: FittyInstance | undefined;
-  categoryFitty: FittyInstance | undefined;
-  smallFontSize = 60;
-  bigFontSize = 80;
-  smallWidth = 944;
-  bigWidth = 1284;
-  catRatio = 0.75;
-  minSizeRatio = 0.4;
+  interface Props {
+    run: RunData | null;
+    small: boolean;
+  }
 
-  fit(): void {
-    if(this.game){
-      this.gameFitty = fitty(this.game, {
-        maxSize: this.small? this.smallFontSize : this.bigFontSize ,
-        minSize: this.small? this.smallFontSize*this.minSizeRatio : this.bigFontSize*this.minSizeRatio,
-        multiLine: true
+  const props = withDefaults(defineProps<Props>(), {
+    run: null,
+    small: false,
+  });
+
+  const game = ref<HTMLDivElement | null>(null);
+  const category = ref<HTMLDivElement | null>(null);
+  let gameFitty: FittyInstance | undefined = undefined;
+  let categoryFitty: FittyInstance | undefined = undefined;
+  let smallFontSize = 60;
+  let bigFontSize = 80;
+  let smallWidth = 944;
+  let bigWidth = 1284;
+  let catRatio = 0.75;
+  let minSizeRatio = 0.4;
+
+  function fit() {
+    if (game.value) {
+      gameFitty = fitty(game.value, {
+        maxSize: props.small ? smallFontSize : bigFontSize,
+        minSize: props.small
+          ? smallFontSize * minSizeRatio
+          : bigFontSize * minSizeRatio,
+        multiLine: true,
       });
     }
-    if(this.category){
-      this.categoryFitty = fitty(this.category, {
-        maxSize: this.small? this.smallFontSize*this.catRatio : this.bigFontSize*this.catRatio,
-        minSize: this.small? this.smallFontSize*this.minSizeRatio*this.catRatio : this.bigFontSize*this.minSizeRatio*this.catRatio,
-        multiLine: true
+    if (category.value) {
+      categoryFitty = fitty(category.value, {
+        maxSize: props.small
+          ? smallFontSize * catRatio
+          : bigFontSize * catRatio,
+        minSize: props.small
+          ? smallFontSize * minSizeRatio * catRatio
+          : bigFontSize * minSizeRatio * catRatio,
+        multiLine: true,
       });
     }
   }
 
-  mounted(): void {
+  onMounted(() => {
     setTimeout(() => {
-      this.fit();
+      fit();
     }, 500);
-  }
+  });
 
-  @Watch("runData")
-  onRunChange(val: RunData | null): void {
-    setTimeout(() => {
-      this.fit();
-    }, 30);
-  }
-
-}
-
+  watch(
+    () => props.run,
+    () => {
+      setTimeout(() => {
+        fit();
+      }, 30);
+    }
+  );
 </script>
 
 <style scoped>

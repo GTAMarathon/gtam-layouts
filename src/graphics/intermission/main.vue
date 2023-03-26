@@ -1,27 +1,44 @@
-<template >
+<template>
   <div>
-    <div :style="{
-      position: 'fixed',
-      left: '0px',
-      top: '0px'
-    }">
-      <img v-if="type != 'FINAL RUN' && type != 'END OF MARATHON'" src='./background_2boxes.png'>
-      <img v-else-if="type != 'END OF MARATHON'" src='./background_1box.png'>
+    <div
+      :style="{
+        position: 'fixed',
+        left: '0px',
+        top: '0px',
+      }"
+    >
+      <img
+        v-if="type != 'FINAL RUN' && type != 'END OF MARATHON'"
+        src="./background_2boxes.png"
+      />
+      <img v-else-if="type != 'END OF MARATHON'" src="./background_1box.png" />
     </div>
 
-    <div :style="{
-      position: 'fixed',
-      left: '0px',
-      top: '0px'
-    }">
-      <img v-if="type == 'START OF MARATHON' || type == 'START OF DAY'" src='./background_start.png'>
-      <img v-else-if="type == 'END OF DAY'" src='./background_end.png'>
-      <img v-else-if="type == 'INTERMISSION' || type == 'FINAL RUN'" src='./background_intermission.png'>
-      <img v-else-if="type == 'END OF MARATHON'" src='./background_end_marathon.png'>
+    <div
+      :style="{
+        position: 'fixed',
+        left: '0px',
+        top: '0px',
+      }"
+    >
+      <img
+        v-if="type == 'START OF MARATHON' || type == 'START OF DAY'"
+        src="./background_start.png"
+      />
+      <img v-else-if="type == 'END OF DAY'" src="./background_end.png" />
+      <img
+        v-else-if="type == 'INTERMISSION' || type == 'FINAL RUN'"
+        src="./background_intermission.png"
+      />
+      <img
+        v-else-if="type == 'END OF MARATHON'"
+        src="./background_end_marathon.png"
+      />
     </div>
 
     <div v-if="type != 'END OF MARATHON'">
-      <div :style="{
+      <div
+        :style="{
           position: 'fixed',
           left: '116px',
           top: '320px',
@@ -29,21 +46,23 @@
           'font-size': '80px',
           'font-weight': 'normal',
           'font-family': 'Bebas Neue',
-        }">
+        }"
+      >
         {{ upNextTimer }}
-      </div> 
+      </div>
       <upcoming-run
-        :small=false
-        :run-data="upNext"
+        :small="false"
+        :run="upNext"
         :style="{
           left: '116px',
           top: '410px',
           height: '234px',
-        }">
+        }"
+      >
       </upcoming-run>
-      
+
       <div v-if="type != 'FINAL RUN'">
-        <transition name='fade'>
+        <transition name="fade">
           <div
             :key="onDeckTimer"
             :style="{
@@ -54,210 +73,257 @@
               'font-size': '60px',
               'font-weight': 'normal',
               'font-family': 'Bebas Neue',
-            }">
+            }"
+          >
             {{ onDeckTimer }}
           </div>
         </transition>
 
         <upcoming-run
-          :small=true
-          :run-data="onDeck"
+          :small="true"
+          :run="onDeck"
           :style="{
             left: '116px',
             top: '809px',
             height: '185px',
-          }">
+          }"
+        >
         </upcoming-run>
       </div>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
-  import { Vue, Component, Watch } from 'vue-property-decorator';
-  import { State } from 'vuex-class';
-  import UpcomingRun from './components/UpcomingRun.vue';
+<script setup lang="ts">
   import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
-  import { RunDataActiveRunSurrounding, RunDataArray } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+  import {
+    RunDataActiveRunSurrounding,
+    RunDataArray,
+  } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+  import UpcomingRun from './components/UpcomingRun.vue';
   import humanizeDuration from 'humanize-duration';
-  @Component({
-    components: {
-      UpcomingRun
-    },
-  })
-  export default class App extends Vue {
-    @State runDataArray!: RunDataArray;
-    @State runDataActiveRunSurrounding!: RunDataActiveRunSurrounding;
+  import { onMounted, ref, watch } from 'vue';
+  import { useReplicant } from 'nodecg-vue-composable';
 
-    type: 'START OF MARATHON' | 'INTERMISSION' | 'END OF DAY' | 'START OF DAY' | 'FINAL RUN' | 'END OF MARATHON' | null = null;
-    upNext: RunData | null = null;
-    upNextTimer = '';
-    upNextCountDownCycle?: number;
-    onDeckArr: RunData[] = [];
-    onDeck: RunData | null = null;
-    onDeckTimer = '';
-    onDeckIndex = 0;
-    onDeckInterval?: number;
+  type IntermissionType =
+    | 'START OF MARATHON'
+    | 'INTERMISSION'
+    | 'END OF DAY'
+    | 'START OF DAY'
+    | 'FINAL RUN'
+    | 'END OF MARATHON'
+    | null;
 
-    mounted(): void {
-      this.update();
-      nodecg.listenFor('endOfMarathon', () => {
-        this.type = 'END OF MARATHON';
-        this.upNext = null;
-        this.onDeckArr = [];
-      });
-      nodecg.listenFor('clearIntermission', () => {
-        this.clear();      
-      });
+  let type = ref<IntermissionType>(null);
+  let upNext = ref<RunData | null>(null);
+  let upNextTimer = ref('');
+  let upNextCountDownCycle = ref(0);
+  let onDeckArr = ref<RunData[]>([]);
+  let onDeck = ref<RunData | null>(null);
+  let onDeckTimer = ref('');
+  let onDeckIndex = ref(0);
+  let onDeckInterval = ref(0);
+  const runDataArray = useReplicant<RunDataArray>(
+    'runDataArray',
+    'nodecg-speedcontrol'
+  );
+  const runDataActiveRunSurrounding = useReplicant<RunDataActiveRunSurrounding>(
+    'runDataActiveRunSurrounding',
+    'nodecg-speedcontrol'
+  );
+
+  onMounted(() => {
+    update();
+    nodecg.listenFor('endOfMarathon', () => {
+      type.value = 'END OF MARATHON';
+      upNext.value = null;
+      onDeckArr.value = [];
+    });
+    nodecg.listenFor('clearIntermission', () => {
+      clear();
+    });
+  });
+
+  function clear() {
+    onDeckArr.value = [];
+    upNext.value = null;
+    upNextTimer.value = 'Next run';
+    onDeckTimer.value = 'Coming up';
+    type.value = null;
+  }
+
+  function update() {
+    clear();
+    let previousRun: RunData | null = null;
+    let currentRun: RunData | null = null;
+    let nextRun: RunData | null = null;
+    if (runDataActiveRunSurrounding!.data!.previous) {
+      let index = runDataArray!.data!.findIndex(
+        (run) => run.id === runDataActiveRunSurrounding!.data!.previous
+      );
+      previousRun = runDataArray!.data![index];
+    }
+    if (runDataActiveRunSurrounding!.data!.current) {
+      let index = runDataArray!.data!.findIndex(
+        (run) => run.id === runDataActiveRunSurrounding!.data!.current
+      );
+      currentRun = runDataArray!.data![index];
+    }
+    if (runDataActiveRunSurrounding!.data!.next) {
+      let index = runDataArray!.data!.findIndex(
+        (run) => run.id === runDataActiveRunSurrounding!.data!.next
+      );
+      nextRun = runDataArray!.data![index];
     }
 
-    clear(): void {
-      this.onDeckArr = [];
-      this.upNext = null;
-      this.upNextTimer = 'Next run';
-      this.onDeckTimer = 'Coming up';
-      this.type = null;
-    }
-
-    @Watch("runDataActiveRunSurrounding")
-    update(): void {
-      this.clear();
-      var previousRun: RunData | null = null;
-      var currentRun: RunData | null = null;
-      var nextRun: RunData | null = null;
-      if (this.runDataActiveRunSurrounding.previous) {
-        var index = this.runDataArray.findIndex(run => run.id === this.runDataActiveRunSurrounding.previous);
-        previousRun = this.runDataArray[index];
-      }
-      if (this.runDataActiveRunSurrounding.current) {
-        var index = this.runDataArray.findIndex(run => run.id === this.runDataActiveRunSurrounding.current);
-        currentRun = this.runDataArray[index];
-      }
-      if (this.runDataActiveRunSurrounding.next) {
-        var index = this.runDataArray.findIndex(run => run.id === this.runDataActiveRunSurrounding.next);
-        nextRun = this.runDataArray[index];
-      }
-
-      if (!currentRun) {
-        if (nextRun) {
-          this.type = 'START OF MARATHON';
-          this.upNext = nextRun;
-          var index = this.runDataArray.findIndex(run => run.id === nextRun?.id);
-          nextRun = this.runDataArray[index+1];
-        }
-      } else if (!previousRun) {
-        this.type = 'START OF MARATHON';
-        this.upNext = currentRun;
-      } else if (!nextRun) {
-        this.type = 'FINAL RUN';
-        this.upNext = currentRun;
-      } else if (currentRun.gameTwitch == 'Just Chatting') {
-        var now = Math.floor(Date.now() / 1000);
-        var timerS = nextRun.scheduledS as number - now;
-        this.upNext = nextRun;
-        this.updateUpNextTimer();
-        var index = this.runDataArray.findIndex(run => run.id === nextRun?.id);
-        nextRun = this.runDataArray[index+1];
-        if(timerS>3600){
-          this.type = 'END OF DAY';
-        }else{
-          this.type = 'START OF DAY';
-        }
-      } else {
-        this.upNext = currentRun;
-        if (previousRun.gameTwitch == 'Just Chatting'){
-          this.type = 'START OF DAY';
-          this.upNextTimer = this.upNextTimer + this.timeToRun(this.upNext);
-        } else{
-          this.type = 'INTERMISSION';
-        }
-      }
-      while(nextRun && nextRun.gameTwitch == 'Just Chatting'){
-          var index = this.runDataArray.findIndex(run => run.id === nextRun?.id);
-          nextRun = this.runDataArray[index+1];
-      }
-
+    if (!currentRun) {
       if (nextRun) {
-        this.onDeckArr.push(nextRun);
-        var index = this.runDataArray.findIndex(run => run.id === nextRun?.id);
-        this.onDeckArr = this.onDeckArr.concat(
-          this.runDataArray.slice(index + 1)
-            .filter(run => run.scheduledS && run.gameTwitch != 'Just Chatting' && run.scheduledS < (Math.floor(Date.now() / 1000) + 10800))
-            .slice(0,2)
+        type.value = 'START OF MARATHON';
+        upNext.value = nextRun;
+        let index = runDataArray!.data!.findIndex(
+          (run) => run.id === nextRun?.id
         );
+        nextRun = runDataArray!.data![index + 1];
       }
-    }
-
-    timeToRun(run: RunData): string {
-      var value = '';
-      if (run.scheduledS) {
-        var now = Math.floor(Date.now() / 1000);
-        var timerS = run.scheduledS - now;
-        if (timerS > 30) {
-          var roundedS = this.customizedRounding(timerS);
-          value = ' in about ' + humanizeDuration(roundedS * 1000, { conjunction: ' and ', serialComma: false, units: ['d', 'h', 'm'] });
-        }
-      }
-      return value;
-    }
-
-    // Update/cycle the 'on deck' run when needed.
-    @Watch('upNext', { immediate: true })
-    onUpNextChange(): void {
-      window.clearInterval(this.upNextCountDownCycle);
-      if (this.type =='START OF MARATHON' || this.type =='END OF DAY' || this.type == 'START OF DAY') {
-        this.updateUpNextTimer();
-        this.upNextCountDownCycle = window.setInterval(this.updateUpNextTimer, 10000);
-      }
-    }
-
-    updateUpNextTimer(): void {
-      if(this.upNext){
-        this.upNextTimer = 'Next run' + this.timeToRun(this.upNext);
-      }
-    }
-
-    @Watch('onDeckArr', { immediate: true })
-    onDeckChange(): void {
-      window.clearInterval(this.onDeckInterval);
-      this.onDeckIndex = 0;
-      if (this.onDeckArr.length) {
-        this.cycleOnDeck();
-        this.onDeckInterval = window.setInterval(this.cycleOnDeck, 10000);
+    } else if (!previousRun) {
+      type.value = 'START OF MARATHON';
+      upNext.value = currentRun;
+    } else if (!nextRun) {
+      type.value = 'FINAL RUN';
+      upNext.value = currentRun;
+    } else if (currentRun.gameTwitch == 'Just Chatting') {
+      let now = Math.floor(Date.now() / 1000);
+      let timerS = (nextRun.scheduledS as number) - now;
+      upNext.value = nextRun;
+      updateUpNextTimer();
+      let index = runDataArray!.data!.findIndex(
+        (run) => run.id === nextRun?.id
+      );
+      nextRun = runDataArray!.data![index + 1];
+      if (timerS > 3600) {
+        type.value = 'END OF DAY';
       } else {
-        this.onDeck = null;
+        type.value = 'START OF DAY';
       }
-    }
-
-    cycleOnDeck(): void {
-      this.onDeck = this.onDeckArr[this.onDeckIndex];
-      this.onDeckTimer = 'Coming up' + this.timeToRun(this.onDeck);
-      this.onDeckIndex += 1;
-      if (this.onDeckIndex >= this.onDeckArr.length) {
-        this.onDeckIndex = 0;
-      }
-    }
-
-    customizedRounding(time: number): number {
-      var rounded: number;
-      if (time < 300) {
-        rounded = Math.round(time / 60) * 60;
-      } else if (time < 3600) {
-        rounded = Math.round(time / 300) * 300;
-      } else if (time < 7200) {
-        var round10 = Math.round(time / 600) * 600;
-        var round15 = Math.round(time / 900) * 900;
-        rounded = Math.abs(round10 - time) < Math.abs(round15 - time) ? round10 : round15;
-      } else if (time < 14400) {
-        rounded = Math.round(time / 900) * 900;
-      } else if (time < 21600) {
-        rounded = Math.round(time / 1800) * 1800;
+    } else {
+      upNext.value = currentRun;
+      if (previousRun.gameTwitch == 'Just Chatting') {
+        type.value = 'START OF DAY';
+        upNextTimer.value = upNextTimer + timeToRun(upNext.value);
       } else {
-        rounded = Math.round(time / 3600) * 3600;
+        type.value = 'INTERMISSION';
       }
-      return rounded;
+    }
+    while (nextRun && nextRun.gameTwitch == 'Just Chatting') {
+      let index = runDataArray!.data!.findIndex(
+        (run) => run.id === nextRun?.id
+      );
+      nextRun = runDataArray!.data![index + 1];
+    }
+
+    if (nextRun) {
+      onDeckArr.value.push(nextRun);
+      let index = runDataArray!.data!.findIndex(
+        (run) => run.id === nextRun?.id
+      );
+      onDeckArr.value = onDeckArr.value.concat(
+        runDataArray!
+          .data!.slice(index + 1)
+          .filter(
+            (run) =>
+              run.scheduledS &&
+              run.gameTwitch != 'Just Chatting' &&
+              run.scheduledS < Math.floor(Date.now() / 1000) + 10800
+          )
+          .slice(0, 2)
+      );
     }
   }
+
+  function timeToRun(run: RunData): string {
+    let value = '';
+    if (run.scheduledS) {
+      var now = Math.floor(Date.now() / 1000);
+      var timerS = run.scheduledS - now;
+      if (timerS > 30) {
+        var roundedS = customizedRounding(timerS);
+        value =
+          ' in about ' +
+          humanizeDuration(roundedS * 1000, {
+            conjunction: ' and ',
+            serialComma: false,
+            units: ['d', 'h', 'm'],
+          });
+      }
+    }
+    return value;
+  }
+
+  function updateUpNextTimer() {
+    if (upNext.value) {
+      upNextTimer.value = 'Next run' + timeToRun(upNext.value);
+    }
+  }
+
+  function customizedRounding(time: number): number {
+    var rounded: number;
+    if (time < 300) {
+      rounded = Math.round(time / 60) * 60;
+    } else if (time < 3600) {
+      rounded = Math.round(time / 300) * 300;
+    } else if (time < 7200) {
+      var round10 = Math.round(time / 600) * 600;
+      var round15 = Math.round(time / 900) * 900;
+      rounded =
+        Math.abs(round10 - time) < Math.abs(round15 - time) ? round10 : round15;
+    } else if (time < 14400) {
+      rounded = Math.round(time / 900) * 900;
+    } else if (time < 21600) {
+      rounded = Math.round(time / 1800) * 1800;
+    } else {
+      rounded = Math.round(time / 3600) * 3600;
+    }
+    return rounded;
+  }
+
+  function cycleOnDeck() {
+    onDeck.value = onDeckArr.value[onDeckIndex.value];
+    onDeckTimer.value = 'Coming up' + timeToRun(onDeck.value);
+    onDeckIndex.value += 1;
+    if (onDeckIndex.value >= onDeckArr.value.length) {
+      onDeckIndex.value = 0;
+    }
+  }
+
+  watch(onDeckArr, () => {
+    window.clearInterval(onDeckInterval.value);
+    onDeckIndex.value = 0;
+    if (onDeckArr.value.length) {
+      cycleOnDeck();
+      onDeckInterval.value = window.setInterval(cycleOnDeck, 10000);
+    } else {
+      onDeck.value = null;
+    }
+  });
+
+  watch(upNext, () => {
+    window.clearInterval(upNextCountDownCycle.value);
+    if (
+      type.value == 'START OF MARATHON' ||
+      type.value == 'END OF DAY' ||
+      type.value == 'START OF DAY'
+    ) {
+      updateUpNextTimer();
+      upNextCountDownCycle.value = window.setInterval(updateUpNextTimer, 10000);
+    }
+  });
+
+  watch(
+    () => runDataActiveRunSurrounding?.data,
+    () => {
+      update();
+    }
+  );
 </script>
 
 <style>
@@ -268,5 +334,4 @@
   .Flex {
     flex-direction: column;
   }
-
 </style>

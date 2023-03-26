@@ -1,10 +1,7 @@
 <template>
-  <div
-    class="Flex"
-    :style="{ position: 'fixed' }"
-  >
-   <div
-      v-if="runDataActiveRun"
+  <div class="Flex" :style="{ position: 'fixed' }">
+    <div
+      v-if="activeRun && activeRun.data"
       :style="{
         'font-size': '1.6em',
         display: 'flex',
@@ -13,18 +10,19 @@
         width: '100%',
       }"
     >
-       <div :style="{ 'margin-left': '5px', width: estimateWidth }">
+      <div :style="{ 'margin-left': '5px', width: estimateWidth }">
         <transition name="fade">
           <div
             id="Estimate"
-            ref="Estimate"
-            :key="`${runDataActiveRun.id}${runDataActiveRun.estimate}`"
+            ref="estimate"
+            :key="`${activeRun.data.id}${activeRun.data.estimate}`"
             :style="{ position: 'absolute' }"
           >
             <span
-              v-for="char in runDataActiveRun.estimate.split('')"
+              v-if="activeRun.data.estimate"
+              v-for="char in activeRun.data.estimate.split('')"
               :key="`${Math.random()}${char}`"
-              :class="(char === ':' ? 'Colon' : undefined)"
+              :class="char === ':' ? 'Colon' : undefined"
             >
               {{ char }}
             </span>
@@ -35,29 +33,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Ref, Watch } from 'vue-property-decorator'; // eslint-disable-line object-curly-newline, max-len
-import { State } from 'vuex-class';
-import { Timer as TimerType, RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+<script setup lang="ts">
+  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { nextTick, ref, watch } from 'vue';
+  import { useReplicant } from 'nodecg-vue-composable';
 
-@Component
-export default class Estimate extends Vue {
-  @State timer!: TimerType;
-  @State runDataActiveRun!: RunDataActiveRun;
-  @Ref('Estimate') readonly estimate!: HTMLElement;
-  isMounted = false;
-  estimateWidth = '0px';
+  const activeRun = useReplicant<RunDataActiveRun>(
+    'runDataActiveRun',
+    'nodecg-speedcontrol'
+  );
+  const estimate = ref<HTMLElement | null>(null);
+  let estimateWidth = ref('0px');
 
-  @Watch('runDataActiveRun', { immediate: true })
-  onRunChange(newVal: TimerType, oldVal?: TimerType): void {
-    if (!oldVal && newVal) {
-      Vue.nextTick()
-        .then(() => {
-          this.estimateWidth = `${this.estimate.clientWidth}px`;
+  watch(
+    () => activeRun?.data,
+    (newValue, oldValue) => {
+      if (!oldValue && newValue) {
+        nextTick().then(() => {
+          if (estimate.value) {
+            estimateWidth.value = `${estimate.value.clientWidth}px`;
+          }
         });
-    }
-  }
-}
+      }
+    },
+    { immediate: true }
+  );
 </script>
 
 <style scoped>
@@ -65,26 +65,12 @@ export default class Estimate extends Vue {
     flex-direction: column;
   }
 
-  /* Each character in the timer is in a span; setting width so the numbers appear monospaced. */
-  #Time > span, #Estimate > span {
+  #Estimate > span {
     display: inline-block;
     width: 0.5em;
     text-align: center;
   }
-  #Time > .Colon, #Estimate > .Colon {
+  #Estimate > .Colon {
     width: 0.3em;
-  }
-
-  .stopped {
-    color: #63d760;
-  }
-  .running {
-    color: #63d760;
-  }
-  .paused {
-    color: #63d760;
-  }
-  .finished {
-    color: #caa12d;
   }
 </style>

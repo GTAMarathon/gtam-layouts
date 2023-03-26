@@ -1,12 +1,19 @@
 /* eslint @typescript-eslint/ban-ts-ignore: off */
 
 import obsWebsocketJs from 'obs-websocket-js';
-import { Configschema } from '../../types/schemas/configschema';
+import { Configschema } from '@gtam-layouts/types/schemas';
 import { get } from './nodecg';
 import { RunData } from '../../../../nodecg-speedcontrol/src/types';
 import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types/schemas';
-import { setStartHighlight, setEndAndCreateHighlight } from './twitch-highlight';
-import { runDataActiveRunSurrounding, runDataArray, runDataActiveRun as activeRun } from './replicants';
+import {
+  setStartHighlight,
+  setEndAndCreateHighlight,
+} from './twitch-highlight';
+import {
+  runDataActiveRunSurrounding,
+  runDataArray,
+  runDataActiveRun as activeRun,
+} from './replicants';
 
 enum VideoFolder {
   III = 'III',
@@ -18,11 +25,11 @@ enum VideoFolder {
   LCS = 'LCS',
   VCS = 'VCS',
   IV = 'IVEFLC',
-  V = 'V'
+  V = 'V',
 }
 
 enum MusicFolder {
-  _2 = "2",
+  _2 = '2',
   III = 'III',
   VC = 'VC',
   SA = 'SA',
@@ -37,7 +44,7 @@ enum MusicFolder {
 }
 
 const nodecg = get();
-const config = (nodecg.bundleConfig as Configschema);
+const config = nodecg.bundleConfig as Configschema;
 
 // Extending the OBS library with some of our own functions.
 class OBSUtility extends obsWebsocketJs {
@@ -48,7 +55,7 @@ class OBSUtility extends obsWebsocketJs {
   async changeScene(name: string): Promise<void> {
     try {
       await this.send('SetCurrentScene', { 'scene-name': name });
-    } catch (err) {
+    } catch (err: any) {
       nodecg.log.warn(`Cannot change OBS scene [${name}]: ${err.error}`);
       throw err;
     }
@@ -60,54 +67,72 @@ class OBSUtility extends obsWebsocketJs {
   async changeToIntermission(): Promise<void> {
     try {
       await this.changeIntermissionVid();
-      await new Promise(r => setTimeout(r, 500));
+      await new Promise((r) => setTimeout(r, 500));
 
       await this.changeScene(config.obs.names.scenes.intermission);
 
       await this.setStudioModeOnTheNextGameScene();
-
-
     } catch (err) {
       nodecg.log.warn('error during changeToIntermission', err);
     }
   }
 
   async setStudioModeOnTheNextGameScene(): Promise<void> {
-    let index = runDataArray.value.findIndex((run: RunData) => run.id === runDataActiveRunSurrounding.value.next);
+    let index = runDataArray.value.findIndex(
+      (run: RunData) => run.id === runDataActiveRunSurrounding.value.next
+    );
     let nextRun = runDataArray.value[index] || null;
     var allScenes = Object.values(config.obs.names.scenes);
 
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 500));
 
-    if (nextRun && allScenes && allScenes.includes(nextRun.customData.obsScene)) {
-      this.send('GetStudioModeStatus').then(response => {
-        if (!response['studio-mode']) {
-          this.send('EnableStudioMode').then(() => {
-            this.send('SetPreviewScene', { 'scene-name': nextRun.customData.obsScene }).catch((err) => {
-              nodecg.log.warn('StudioMode not enabled', err);
+    if (
+      nextRun &&
+      allScenes &&
+      allScenes.includes(nextRun.customData.obsScene)
+    ) {
+      this.send('GetStudioModeStatus')
+        .then((response) => {
+          if (!response['studio-mode']) {
+            this.send('EnableStudioMode')
+              .then(() => {
+                this.send('SetPreviewScene', {
+                  'scene-name': nextRun.customData.obsScene,
+                }).catch((err) => {
+                  nodecg.log.warn('StudioMode not enabled', err);
+                });
+              })
+              .catch((err) => {
+                nodecg.log.warn('couldnt enable StudioMode', err);
+              });
+          } else {
+            this.send('SetPreviewScene', {
+              'scene-name': nextRun.customData.obsScene,
+            }).catch((err) => {
+              nodecg.log.warn('preview scene not set', err);
             });
-          }).catch((err) => {
-            nodecg.log.warn('couldnt enable StudioMode', err);
-          });
-        } else {
-          this.send('SetPreviewScene', { 'scene-name': nextRun.customData.obsScene }).catch((err) => {
-            nodecg.log.warn('preview scene not set', err);
-          });
-        }
-      }).catch((err) => {
-        nodecg.log.warn('couldnt get StudioModeStatus', err);
-      });
+          }
+        })
+        .catch((err) => {
+          nodecg.log.warn('couldnt get StudioModeStatus', err);
+        });
     }
   }
 
-  async setTwitchUrlToSources(twitch: string|undefined, sources: (string | undefined)[]): Promise<void> {
+  async setTwitchUrlToSources(
+    twitch: string | undefined,
+    sources: (string | undefined)[]
+  ): Promise<void> {
     for (var source of sources) {
       if (source && twitch) {
-        var url = config.feeds.playerUrl.replace(new RegExp('{{twitchAccount}}', 'g'), twitch);
+        var url = config.feeds.playerUrl.replace(
+          new RegExp('{{twitchAccount}}', 'g'),
+          twitch
+        );
         await this.send('SetSourceSettings', {
-          'sourceName': source,
-          'sourceType': 'browser_source',
-          'sourceSettings': { 'url': url }
+          sourceName: source,
+          sourceType: 'browser_source',
+          sourceSettings: { url: url },
         }).catch((err) => {
           nodecg.log.warn('url not set to source', err);
         });
@@ -115,54 +140,77 @@ class OBSUtility extends obsWebsocketJs {
     }
   }
 
-  async changeRunnersOnVCHundo(data: { feed1: RunDataActiveRun['teams'][number], feed2: RunDataActiveRun['teams'][number], feed3: RunDataActiveRun['teams'][number], feed4: RunDataActiveRun['teams'][number], feed5: RunDataActiveRun['teams'][number], }): Promise<void> {
+  async changeRunnersOnVCHundo(data: {
+    feed1: RunDataActiveRun['teams'][number];
+    feed2: RunDataActiveRun['teams'][number];
+    feed3: RunDataActiveRun['teams'][number];
+    feed4: RunDataActiveRun['teams'][number];
+    feed5: RunDataActiveRun['teams'][number];
+  }): Promise<void> {
     nodecg.log.warn('data');
     nodecg.log.warn(JSON.stringify(data));
 
     var index = -1;
-    var array = activeRun.value.teams.filter(team => team.id == data.feed5.id);
+    var array = activeRun.value.teams.filter(
+      (team) => team.id == data.feed5.id
+    );
     if (array.length) {
       index = activeRun.value.teams.indexOf(array[0]);
       if (index > -1) {
         activeRun.value.teams.splice(index, 1);
         activeRun.value.teams.unshift(data.feed5);
-        this.setTwitchUrlToSources(data.feed5.players[0].social.twitch || undefined, [config.obs.names.sources.runner5_43]);
+        this.setTwitchUrlToSources(
+          data.feed5.players[0].social.twitch || undefined,
+          [config.obs.names.sources.runner5_43]
+        );
       }
     }
-    array = activeRun.value.teams.filter(team => team.id == data.feed4.id);
+    array = activeRun.value.teams.filter((team) => team.id == data.feed4.id);
     if (array.length) {
       index = activeRun.value.teams.indexOf(array[0]);
       if (index > -1) {
         activeRun.value.teams.splice(index, 1);
         activeRun.value.teams.unshift(data.feed4);
-        this.setTwitchUrlToSources(data.feed4.players[0].social.twitch || undefined, [config.obs.names.sources.runner4_43]);
+        this.setTwitchUrlToSources(
+          data.feed4.players[0].social.twitch || undefined,
+          [config.obs.names.sources.runner4_43]
+        );
       }
     }
-    array = activeRun.value.teams.filter(team => team.id == data.feed3.id);
+    array = activeRun.value.teams.filter((team) => team.id == data.feed3.id);
     if (array.length) {
       index = activeRun.value.teams.indexOf(array[0]);
       if (index > -1) {
         activeRun.value.teams.splice(index, 1);
         activeRun.value.teams.unshift(data.feed3);
-        this.setTwitchUrlToSources(data.feed3.players[0].social.twitch || undefined, [config.obs.names.sources.runner3_43]);
+        this.setTwitchUrlToSources(
+          data.feed3.players[0].social.twitch || undefined,
+          [config.obs.names.sources.runner3_43]
+        );
       }
     }
-    array = activeRun.value.teams.filter(team => team.id == data.feed2.id);
+    array = activeRun.value.teams.filter((team) => team.id == data.feed2.id);
     if (array.length) {
       index = activeRun.value.teams.indexOf(array[0]);
       if (index > -1) {
         activeRun.value.teams.splice(index, 1);
         activeRun.value.teams.unshift(data.feed2);
-        this.setTwitchUrlToSources(data.feed2.players[0].social.twitch || undefined, [config.obs.names.sources.runner2_43]);
+        this.setTwitchUrlToSources(
+          data.feed2.players[0].social.twitch || undefined,
+          [config.obs.names.sources.runner2_43]
+        );
       }
     }
-    array = activeRun.value.teams.filter(team => team.id == data.feed1.id);
+    array = activeRun.value.teams.filter((team) => team.id == data.feed1.id);
     if (array.length) {
       index = activeRun.value.teams.indexOf(array[0]);
       if (index > -1) {
         activeRun.value.teams.splice(index, 1);
         activeRun.value.teams.unshift(data.feed1);
-        this.setTwitchUrlToSources(data.feed1.players[0].social.twitch || undefined, [config.obs.names.sources.runner1_43]);
+        this.setTwitchUrlToSources(
+          data.feed1.players[0].social.twitch || undefined,
+          [config.obs.names.sources.runner1_43]
+        );
       }
     }
   }
@@ -171,34 +219,82 @@ class OBSUtility extends obsWebsocketJs {
     switch (runnerNumber) {
       case 1: {
         await this.changeScene(config.obs.names.scenes._4p169_1);
-        this.toggleSourceAudio(config.obs.names.sources.runner1_169, false).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner2_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner3_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner4_169, true).catch(() => { });
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner1_169,
+          false
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner2_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner3_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner4_169,
+          true
+        ).catch(() => {});
         break;
       }
       case 2: {
         await this.changeScene(config.obs.names.scenes._4p169_2);
-        this.toggleSourceAudio(config.obs.names.sources.runner1_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner2_169, false).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner3_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner4_169, true).catch(() => { });
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner1_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner2_169,
+          false
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner3_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner4_169,
+          true
+        ).catch(() => {});
         break;
       }
       case 3: {
         await this.changeScene(config.obs.names.scenes._4p169_3);
-        this.toggleSourceAudio(config.obs.names.sources.runner1_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner2_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner3_169, false).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner4_169, true).catch(() => { });
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner1_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner2_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner3_169,
+          false
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner4_169,
+          true
+        ).catch(() => {});
         break;
       }
       case 4: {
         await this.changeScene(config.obs.names.scenes._4p169_4);
-        this.toggleSourceAudio(config.obs.names.sources.runner1_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner2_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner3_169, true).catch(() => { });
-        this.toggleSourceAudio(config.obs.names.sources.runner4_169, false).catch(() => { });
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner1_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner2_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner3_169,
+          true
+        ).catch(() => {});
+        this.toggleSourceAudio(
+          config.obs.names.sources.runner4_169,
+          false
+        ).catch(() => {});
         break;
       }
       default: {
@@ -208,10 +304,12 @@ class OBSUtility extends obsWebsocketJs {
     }
   }
 
-  // Change intermission video 
+  // Change intermission video
   async changeIntermissionVid(): Promise<void> {
     try {
-      let index = runDataArray.value.findIndex((run: RunData) => run.id === runDataActiveRunSurrounding.value.next)
+      let index = runDataArray.value.findIndex(
+        (run: RunData) => run.id === runDataActiveRunSurrounding.value.next
+      );
       let nextRun = runDataArray.value[index] || null;
       if (nextRun && nextRun.gameTwitch == 'Just Chatting') {
         nextRun = runDataArray.value[index + 1] || null;
@@ -320,28 +418,41 @@ class OBSUtility extends obsWebsocketJs {
         }
 
         await this.send('SetSourceSettings', {
-          'sourceName': config.obs.names.sources.intermissionVideo,
-          'sourceType': 'vlc_source',
-          'sourceSettings': {
-            'playlist': [{ 'hidden': false, 'selected': false, 'value': config.obs.names.paths.intermissionVideo + '/' + videoFolder }],
-            'shuffle': true
-          }
+          sourceName: config.obs.names.sources.intermissionVideo,
+          sourceType: 'vlc_source',
+          sourceSettings: {
+            playlist: [
+              {
+                hidden: false,
+                selected: false,
+                value:
+                  config.obs.names.paths.intermissionVideo + '/' + videoFolder,
+              },
+            ],
+            shuffle: true,
+          },
         }).catch((err) => {
           nodecg.log.warn("[OBS] Couldn't set intermission video", err);
         });
-
 
         // no specific music
         if (!musicFolder) {
           musicFolder = MusicFolder.Mix;
         }
         await this.send('SetSourceSettings', {
-          'sourceName': config.obs.names.sources.intermissionMusic,
-          'sourceType': 'vlc_source',
-          'sourceSettings': {
-            'playlist': [{ 'hidden': false, 'selected': false, 'value': config.obs.names.paths.intermissionMusic + '/' + musicFolder }],
-            'shuffle': true
-          }
+          sourceName: config.obs.names.sources.intermissionMusic,
+          sourceType: 'vlc_source',
+          sourceSettings: {
+            playlist: [
+              {
+                hidden: false,
+                selected: false,
+                value:
+                  config.obs.names.paths.intermissionMusic + '/' + musicFolder,
+              },
+            ],
+            shuffle: true,
+          },
         }).catch((err) => {
           nodecg.log.warn("[OBS] Couldn't set intermission music", err);
         });
@@ -359,7 +470,7 @@ class OBSUtility extends obsWebsocketJs {
   async toggleSourceAudio(source: string, mute = true): Promise<void> {
     try {
       await this.send('SetMute', { source, mute });
-    } catch (err) {
+    } catch (err: any) {
       nodecg.log.warn(`Cannot mute OBS source [${source}]: ${err.error}`);
       throw err;
     }
@@ -370,7 +481,7 @@ class OBSUtility extends obsWebsocketJs {
    */
   async muteAudio(): Promise<void> {
     config.obs.names.audioToMute.forEach((source) => {
-      this.toggleSourceAudio(source, true).catch(() => { });
+      this.toggleSourceAudio(source, true).catch(() => {});
     });
   }
 
@@ -379,7 +490,7 @@ class OBSUtility extends obsWebsocketJs {
    */
   async unmuteAudio(): Promise<void> {
     config.obs.names.audioToUnmute.forEach((source) => {
-      this.toggleSourceAudio(source, false).catch(() => { });
+      this.toggleSourceAudio(source, false).catch(() => {});
     });
   }
 }
@@ -391,12 +502,15 @@ const settings = {
 };
 
 function connect(): void {
-  obs.connect(settings).then(() => {
-    nodecg.log.info('OBS connection successful.');
-  }).catch((err) => {
-    nodecg.log.warn('OBS connection error.');
-    nodecg.log.debug('OBS connection error:', err);
-  });
+  obs
+    .connect(settings)
+    .then(() => {
+      nodecg.log.info('OBS connection successful.');
+    })
+    .catch((err) => {
+      nodecg.log.warn('OBS connection error.');
+      nodecg.log.debug('OBS connection error:', err);
+    });
 }
 
 if (config.obs.enable) {
@@ -413,17 +527,22 @@ if (config.obs.enable) {
     nodecg.log.debug('OBS connection error:', err);
   });
 
-  // @ts-ignore: 
+  // @ts-ignore:
   obs.on('MediaStarted', (data) => {
-    // @ts-ignore: 
+    // @ts-ignore:
     if (data['sourceName'] == config.obs.names.sources.intermissionVideo) {
-      // @ts-ignore: 
-      obs.send('SetMediaTime', {
-        'sourceName': config.obs.names.sources.intermissionVideo,
-        'timestamp': Math.floor(Math.random() * 360000) // random from 0 to 6:00
-      }).catch((err) => {
-        nodecg.log.warn("[OBS] Couldn't set intermission video timestamp", err);
-      });
+      // @ts-ignore:
+      obs
+        .send('SetMediaTime', {
+          sourceName: config.obs.names.sources.intermissionVideo,
+          timestamp: Math.floor(Math.random() * 360000), // random from 0 to 6:00
+        })
+        .catch((err) => {
+          nodecg.log.warn(
+            "[OBS] Couldn't set intermission video timestamp",
+            err
+          );
+        });
     }
   });
 

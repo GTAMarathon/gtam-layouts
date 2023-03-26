@@ -1,3 +1,2 @@
-export * from "./Asset";
-export * from "./hundoTrackerPlayer";
-export * from "./augment-window";
+export * from './Asset';
+export * from './hundoTrackerPlayer';

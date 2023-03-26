@@ -10,7 +10,7 @@
         top: '913px',
         width: '259px',
         height: '77px',
-        fontSize: '26px'
+        fontSize: '26px',
       }"
     ></timer>
     <estimate
@@ -20,7 +20,7 @@
         width: '259px',
         height: '100px',
         fontWeight: 'regular',
-        fontSize: '24px'
+        fontSize: '24px',
       }"
     ></estimate>
     <game
@@ -29,7 +29,7 @@
         top: '828px',
         width: '330px',
         height: '58px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       }"
     ></game>
     <category
@@ -38,7 +38,7 @@
         top: '827px',
         width: '300px',
         height: '54px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       }"
     ></category>
     <player
@@ -46,16 +46,17 @@
         left: '1000px',
         top: '40px',
         width: '300px',
-        height: '100px'
+        height: '100px',
       }"
       :size="46"
+      :team="1"
     ></player>
     <player
       :style="{
         left: '1000px',
         top: '950px',
         width: '300px',
-        height: '100px'
+        height: '100px',
       }"
       :size="46"
       :team="2"
@@ -65,7 +66,7 @@
         left: '1540px',
         top: '160px',
         width: '300px',
-        height: '100px'
+        height: '100px',
       }"
       :size="46"
       :team="3"
@@ -73,32 +74,19 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { State } from "vuex-class";
-import Timer from "../_misc/components/Timer.vue";
-import Estimate from "../_misc/components/Estimate.vue";
-import Game from "../_misc/components/Game.vue";
-import Category from "../_misc/components/Category.vue";
-import Player from "../_misc/components/Player.vue";
-import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
+<script setup lang="ts">
+  import { useHead } from '@vueuse/head';
+  import Timer from '../_misc/components/Timer.vue';
+  import Estimate from '../_misc/components/Estimate.vue';
+  import Game from '../_misc/components/Game.vue';
+  import Category from '../_misc/components/Category.vue';
+  import Player from '../_misc/components/Player.vue';
 
-@Component({
-  components: {
-    Timer,
-    Estimate,
-    Game,
-    Category,
-    Player
-  }
-})
-export default class App extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
-}
+  useHead({ title: '16:9 3 Player' });
 </script>
 
 <style>
-@import url("../_misc/common.css");
-@import url("../_misc/Fade.css");
-@import url("../_misc/Flex.css");
+  @import url('../_misc/common.css');
+  @import url('../_misc/Fade.css');
+  @import url('../_misc/Flex.css');
 </style>
