@@ -10,7 +10,7 @@
         top: '987px',
         width: '259px',
         height: '75px',
-        'font-size': '26px'
+        'font-size': '26px',
       }"
     ></timer>
     <estimate
@@ -20,7 +20,7 @@
         width: '259px',
         height: '85px',
         'font-weight': 'regular',
-        'font-size': '24px'
+        'font-size': '24px',
       }"
     ></estimate>
     <game

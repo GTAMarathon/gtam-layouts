@@ -2,7 +2,7 @@
   <div>
     <QBtn color="black" block :disabled="disableChange" @click="playNextRun">
       <span v-if="nextRun">
-        <QIcon name="mdi-play" left/>{{ nextRunGameName }}
+        <QIcon name="mdi-play" left />{{ nextRunGameName }}
       </span>
       <span v-else-if="runDataArray!.data!.length">End of marathon</span>
       <span v-else>No Runs Added</span>
@@ -13,7 +13,7 @@
       :style="{ 'margin-top': '5px' }"
     >
       Cannot change run while timer is {{ timer.data.state }}.
-  </QBanner>
+    </QBanner>
   </div>
 </template>
 

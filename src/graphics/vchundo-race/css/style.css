@@ -1,5 +1,5 @@
-@import url("./fonts/vcsans.css");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url('./fonts/vcsans.css');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 body {
   margin: 0;
@@ -7,7 +7,7 @@ body {
   overflow: hidden;
   color: white;
   font-weight: bold;
-  font-family: "vice_city_sansregular";
+  font-family: 'vice_city_sansregular';
 }
 
 #backgrounds {
@@ -62,7 +62,7 @@ span.player_percentage {
 
 table.table-bordered {
   table-layout: fixed;
-  font-family: "Roboto";
+  font-family: 'Roboto';
 }
 
 table.table-bordered th {

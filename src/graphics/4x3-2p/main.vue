@@ -79,7 +79,7 @@
 </script>
 
 <style>
-@import url("../_misc/common.css");
-@import url("../_misc/Fade.css");
-@import url("../_misc/Flex.css");
+  @import url('../_misc/common.css');
+  @import url('../_misc/Fade.css');
+  @import url('../_misc/Flex.css');
 </style>

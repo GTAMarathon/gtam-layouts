@@ -9,4 +9,4 @@ import App from './focus/main.vue';
 
 const head = createHead();
 createApp(App).use(Quasar, {}).use(head).mount('#app');
-Dark.set(true)
+Dark.set(true);

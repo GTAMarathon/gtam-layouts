@@ -11,7 +11,7 @@
             color="black"
           >
             {{ runner.name }}
-        </QBtn>
+          </QBtn>
         </div>
         <div v-else>
           <QBtn color="accent" disabled>
