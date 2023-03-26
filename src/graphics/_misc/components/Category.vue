@@ -2,55 +2,68 @@
   <div :style="{ position: 'fixed' }">
     <transition name="fade">
       <div
-        v-if="runDataActiveRun"
-        :key="`${runDataActiveRun.category}`"
+        v-if="activeRun && activeRun.data"
+        :key="`${activeRun.data.category}`"
         class="Flex"
       >
         <div
-          v-if="runDataActiveRun"
+          v-if="activeRun && activeRun.data"
           :style="{ 'font-size': '1.3em' }"
           ref="category"
         >
-          {{ runDataActiveRun.category }}
+          {{ activeRun.data.category }}
         </div>
       </div>
     </transition>
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Ref, Prop, Watch } from "vue-property-decorator";
-import { State } from "vuex-class";
-import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
-import fitty, { FittyInstance } from "fitty";
+<script setup lang="ts">
+  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import fitty, { FittyInstance } from 'fitty';
+  import { ref, watch } from 'vue';
+  import { useReplicant } from 'nodecg-vue-composable';
 
-@Component
-export default class Category extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
-  @Prop({ default: 64 }) readonly size!: number;
-  @Ref("category") category!: HTMLDivElement;
-
-  categoryFitty: FittyInstance | undefined;
-
-  fit(): void {
-    this.categoryFitty = fitty(this.category, {
-      maxSize: this.size,
-      minSize: 1,
-      multiLine: true
-    });
+  interface Props {
+    size: number;
   }
 
-  mounted() {
+  const props = withDefaults(defineProps<Props>(), {
+    size: 64,
+  });
+
+  const activeRun = useReplicant<RunDataActiveRun>(
+    'runDataActiveRun',
+    'nodecg-speedcontrol'
+  );
+
+  const category = ref<HTMLDivElement | null>(null);
+
+  let categoryFitty: FittyInstance | undefined = undefined;
+
+  function fit() {
+    if (category.value) {
+      categoryFitty = fitty(category.value, {
+        maxSize: props.size,
+        minSize: 1,
+        multiLine: true,
+      });
+    }
+  }
+
+  watch(
+    () => activeRun?.data,
+    () => {
+      setTimeout(() => {
+        fit();
+      }, 500);
+    },
+    { immediate: true }
+  );
+
+  /*   onMounted(() => {
     setTimeout(() => {
-      this.fit();
+      fit();
     }, 500);
-  }
-
-  @Watch("runDataActiveRun", { immediate: true })
-  onRunChange() {
-    setTimeout(() => {
-      this.fit();
-    }, 500);
-  }
-}
+  }); */
 </script>

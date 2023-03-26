@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div v-if="fourPlayers" :key="fourPlayers">
+    <div v-if="fourPlayers" :key="fourPlayers.toString()">
       <v-btn @click="focusOnRunner(1)">{{ runner(0) }} </v-btn>
       <v-btn @click="focusOnRunner(2)">{{ runner(1) }} </v-btn>
       <v-btn @click="focusOnRunner(3)">{{ runner(2) }} </v-btn>
@@ -13,52 +13,70 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { State } from "vuex-class";
-import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types/schemas";
+  import { defineComponent, computed } from 'vue';
+  import { useReplicant } from 'nodecg-vue-composable';
+  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { useHead } from '@vueuse/head';
 
-@Component
-export default class App extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
+  useHead({ title: 'Focus on specific runner' });
 
-  runner(runnerNumber: number): string {
-    if(this.fourPlayersCoop){
-      return this.runDataActiveRun.teams[runnerNumber].players[0]?.name;
-    }
-    if(this.fourTeams){
-      return this.runDataActiveRun.teams[runnerNumber].players[0]?.name;
-    }
-    return "";
-  }
+  export default defineComponent({
+    setup() {
+      const runDataActiveRun = useReplicant<RunDataActiveRun>(
+        'runDataActiveRun',
+        'nodecg-speedcontrol'
+      );
 
-  get fourPlayersCoop(): boolean {
-    return (
-      this.runDataActiveRun &&
-      this.runDataActiveRun.teams &&
-      this.runDataActiveRun.teams.length == 1 &&
-      this.runDataActiveRun.teams[0].players.length == 4
-    );
-  }
-  
-  get fourTeams(): boolean {
-    return (
-      this.runDataActiveRun &&
-      this.runDataActiveRun.teams &&
-      this.runDataActiveRun.teams.length == 4
-    );
-  }
-  get fourPlayers(): boolean {
-    return this.fourTeams || this.fourPlayersCoop;
-  }
-  focusOnRunner(num: number): void {
-    nodecg
-      .sendMessage("focusOnRunner", num)
-      .then(() => {
-        // run change successful
-      })
-      .catch(() => {
-        // run change unsuccessful
+      const fourPlayersCoop = computed<boolean>((): boolean => {
+        return (
+          runDataActiveRun!.data! &&
+          runDataActiveRun!.data!.teams &&
+          runDataActiveRun!.data!.teams.length == 1 &&
+          runDataActiveRun!.data!.teams[0].players.length == 4
+        );
       });
-  }
-}
+
+      const fourTeams = computed<boolean>((): boolean => {
+        return (
+          runDataActiveRun!.data! &&
+          runDataActiveRun!.data!.teams &&
+          runDataActiveRun!.data!.teams.length == 4
+        );
+      });
+
+      const fourPlayers = computed<boolean>((): boolean => {
+        return fourTeams.value || fourPlayersCoop.value;
+      });
+
+      function runner(runnerNumber: number): string {
+        if (fourPlayersCoop.value) {
+          return runDataActiveRun!.data!.teams[runnerNumber].players[0]?.name;
+        }
+        if (fourTeams.value) {
+          return runDataActiveRun!.data!.teams[runnerNumber].players[0]?.name;
+        }
+        return '';
+      }
+
+      function focusOnRunner(num: number): void {
+        nodecg
+          .sendMessage('focusOnRunner', num)
+          .then(() => {
+            // run change successful
+          })
+          .catch(() => {
+            // run change unsuccessful
+          });
+      }
+
+      return {
+        runDataActiveRun,
+        fourPlayersCoop,
+        fourTeams,
+        fourPlayers,
+        runner,
+        focusOnRunner,
+      };
+    },
+  });
 </script>

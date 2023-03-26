@@ -4,35 +4,35 @@
       <div>
         <div v-if="!feedNumber">
           <v-btn
-                    :disabled="model.feed1"
+            :disabled="model.feed1 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(1)"
           >
             Feed 1
           </v-btn>
           <v-btn
-                              :disabled="model.feed2"
+            :disabled="model.feed2 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(2)"
           >
             Feed 2
           </v-btn>
           <v-btn
-                              :disabled="model.feed3"
+            :disabled="model.feed3 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(3)"
           >
             Feed 3
           </v-btn>
           <v-btn
-                              :disabled="model.feed4"
+            :disabled="model.feed4 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(4)"
           >
             Feed 4
           </v-btn>
           <v-btn
-                              :disabled="model.feed5"
+            :disabled="model.feed5 != undefined"
             :style="{ 'margin-right': '5px' }"
             v-on:click="select(5)"
           >
@@ -40,9 +40,7 @@
           </v-btn>
         </div>
         <div v-else>
-          <v-btn color="accent" disabled>
-            Feed {{ feedNumber }}
-          </v-btn>
+          <v-btn color="accent" disabled> Feed {{ feedNumber }} </v-btn>
         </div>
       </div>
       <div v-if="feedNumber">
@@ -63,114 +61,152 @@
       <div>
         <v-btn
           :disabled="disableSend"
-          :style="{             'margin-top': '5px',          'margin-right': '5px', }"
+          :style="{ 'margin-top': '5px', 'margin-right': '5px' }"
           v-on:click="send()"
         >
           SEND
         </v-btn>
         <v-btn
-          :disabled="feedNumber"
-          :style="{             'margin-top': '5px',          'margin-right': '5px', }"
+          :disabled="feedNumber != undefined"
+          :style="{ 'margin-top': '5px', 'margin-right': '5px' }"
           v-on:click="cancel()"
         >
           CANCEL
         </v-btn>
       </div>
-
     </div>
   </v-app>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { State } from "vuex-class";
-import {  RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types/schemas";
-import { RunDataTeam } from "../../../../nodecg-speedcontrol/src/types";
+  import { defineComponent, computed, ref, Ref } from 'vue';
+  import { useReplicant } from 'nodecg-vue-composable';
+  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+  import { RunDataTeam } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { useHead } from '@vueuse/head';
 
-@Component
-export default class App extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
-  model : {
-    feedNumber: number | undefined,
-    feed1: RunDataTeam | undefined,
-    feed2: RunDataTeam | undefined,
-    feed3: RunDataTeam | undefined,
-    feed4: RunDataTeam | undefined,
-    feed5: RunDataTeam | undefined,
-  } = {
-    feedNumber : undefined,
-    feed1: undefined,
-    feed2: undefined,
-    feed3: undefined,
-    feed4: undefined,
-    feed5: undefined,
-  };
-
-  get runners(): RunDataTeam[] {
-    return this.runDataActiveRun.teams.filter(team => team!=this.model.feed1 && team!=this.model.feed2 && team!=this.model.feed3 && team!=this.model.feed4 && team!=this.model.feed5);
-  }
-  get feedNumber(): number | undefined {
-    return this.model.feedNumber;
-  }
-  get disableSend(): boolean{
-    return this.feedNumber != undefined || this.model.feed1==undefined|| this.model.feed2==undefined|| this.model.feed3==undefined|| this.model.feed4==undefined|| this.model.feed5==undefined;
+  interface Model {
+    feedNumber: number | undefined;
+    feed1: RunDataTeam | undefined;
+    feed2: RunDataTeam | undefined;
+    feed3: RunDataTeam | undefined;
+    feed4: RunDataTeam | undefined;
+    feed5: RunDataTeam | undefined;
   }
 
-  select(feedNumber: number): void {
-    this.$set(this.model, "feedNumber", feedNumber);
-  }
+  useHead({ title: 'Assign streams to players (VC Hundo version)' });
 
-  assign(team: RunDataTeam): void {
-    switch (this.model.feedNumber) {
-      case 1:
-        this.$set(this.model, "feed1", team);
-        break;
-      case 2:
-        this.$set(this.model, "feed2", team);
-        break;
-      case 3:
-        this.$set(this.model, "feed3", team);
-        break;
-      case 4:
-        this.$set(this.model, "feed4", team);
-        break;
-      case 5:
-        this.$set(this.model, "feed5", team);
-        break;
-      default:
-    }
+  export default defineComponent({
+    setup() {
+      const runDataActiveRun = useReplicant<RunDataActiveRun>(
+        'runDataActiveRun',
+        'nodecg-speedcontrol'
+      );
 
-    this.$set(this.model, "feedNumber", undefined);
-  }
+      let model: Ref<Model> = ref({
+        feedNumber: undefined,
+        feed1: undefined,
+        feed2: undefined,
+        feed3: undefined,
+        feed4: undefined,
+        feed5: undefined,
+      });
 
-  send():void{
-    var data = {
-      feed1: this.model.feed1,
-      feed2: this.model.feed2,
-      feed3: this.model.feed3,
-      feed4: this.model.feed4,
-      feed5: this.model.feed5,
-    };
-    nodecg
-      .sendMessage("changeRunnersOnVCHundo", data)
-      .then(() => {})
-      .catch(() => {});
+      const runners = computed<RunDataTeam[]>((): RunDataTeam[] => {
+        return runDataActiveRun!.data!.teams.filter(
+          (team) =>
+            team != model.value.feed1 &&
+            team != model.value.feed2 &&
+            team != model.value.feed3 &&
+            team != model.value.feed4 &&
+            team != model.value.feed5
+        );
+      });
 
-    this.$set(this.model, "feed1", undefined);
-    this.$set(this.model, "feed2", undefined);
-    this.$set(this.model, "feed3", undefined);
-    this.$set(this.model, "feed4", undefined);
-    this.$set(this.model, "feed5", undefined);
-    this.$set(this.model, "selectedRunner", undefined);
-  }
-  
-  cancel():void{
-    this.$set(this.model, "feed1", undefined);
-    this.$set(this.model, "feed2", undefined);
-    this.$set(this.model, "feed3", undefined);
-    this.$set(this.model, "feed4", undefined);
-    this.$set(this.model, "feed5", undefined);
-    this.$set(this.model, "selectedRunner", undefined);
-  }
-}
+      const feedNumber = computed<number | undefined>(
+        (): number | undefined => {
+          return model.value.feedNumber;
+        }
+      );
+
+      const disableSend = computed<boolean>((): boolean => {
+        return (
+          feedNumber.value != undefined ||
+          model.value.feed1 == undefined ||
+          model.value.feed2 == undefined ||
+          model.value.feed3 == undefined ||
+          model.value.feed4 == undefined ||
+          model.value.feed5 == undefined
+        );
+      });
+
+      function select(feedNumber: number): void {
+        model.value.feedNumber = feedNumber;
+      }
+
+      function assign(team: RunDataTeam): void {
+        switch (model.value.feedNumber) {
+          case 1:
+            model.value.feed1 = team;
+            break;
+          case 2:
+            model.value.feed2 = team;
+            break;
+
+          case 3:
+            model.value.feed3 = team;
+            break;
+          case 4:
+            model.value.feed4 = team;
+            break;
+          case 5:
+            model.value.feed5 = team;
+            break;
+        }
+        model.value.feedNumber = undefined;
+      }
+
+      function send(): void {
+        var data = {
+          feed1: model.value.feed1,
+          feed2: model.value.feed2,
+          feed3: model.value.feed3,
+          feed4: model.value.feed4,
+          feed5: model.value.feed5,
+        };
+        nodecg
+          .sendMessage('changeRunnersOnVCHundo', data)
+          .then(() => {})
+          .catch(() => {});
+
+        model.value.feed1 = undefined;
+        model.value.feed2 = undefined;
+        model.value.feed3 = undefined;
+        model.value.feed4 = undefined;
+        model.value.feed5 = undefined;
+        model.value.feedNumber = undefined;
+      }
+
+      function cancel(): void {
+        model.value.feed1 = undefined;
+        model.value.feed2 = undefined;
+        model.value.feed3 = undefined;
+        model.value.feed4 = undefined;
+        model.value.feed5 = undefined;
+        model.value.feedNumber = undefined;
+      }
+
+      return {
+        runDataActiveRun,
+        model,
+        runners,
+        feedNumber,
+        disableSend,
+        select,
+        assign,
+        send,
+        cancel,
+      };
+    },
+  });
 </script>

@@ -1,13 +1,18 @@
-import { Configschema } from '../types/schemas/configschema';
+import { Configschema } from '@gtam-layouts/types/schemas';
 import { ExtensionReturn } from '../../../nodecg-speedcontrol/src/types';
 import { get } from './util/nodecg';
 import obs from './util/obs';
 import { updateOengusScheduleOnSwitchingRun } from './scheduling';
-import { timer as timerRep, runDataActiveRun as activeRun } from './util/replicants';
+import {
+  timer as timerRep,
+  runDataActiveRun as activeRun,
+} from './util/replicants';
 
 const nodecg = get();
-const { sendMessage } = nodecg.extensions['nodecg-speedcontrol'] as unknown as ExtensionReturn;
-const config = (nodecg.bundleConfig as Configschema);
+const { sendMessage } = nodecg.extensions[
+  'nodecg-speedcontrol'
+] as unknown as ExtensionReturn;
+const config = nodecg.bundleConfig as Configschema;
 
 timerRep.on('change', (newVal, oldVal) => {
   if (oldVal && oldVal.state !== 'finished' && newVal.state === 'finished') {
@@ -15,16 +20,19 @@ timerRep.on('change', (newVal, oldVal) => {
   }
 });
 nodecg.listenFor('endOfMarathon', async (data, ack) => {
-  obs.changeToIntermission().catch(() => { });
+  obs.changeToIntermission().catch(() => {});
   if (ack && !ack.handled) {
     ack(null);
   }
 });
 
 nodecg.listenFor('nextRun', async (data, ack) => {
-  await sendMessage('importOengusSchedule', { marathonShort: config.schedule.marathonShort, useJapanese: false }).catch(() => { });
+  await sendMessage('importOengusSchedule', {
+    marathonShort: config.schedule.marathonShort,
+    useJapanese: false,
+  }).catch(() => {});
   nodecg.sendMessage('clearIntermission');
-  await new Promise(f => setTimeout(f, 60));
+  await new Promise((f) => setTimeout(f, 60));
 
   sendMessage('twitchStartCommercial', { duration: 180 })
     .then(() => {
@@ -33,8 +41,8 @@ nodecg.listenFor('nextRun', async (data, ack) => {
     .catch((err: any) => {
       nodecg.log.warn('Cannot play ads: ', err);
     });
-  obs.changeToIntermission().catch(() => { });
-  setTimeout(() => sendMessage('changeToNextRun').catch(() => { }), 1000);
+  obs.changeToIntermission().catch(() => {});
+  setTimeout(() => sendMessage('changeToNextRun').catch(() => {}), 1000);
   obs.muteAudio();
   obs.unmuteAudio();
 
@@ -46,7 +54,7 @@ nodecg.listenFor('nextRun', async (data, ack) => {
 });
 
 nodecg.listenFor('focusOnRunner', (data, ack) => {
-  obs.focusOnRunnerX(data).catch(() => { });
+  obs.focusOnRunnerX(data).catch(() => {});
 
   if (ack && !ack.handled) {
     ack(null);
@@ -54,7 +62,7 @@ nodecg.listenFor('focusOnRunner', (data, ack) => {
 });
 
 nodecg.listenFor('changeRunnersOnVCHundo', (data, ack) => {
-  obs.changeRunnersOnVCHundo(data).catch(() => { });
+  obs.changeRunnersOnVCHundo(data).catch(() => {});
 
   if (ack && !ack.handled) {
     ack(null);
@@ -66,7 +74,13 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
   var source43: string | undefined;
   var source169: string | undefined;
 
-  if (data.runner && data.stream.twitchAccount && data.stream && activeRun.value && activeRun.value.teams) {
+  if (
+    data.runner &&
+    data.stream.twitchAccount &&
+    data.stream &&
+    activeRun.value &&
+    activeRun.value.teams
+  ) {
     var players = [];
     for (var team of activeRun.value.teams) {
       for (var player of team.players) {
@@ -74,7 +88,7 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
       }
     }
 
-    var index = players.findIndex(playerX => playerX.id == data.runner.id);
+    var index = players.findIndex((playerX) => playerX.id == data.runner.id);
 
     switch (index) {
       case 0:
@@ -100,7 +114,13 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
         nodecg.log.warn('players: ', players);
         break;
     }
-    obs.setTwitchUrlToSources(data.stream.twitchAccount, [source32, source43, source169]).catch(() => { });
+    obs
+      .setTwitchUrlToSources(data.stream.twitchAccount, [
+        source32,
+        source43,
+        source169,
+      ])
+      .catch(() => {});
 
     if (ack && !ack.handled) {
       ack(null);

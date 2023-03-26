@@ -11,11 +11,13 @@ async function setChannels(usernames: string): Promise<void> {
   try {
     const resp = await needle(
       'get',
-      `https://api.furious.pro/featuredchannels/bot/${config.token}/${usernames}`,
+      `https://api.furious.pro/featuredchannels/bot/${config.token}/${usernames}`
     );
 
     if (resp.statusCode === 200) {
-      nodecg.log.info(`[Twitch Ext] Successfully updated channels to ${usernames}`);
+      nodecg.log.info(
+        `[Twitch Ext] Successfully updated channels to ${usernames}`
+      );
     } else {
       throw new Error(`Status Code ${resp.statusCode}`);
     }
@@ -30,11 +32,11 @@ currentRun.on('change', (newVal) => {
     var channels: string[] = [];
     newVal.teams.forEach(function (team) {
       team.players.forEach(function (player) {
-        if(player.social.twitch){
+        if (player.social.twitch) {
           channels.push(player.social.twitch);
         }
-      })
-    })
+      });
+    });
     setChannels(channels.join(','));
   }
-})
+});

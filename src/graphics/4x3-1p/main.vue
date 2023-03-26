@@ -10,7 +10,7 @@
         top: '653px',
         width: '259px',
         height: '75px',
-        'font-size': '26px'
+        'font-size': '26px',
       }"
     ></timer>
     <estimate
@@ -19,8 +19,8 @@
         top: '705px',
         width: '259px',
         height: '75px',
-        'font-weight': regular,
-        'font-size': '24px'
+        'font-weight': 'regular',
+        'font-size': '24px',
       }"
     ></estimate>
     <game
@@ -29,7 +29,7 @@
         top: '335px',
         width: '450px',
         height: '100px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       }"
       :size="50"
     ></game>
@@ -39,7 +39,7 @@
         top: '535px',
         width: '450px',
         height: '75px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       }"
       :size="50"
     ></category>
@@ -49,35 +49,22 @@
         top: '905px',
         width: '450px',
         height: '75px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       }"
       :size="56"
     ></player>
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { State } from "vuex-class";
-import Timer from "../_misc/components/Timer.vue";
-import Estimate from "../_misc/components/Estimate.vue";
-import Game from "../_misc/components/Game.vue";
-import Category from "../_misc/components/Category.vue";
-import Player from "../_misc/components/Player.vue";
-import { RunDataActiveRun } from "nodecg/bundles/nodecg-speedcontrol/src/types";
+<script setup lang="ts">
+  import { useHead } from '@vueuse/head';
+  import Timer from '../_misc/components/Timer.vue';
+  import Estimate from '../_misc/components/Estimate.vue';
+  import Game from '../_misc/components/Game.vue';
+  import Category from '../_misc/components/Category.vue';
+  import Player from '../_misc/components/Player.vue';
 
-@Component({
-  components: {
-    Timer,
-    Estimate,
-    Game,
-    Category,
-    Player
-  }
-})
-export default class App extends Vue {
-  @State runDataActiveRun!: RunDataActiveRun;
-}
+  useHead({ title: '4:3 1 Player' });
 </script>
 
 <style>

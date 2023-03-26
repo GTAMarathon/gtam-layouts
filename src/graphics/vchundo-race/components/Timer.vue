@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="Flex"
-    :style="{ position: 'fixed' }"
-  >
+  <div class="Flex" :style="{ position: 'fixed' }">
     <div
       id="Time"
       :style="{
@@ -11,26 +8,18 @@
         'margin-bottom': '-0.2em',
       }"
     >
-      <span
-      >
-        {{ timer.time }}
+      <span v-if="timer && timer.data">
+        {{ timer.data.time }}
       </span>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Ref, Watch } from 'vue-property-decorator'; // eslint-disable-line object-curly-newline, max-len
-import { State } from 'vuex-class';
-import { Timer as TimerType, RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+<script setup lang="ts">
+  import { useReplicant } from 'nodecg-vue-composable';
+  import { Timer } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
 
-@Component
-export default class Timer extends Vue {
-  @State timer!: TimerType;
-  @State runDataActiveRun!: RunDataActiveRun;
-  @Ref('Estimate') readonly estimate!: HTMLElement;
-  isMounted = false;
-}
+  const timer = useReplicant<Timer>('timer', 'nodecg-speedcontrol');
 </script>
 
 <style scoped>
@@ -44,5 +33,4 @@ export default class Timer extends Vue {
     text-align: center;
     color: #a1ebff;
   }
-
 </style>
