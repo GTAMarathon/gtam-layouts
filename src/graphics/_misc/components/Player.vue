@@ -52,7 +52,7 @@
   let timeout = 0;
   let teamI = 0;
   let index = 0;
-  let name: string | null = null;
+  let name = ref<string | null>(null);
   let playerFitty: FittyInstance | undefined = undefined;
   const player = ref<HTMLDivElement | null>(null);
 
@@ -94,7 +94,7 @@
       window.clearTimeout(timeout);
       teamI = props.team - 1;
       index = 0;
-      name = null;
+      name.value = null;
       const coop = !!(
         newValue &&
         newValue.teams.length === 1 &&
@@ -103,7 +103,7 @@
 
       if (newValue) {
         if (coop && newValue.teams[0].players[teamI]) {
-          name = newValue.teams[0].players[teamI].name;
+          name.value = newValue.teams[0].players[teamI].name;
         } else if (
           !coop &&
           newValue.teams[teamI] &&
@@ -126,7 +126,7 @@
         return;
       }
       const { players } = activeRun.data.teams[teamI];
-      name = players[index].name;
+      name.value = players[index].name;
       timeout = window.setTimeout(() => showNextName(), 30 * 1000);
       index = players.length <= index + 1 ? 0 : index + 1;
     }

@@ -50,6 +50,7 @@
         height: '50px',
       }"
       :size="40"
+      :team="1"
     ></player>
   </div>
 </template>

@@ -51,6 +51,7 @@
         height: '55px',
       }"
       :size="45"
+      :team="1"
     ></player>
     <player
       :style="{

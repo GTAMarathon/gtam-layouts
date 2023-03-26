@@ -14,7 +14,7 @@
         <transition name="fade">
           <div
             id="Estimate"
-            ref="Estimate"
+            ref="estimate"
             :key="`${activeRun.data.id}${activeRun.data.estimate}`"
             :style="{ position: 'absolute' }"
           >
@@ -51,11 +51,12 @@
       if (!oldValue && newValue) {
         nextTick().then(() => {
           if (estimate.value) {
-            estimateWidth.value = `${estimate.value.clientWidth}`;
+            estimateWidth.value = `${estimate.value.clientWidth}px`;
           }
         });
       }
-    }
+    },
+    { immediate: true }
   );
 </script>
 

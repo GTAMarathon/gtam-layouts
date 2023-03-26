@@ -52,6 +52,7 @@
         fontWeight: 'bold',
       }"
       :size="50"
+      :team="1"
     ></player>
     <player
       :style="{

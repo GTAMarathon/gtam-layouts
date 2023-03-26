@@ -52,6 +52,7 @@
         fontWeight: 'bold',
       }"
       :size="56"
+      :team="1"
     ></player>
   </div>
 </template>

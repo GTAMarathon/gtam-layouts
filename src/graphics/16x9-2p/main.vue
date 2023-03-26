@@ -51,6 +51,7 @@
         fontSize: '24px',
       }"
       :size="46"
+      :team="1"
     ></player>
     <player
       :style="{
