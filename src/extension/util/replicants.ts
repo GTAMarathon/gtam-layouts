@@ -42,3 +42,6 @@ export const runDataArray = nodecg.Replicant<RunDataArray>(
   'runDataArray',
   'nodecg-speedcontrol'
 ) as unknown as NodeCG.ServerReplicantWithSchemaDefault<RunDataArray>;
+export const currentOBSScene = nodecg.Replicant<string>('currentOBSScene', {
+  defaultValue: '',
+}) as unknown as NodeCG.ServerReplicant<string>;

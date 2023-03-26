@@ -13,6 +13,7 @@ import {
   runDataActiveRunSurrounding,
   runDataArray,
   runDataActiveRun as activeRun,
+  currentOBSScene,
 } from './replicants';
 
 enum VideoFolder {
@@ -54,7 +55,7 @@ class OBSUtility extends obsWebsocketJs {
    */
   async changeScene(name: string): Promise<void> {
     try {
-      await this.send('SetCurrentScene', { 'scene-name': name });
+      await this.call('SetCurrentProgramScene', { sceneName: name });
     } catch (err: any) {
       nodecg.log.warn(`Cannot change OBS scene [${name}]: ${err.error}`);
       throw err;
@@ -91,13 +92,13 @@ class OBSUtility extends obsWebsocketJs {
       allScenes &&
       allScenes.includes(nextRun.customData.obsScene)
     ) {
-      this.send('GetStudioModeStatus')
+      this.call('GetStudioModeEnabled')
         .then((response) => {
-          if (!response['studio-mode']) {
-            this.send('EnableStudioMode')
+          if (!response.studioModeEnabled) {
+            this.call('SetStudioModeEnabled', { studioModeEnabled: true })
               .then(() => {
-                this.send('SetPreviewScene', {
-                  'scene-name': nextRun.customData.obsScene,
+                this.call('SetCurrentPreviewScene', {
+                  sceneName: nextRun.customData.obsScene,
                 }).catch((err) => {
                   nodecg.log.warn('StudioMode not enabled', err);
                 });
@@ -106,8 +107,8 @@ class OBSUtility extends obsWebsocketJs {
                 nodecg.log.warn('couldnt enable StudioMode', err);
               });
           } else {
-            this.send('SetPreviewScene', {
-              'scene-name': nextRun.customData.obsScene,
+            this.call('SetCurrentPreviewScene', {
+              sceneName: nextRun.customData.obsScene,
             }).catch((err) => {
               nodecg.log.warn('preview scene not set', err);
             });
@@ -129,10 +130,9 @@ class OBSUtility extends obsWebsocketJs {
           new RegExp('{{twitchAccount}}', 'g'),
           twitch
         );
-        await this.send('SetSourceSettings', {
-          sourceName: source,
-          sourceType: 'browser_source',
-          sourceSettings: { url: url },
+        await this.call('SetInputSettings', {
+          inputName: source,
+          inputSettings: { url: url },
         }).catch((err) => {
           nodecg.log.warn('url not set to source', err);
         });
@@ -417,10 +417,9 @@ class OBSUtility extends obsWebsocketJs {
           videoFolder = VideoFolder[random];
         }
 
-        await this.send('SetSourceSettings', {
-          sourceName: config.obs.names.sources.intermissionVideo,
-          sourceType: 'vlc_source',
-          sourceSettings: {
+        await this.call('SetInputSettings', {
+          inputName: config.obs.names.sources.intermissionVideo,
+          inputSettings: {
             playlist: [
               {
                 hidden: false,
@@ -439,10 +438,9 @@ class OBSUtility extends obsWebsocketJs {
         if (!musicFolder) {
           musicFolder = MusicFolder.Mix;
         }
-        await this.send('SetSourceSettings', {
-          sourceName: config.obs.names.sources.intermissionMusic,
-          sourceType: 'vlc_source',
-          sourceSettings: {
+        await this.call('SetInputSettings', {
+          inputName: config.obs.names.sources.intermissionMusic,
+          inputSettings: {
             playlist: [
               {
                 hidden: false,
@@ -469,7 +467,7 @@ class OBSUtility extends obsWebsocketJs {
    */
   async toggleSourceAudio(source: string, mute = true): Promise<void> {
     try {
-      await this.send('SetMute', { source, mute });
+      await this.call('SetInputMute', { inputName: source, inputMuted: mute });
     } catch (err: any) {
       nodecg.log.warn(`Cannot mute OBS source [${source}]: ${err.error}`);
       throw err;
@@ -496,14 +494,10 @@ class OBSUtility extends obsWebsocketJs {
 }
 
 const obs = new OBSUtility();
-const settings = {
-  address: config.obs.address,
-  password: config.obs.password,
-};
 
 function connect(): void {
   obs
-    .connect(settings)
+    .connect(config.obs.address, config.obs.password)
     .then(() => {
       nodecg.log.info('OBS connection successful.');
     })
@@ -521,21 +515,17 @@ if (config.obs.enable) {
     setTimeout(connect, 5000);
   });
 
-  // @ts-ignore: Pretty sure this emits an error.
-  obs.on('error', (err) => {
+  obs.on('ConnectionError', (err) => {
     nodecg.log.warn('OBS connection error.');
     nodecg.log.debug('OBS connection error:', err);
   });
 
-  // @ts-ignore:
-  obs.on('MediaStarted', (data) => {
-    // @ts-ignore:
-    if (data['sourceName'] == config.obs.names.sources.intermissionVideo) {
-      // @ts-ignore:
+  obs.on('MediaInputPlaybackStarted', (data) => {
+    if (data.inputName == config.obs.names.sources.intermissionVideo) {
       obs
-        .send('SetMediaTime', {
-          sourceName: config.obs.names.sources.intermissionVideo,
-          timestamp: Math.floor(Math.random() * 360000), // random from 0 to 6:00
+        .call('SetMediaInputCursor', {
+          inputName: config.obs.names.sources.intermissionVideo,
+          mediaCursor: Math.floor(Math.random() * 360000), // random from 0 to 6:00
         })
         .catch((err) => {
           nodecg.log.warn(
@@ -546,9 +536,12 @@ if (config.obs.enable) {
     }
   });
 
-  obs.on('TransitionBegin', (data) => {
-    if (data['from-scene'] == config.obs.names.scenes.intermission) {
-      setStartHighlight();
+  obs.on('CurrentProgramSceneChanged', (data) => {
+    if (data.sceneName != currentOBSScene.value) {
+      if (currentOBSScene.value == config.obs.names.scenes.intermission) {
+        setStartHighlight();
+      }
+      currentOBSScene.value = data.sceneName;
     }
   });
 }
