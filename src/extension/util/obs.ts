@@ -67,8 +67,8 @@ class OBSUtility extends obsWebsocketJs {
    */
   async changeToIntermission(): Promise<void> {
     try {
-      await this.changeIntermissionVid();
-      await new Promise((r) => setTimeout(r, 500));
+      this.changeIntermissionVid();
+      await new Promise((r) => setTimeout(r, 700));
 
       await this.changeScene(config.obs.names.scenes.intermission);
 
@@ -417,6 +417,7 @@ class OBSUtility extends obsWebsocketJs {
           videoFolder = VideoFolder[random];
         }
 
+        // set video input
         await this.call('SetInputSettings', {
           inputName: config.obs.names.sources.intermissionVideo,
           inputSettings: {
@@ -433,6 +434,30 @@ class OBSUtility extends obsWebsocketJs {
         }).catch((err) => {
           nodecg.log.warn("[OBS] Couldn't set intermission video", err);
         });
+
+        // play video to set cursor position
+        await this.call('TriggerMediaInputAction', {
+          inputName: config.obs.names.sources.intermissionVideo,
+          mediaAction: 'OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PLAY',
+        }).catch((err) => {
+          nodecg.log.warn(
+            "[OBS] Couldn't play intermission video for cursor settings purposes: ",
+            err
+          );
+        });
+
+        // randomize video cursor position
+        setTimeout(async () => {
+          await this.call('SetMediaInputCursor', {
+            inputName: config.obs.names.sources.intermissionVideo,
+            mediaCursor: Math.floor(Math.random() * 360000), // random from 0 to 6:00
+          }).catch((err) => {
+            nodecg.log.warn(
+              "[OBS] Couldn't set intermission video timestamp",
+              err
+            );
+          });
+        }, 200);
 
         // no specific music
         if (!musicFolder) {
@@ -518,25 +543,6 @@ if (config.obs.enable) {
   obs.on('ConnectionError', (err) => {
     nodecg.log.warn('OBS connection error.');
     nodecg.log.debug('OBS connection error:', err);
-  });
-
-  obs.on('MediaInputPlaybackStarted', (data) => {
-    if (data.inputName == config.obs.names.sources.intermissionVideo) {
-      // have to delay it by 100ms for it to work consistently
-      setTimeout(() => {
-        obs
-          .call('SetMediaInputCursor', {
-            inputName: config.obs.names.sources.intermissionVideo,
-            mediaCursor: Math.floor(Math.random() * 360000), // random from 0 to 6:00
-          })
-          .catch((err) => {
-            nodecg.log.warn(
-              "[OBS] Couldn't set intermission video timestamp",
-              err
-            );
-          });
-      }, 100);
-    }
   });
 
   obs.on('CurrentProgramSceneChanged', (data) => {
