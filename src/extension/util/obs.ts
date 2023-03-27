@@ -522,17 +522,20 @@ if (config.obs.enable) {
 
   obs.on('MediaInputPlaybackStarted', (data) => {
     if (data.inputName == config.obs.names.sources.intermissionVideo) {
-      obs
-        .call('SetMediaInputCursor', {
-          inputName: config.obs.names.sources.intermissionVideo,
-          mediaCursor: Math.floor(Math.random() * 360000), // random from 0 to 6:00
-        })
-        .catch((err) => {
-          nodecg.log.warn(
-            "[OBS] Couldn't set intermission video timestamp",
-            err
-          );
-        });
+      // have to delay it by 100ms for it to work consistently
+      setTimeout(() => {
+        obs
+          .call('SetMediaInputCursor', {
+            inputName: config.obs.names.sources.intermissionVideo,
+            mediaCursor: Math.floor(Math.random() * 360000), // random from 0 to 6:00
+          })
+          .catch((err) => {
+            nodecg.log.warn(
+              "[OBS] Couldn't set intermission video timestamp",
+              err
+            );
+          });
+      }, 100);
     }
   });
 
