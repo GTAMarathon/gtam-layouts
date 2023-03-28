@@ -50,7 +50,7 @@
     "module-alias": "^2.2.2",
     "moment": "^2.29.4",
     "needle": "^3.2.0",
-    "obs-websocket-js": "^4.0.3",
+    "obs-websocket-js": "^5.0.2",
     "parse-duration": "^1.0.3",
     "socket.io-client": "^2.4.0"
   },

@@ -4,7 +4,10 @@
       <span v-if="nextRun">
         <QIcon name="mdi-play" left />{{ nextRunGameName }}
       </span>
-      <span v-else-if="runDataArray!.data!.length">End of marathon</span>
+      <span
+        v-else-if="runDataArray && runDataArray.data && runDataArray!.data!.length"
+        >End of marathon</span
+      >
       <span v-else>No Runs Added</span>
     </QBtn>
     <QBanner
@@ -45,11 +48,20 @@
 
       const timer = useReplicant<Timer>('timer', 'nodecg-speedcontrol');
 
-      const nextRun = computed<RunData>((): RunData => {
-        const runToReturn: RunData | undefined = runDataArray!.data!.find(
-          (run: RunData) => run.id === runDataActiveRunSurrounding!.data!.next
-        );
-        return runToReturn!;
+      const nextRun = computed<RunData | null>((): RunData | null => {
+        if (
+          runDataArray &&
+          runDataArray.data &&
+          runDataActiveRunSurrounding &&
+          runDataActiveRunSurrounding.data
+        ) {
+          const runToReturn: RunData | undefined = runDataArray!.data!.find(
+            (run: RunData) => run.id === runDataActiveRunSurrounding!.data!.next
+          );
+          return runToReturn!;
+        } else {
+          return null;
+        }
       });
 
       const nextRunGameName = computed<string>((): string => {
@@ -62,11 +74,16 @@
       });
 
       const disableChange = computed<boolean>((): boolean => {
-        return ['running', 'paused'].includes(timer!.data!.state);
+        if (timer && timer.data) {
+          return ['running', 'paused'].includes(timer!.data!.state);
+        } else {
+          return true;
+        }
       });
 
       function playNextRun(): void {
-        if (nextRun) {
+        if (nextRun && nextRun.value) {
+          console.log('Setting next run');
           nodecg
             .sendMessage('nextRun')
             .then(() => {

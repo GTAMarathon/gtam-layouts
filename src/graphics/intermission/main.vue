@@ -157,23 +157,25 @@
     let previousRun: RunData | null = null;
     let currentRun: RunData | null = null;
     let nextRun: RunData | null = null;
-    if (runDataActiveRunSurrounding!.data!.previous) {
-      let index = runDataArray!.data!.findIndex(
-        (run) => run.id === runDataActiveRunSurrounding!.data!.previous
-      );
-      previousRun = runDataArray!.data![index];
-    }
-    if (runDataActiveRunSurrounding!.data!.current) {
-      let index = runDataArray!.data!.findIndex(
-        (run) => run.id === runDataActiveRunSurrounding!.data!.current
-      );
-      currentRun = runDataArray!.data![index];
-    }
-    if (runDataActiveRunSurrounding!.data!.next) {
-      let index = runDataArray!.data!.findIndex(
-        (run) => run.id === runDataActiveRunSurrounding!.data!.next
-      );
-      nextRun = runDataArray!.data![index];
+    if (runDataActiveRunSurrounding && runDataActiveRunSurrounding.data) {
+      if (runDataActiveRunSurrounding!.data!.previous) {
+        let index = runDataArray!.data!.findIndex(
+          (run) => run.id === runDataActiveRunSurrounding!.data!.previous
+        );
+        previousRun = runDataArray!.data![index];
+      }
+      if (runDataActiveRunSurrounding!.data!.current) {
+        let index = runDataArray!.data!.findIndex(
+          (run) => run.id === runDataActiveRunSurrounding!.data!.current
+        );
+        currentRun = runDataArray!.data![index];
+      }
+      if (runDataActiveRunSurrounding!.data!.next) {
+        let index = runDataArray!.data!.findIndex(
+          (run) => run.id === runDataActiveRunSurrounding!.data!.next
+        );
+        nextRun = runDataArray!.data![index];
+      }
     }
 
     if (!currentRun) {
