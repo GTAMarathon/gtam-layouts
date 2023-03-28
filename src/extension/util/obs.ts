@@ -67,7 +67,7 @@ class OBSUtility extends obsWebsocketJs {
    */
   async changeToIntermission(): Promise<void> {
     try {
-      this.changeIntermissionVid();
+      await this.changeIntermissionVid();
       await new Promise((r) => setTimeout(r, 700));
 
       await this.changeScene(config.obs.names.scenes.intermission);
@@ -434,30 +434,6 @@ class OBSUtility extends obsWebsocketJs {
         }).catch((err) => {
           nodecg.log.warn("[OBS] Couldn't set intermission video", err);
         });
-
-        // play video to set cursor position
-        await this.call('TriggerMediaInputAction', {
-          inputName: config.obs.names.sources.intermissionVideo,
-          mediaAction: 'OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PLAY',
-        }).catch((err) => {
-          nodecg.log.warn(
-            "[OBS] Couldn't play intermission video for cursor settings purposes: ",
-            err
-          );
-        });
-
-        // randomize video cursor position
-        setTimeout(async () => {
-          await this.call('SetMediaInputCursor', {
-            inputName: config.obs.names.sources.intermissionVideo,
-            mediaCursor: Math.floor(Math.random() * 360000), // random from 0 to 6:00
-          }).catch((err) => {
-            nodecg.log.warn(
-              "[OBS] Couldn't set intermission video timestamp",
-              err
-            );
-          });
-        }, 200);
 
         // no specific music
         if (!musicFolder) {
