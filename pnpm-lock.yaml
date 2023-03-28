@@ -14,6 +14,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.54.0
   '@vitejs/plugin-vue': ^4.0.0
   '@vueuse/head': ^1.1.15
+  big-text.js: ^1.0.1
   bootstrap: ^5.0.1
   eslint: ^8.35.0
   eslint-config-airbnb-base: ^15.0.0
@@ -48,6 +49,7 @@ specifiers:
 dependencies:
   '@mdi/font': 7.2.96
   '@popperjs/core': 2.11.7
+  big-text.js: 1.0.1
   bootstrap: 5.0.1_@popperjs+core@2.11.7
   fitty: 2.3.6
   graphql: 15.8.0
@@ -1326,6 +1328,10 @@ packages:
     resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
     engines: {node: ^4.5.0 || >= 5.9}
     dev: true
+
+  /big-text.js/1.0.1:
+    resolution: {integrity: sha512-4jjqUxwvLHqA8g7UkK+oCltCKKVy2WTI7TbTpOqfP7EGCAmg/wItQJ62ry2ozPfXL7iDyKAAx2gN0v8Xlfo2Sg==}
+    dev: false
 
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}

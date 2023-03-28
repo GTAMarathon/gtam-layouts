@@ -48,6 +48,7 @@
   import fitty, { FittyInstance } from 'fitty';
   import { onMounted, ref, watch } from 'vue';
   import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import BigText from 'big-text.js';
 
   interface Props {
     run: RunData | null;
