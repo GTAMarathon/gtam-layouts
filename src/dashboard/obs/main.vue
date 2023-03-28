@@ -1,11 +1,6 @@
 <template>
   <div>
-    <QBtn
-      color="black"
-      block
-      :disabled="disableChange"
-      @click.native="playNextRun"
-    >
+    <QBtn color="black" block :disabled="disableChange" @click="playNextRun">
       <span v-if="nextRun">
         <QIcon name="mdi-play" left />{{ nextRunGameName }}
       </span>
