@@ -13,9 +13,6 @@ dependencies:
   bootstrap:
     specifier: ^5.0.1
     version: 5.0.1(@popperjs/core@2.11.7)
-  fitty:
-    specifier: ^2.3.6
-    version: 2.3.6
   graphql:
     specifier: ^15.8.0
     version: 15.8.0
@@ -2553,10 +2550,6 @@ packages:
       locate-path: 6.0.0
       path-exists: 4.0.0
     dev: true
-
-  /fitty@2.3.6:
-    resolution: {integrity: sha512-ENp/+MqqYmXBGHC0dlltCX75+5zL5m0uiIGCgYdoThao99BrJpNYzEh3xrvhiy4b7O5X82CQT7dPTiB53H6stw==}
-    dev: false
 
   /flat-cache@3.0.4:
     resolution: {integrity: sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg==}
