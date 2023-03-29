@@ -21,6 +21,7 @@
           }"
         >
           <div
+            id="game"
             ref="game"
             :style="{
               'font-size': '1em',
@@ -30,6 +31,7 @@
             {{ run.game }}
           </div>
           <div
+            id="category"
             ref="category"
             :style="{
               'font-size': catRatio + 'em',
@@ -45,10 +47,9 @@
 </template>
 
 <script setup lang="ts">
-  import fitty, { FittyInstance } from 'fitty';
   import { onMounted, ref, watch } from 'vue';
   import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
-  import BigText from 'big-text.js';
+  import BigText from 'big-text.ts';
 
   interface Props {
     run: RunData | null;
@@ -62,8 +63,6 @@
 
   const game = ref<HTMLDivElement | null>(null);
   const category = ref<HTMLDivElement | null>(null);
-  let gameFitty: FittyInstance | undefined = undefined;
-  let categoryFitty: FittyInstance | undefined = undefined;
   let smallFontSize = 60;
   let bigFontSize = 80;
   let smallWidth = 944;
@@ -73,23 +72,17 @@
 
   function fit() {
     if (game.value) {
-      gameFitty = fitty(game.value, {
-        maxSize: props.small ? smallFontSize : bigFontSize,
-        minSize: props.small
-          ? smallFontSize * minSizeRatio
-          : bigFontSize * minSizeRatio,
-        multiLine: true,
+      BigText(game.value, {
+        maximumFontSize: props.small ? smallFontSize : bigFontSize,
+        textAlign: 'left',
       });
     }
     if (category.value) {
-      categoryFitty = fitty(category.value, {
-        maxSize: props.small
+      BigText(category.value, {
+        maximumFontSize: props.small
           ? smallFontSize * catRatio
           : bigFontSize * catRatio,
-        minSize: props.small
-          ? smallFontSize * minSizeRatio * catRatio
-          : bigFontSize * minSizeRatio * catRatio,
-        multiLine: true,
+        textAlign: 'left',
       });
     }
   }
@@ -97,7 +90,7 @@
   onMounted(() => {
     setTimeout(() => {
       fit();
-    }, 500);
+    }, 50);
   });
 
   watch(

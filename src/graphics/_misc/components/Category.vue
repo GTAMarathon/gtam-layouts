@@ -20,9 +20,9 @@
 
 <script setup lang="ts">
   import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
-  import fitty, { FittyInstance } from 'fitty';
   import { ref, watch } from 'vue';
   import { useReplicant } from 'nodecg-vue-composable';
+  import BigText from 'big-text.ts';
 
   interface Props {
     size: number;
@@ -39,31 +39,18 @@
 
   const category = ref<HTMLDivElement | null>(null);
 
-  let categoryFitty: FittyInstance | undefined = undefined;
-
-  function fit() {
-    if (category.value) {
-      categoryFitty = fitty(category.value, {
-        maxSize: props.size,
-        minSize: 1,
-        multiLine: true,
-      });
-    }
-  }
-
   watch(
     () => activeRun?.data,
     () => {
       setTimeout(() => {
-        fit();
-      }, 500);
+        if (category.value) {
+          BigText(category.value, {
+            maximumFontSize: props.size,
+            verticalAlign: 'center'
+          });
+        }
+      }, 20);
     },
     { immediate: true }
   );
-
-  /*   onMounted(() => {
-    setTimeout(() => {
-      fit();
-    }, 500);
-  }); */
 </script>

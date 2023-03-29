@@ -15,6 +15,7 @@
           v-if="activeRun && activeRun.data"
           :style="{ 'font-size': `1.3em` }"
           ref="game"
+          id="game"
         >
           {{ activeRun.data.customData.gameShort }}
         </div>
@@ -24,10 +25,10 @@
 </template>
 
 <script setup lang="ts">
-  import fitty, { FittyInstance } from 'fitty';
   import { ref, watch } from 'vue';
   import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
+  import BigText from 'big-text.ts';
 
   interface Props {
     size: number;
@@ -42,24 +43,17 @@
     'nodecg-speedcontrol'
   );
   const game = ref<HTMLDivElement | null>(null);
-  let gameFitty: FittyInstance | undefined = undefined;
-
-  function fit() {
-    if (game.value) {
-      gameFitty = fitty(game.value, {
-        maxSize: props.size,
-        minSize: 1,
-        multiLine: true,
-      });
-    }
-  }
 
   watch(
     () => activeRun?.data,
     () => {
       setTimeout(() => {
-        fit();
-      }, 500);
+        if (game.value) {
+          BigText(game.value, {
+            maximumFontSize: props.size,
+          });
+        }
+      }, 20);
     },
     { immediate: true }
   );
