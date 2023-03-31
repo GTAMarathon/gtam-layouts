@@ -25,13 +25,13 @@
 </template>
 
 <script setup lang="ts">
-  import fitty, { FittyInstance } from 'fitty';
   import { computed, onMounted, ref, watch } from 'vue';
   import {
     RunDataActiveRun,
     Timer,
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
+  import BigText from 'big-text.ts';
 
   interface Props {
     size: number;
@@ -53,18 +53,7 @@
   let teamI = 0;
   let index = 0;
   let name = ref<string | null>(null);
-  let playerFitty: FittyInstance | undefined = undefined;
   const player = ref<HTMLDivElement | null>(null);
-
-  function fit() {
-    if (player.value) {
-      playerFitty = fitty(player.value, {
-        maxSize: props.size,
-        minSize: 1,
-        multiLine: true,
-      });
-    }
-  }
 
   const finishTime = computed<string | undefined>((): string | undefined => {
     if (activeRun && timer) {
@@ -114,8 +103,13 @@
       }
 
       setTimeout(() => {
-        fit();
-      }, 500);
+        if (player.value) {
+          BigText(player.value, {
+            maximumFontSize: props.size,
+            textAlign: 'left',
+          });
+        }
+      }, 20);
     },
     { immediate: true }
   );
@@ -131,10 +125,4 @@
       index = players.length <= index + 1 ? 0 : index + 1;
     }
   }
-
-  onMounted(() => {
-    setTimeout(() => {
-      fit();
-    }, 500);
-  });
 </script>
