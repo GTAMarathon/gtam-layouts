@@ -1611,7 +1611,7 @@ class OBSUtility extends obsWebsocketJs {
   }
 
   /**
-   *
+   * Set transform properties of a specific scene item.
    * @param scene Name of the scene the source is in.
    * @param sourceId Scene Item ID of the source.
    * @param sourceTransform Transform properties to apply to the source.
