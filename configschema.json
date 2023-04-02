@@ -95,80 +95,20 @@
                   "type": "string",
                   "default": "quiz"
                 },
-                "_1p32": {
+                "gameLayout": {
                   "type": "string",
-                  "default": "3:2 1p"
-                },
-                "_1p43": {
-                  "type": "string",
-                  "default": "4:3 1p"
-                },
-                "_2p43": {
-                  "type": "string",
-                  "default": "4:3 2p"
-                },
-                "_3p43": {
-                  "type": "string",
-                  "default": "4:3 3p"
-                },
-                "_1p169": {
-                  "type": "string",
-                  "default": "16:9 1p"
-                },
-                "_2p169": {
-                  "type": "string",
-                  "default": "16:9 2p"
-                },
-                "_3p169": {
-                  "type": "string",
-                  "default": "16:9 3p"
-                },
-                "_4p169_1": {
-                  "type": "string",
-                  "default": "16:9 4p"
-                },
-                "_4p169_2": {
-                  "type": "string",
-                  "default": "16:9 4p2"
-                },
-                "_4p169_3": {
-                  "type": "string",
-                  "default": "16:9 4p3"
-                },
-                "_4p169_4": {
-                  "type": "string",
-                  "default": "16:9 4p4"
-                },
-                "vcbingo": {
-                  "type": "string",
-                  "default": "GTA VC Bingo"
+                  "default": "Game Layout"
                 },
                 "vchundo": {
                   "type": "string",
-                  "default": "GTA VC Bingo"
-                },
-                "vbingo": {
-                  "type": "string",
-                  "default": "GTA V Bingo"
+                  "default": "GTA VC Hundo"
                 }
               },
               "required": [
                 "intermission",
                 "quiz",
-                "_1p32",
-                "_1p43",
-                "_2p43",
-                "_3p43",
-                "_1p169",
-                "_2p169",
-                "_3p169",
-                "_4p169_1",
-                "_4p169_2",
-                "_4p169_3",
-                "_4p169_4",
-                "vcbingo",
-                "vchundo",
-                "vbingo"
+                "gameLayout",
+                "vchundo"
               ]
             },
             "sources": {
@@ -183,60 +123,40 @@
                   "type": "string",
                   "default": "Music"
                 },
-                "runner1_169": {
+                "runner1": {
                   "type": "string",
-                  "default": "16:9 Feed 1"
+                  "default": "Feed 1"
                 },
-                "runner2_169": {
+                "runner2": {
                   "type": "string",
-                  "default": "16:9 Feed 2"
+                  "default": "Feed 2"
                 },
-                "runner3_169": {
+                "runner3": {
                   "type": "string",
-                  "default": "16:9 Feed 3"
+                  "default": "Feed 3"
                 },
-                "runner4_169": {
+                "runner4": {
                   "type": "string",
-                  "default": "16:9 Feed 4"
+                  "default": "Feed 4"
                 },
-                "runner1_32": {
+                "runner5": {
                   "type": "string",
-                  "default": "3:2 Feed 1"
+                  "default": "Feed 5"
                 },
-                "runner1_43": {
+                "bingoBoard": {
                   "type": "string",
-                  "default": "4:3 Feed 1"
-                },
-                "runner2_43": {
-                  "type": "string",
-                  "default": "4:3 Feed 2"
-                },
-                "runner3_43": {
-                  "type": "string",
-                  "default": "4:3 Feed 3"
-                },
-                "runner4_43": {
-                  "type": "string",
-                  "default": "4:3 Feed 4"
-                },
-                "runner5_43": {
-                  "type": "string",
-                  "default": "4:3 Feed 5"
+                  "default": "Bingo Board"
                 }
               },
               "required": [
                 "intermissionVideo",
                 "intermissionMusic",
-                "runner1_32",
-                "runner1_43",
-                "runner2_43",
-                "runner3_43",
-                "runner4_43",
-                "runner5_43",
-                "runner1_169",
-                "runner2_169",
-                "runner3_169",
-                "runner4_169"
+                "runner1",
+                "runner2",
+                "runner3",
+                "runner4",
+                "runner5",
+                "bingoBoard"
               ]
             },
             "paths": {

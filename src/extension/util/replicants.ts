@@ -6,7 +6,7 @@ import {
   RunFinishTimes,
   Timer,
 } from '../../../../nodecg-speedcontrol/src/types';
-import { HundoTrackerData } from '@gtam-layouts/types/schemas';
+import { HundoTrackerData, GameLayouts } from '@gtam-layouts/types/schemas';
 import {
   OengusImportStatus,
   RunDataActiveRunSurrounding,
@@ -45,3 +45,6 @@ export const runDataArray = nodecg.Replicant<RunDataArray>(
 export const currentOBSScene = nodecg.Replicant<string>('currentOBSScene', {
   defaultValue: '',
 }) as unknown as NodeCG.ServerReplicant<string>;
+export const gameLayouts = nodecg.Replicant<GameLayouts>(
+  'gameLayouts'
+) as unknown as NodeCG.ServerReplicantWithSchemaDefault<GameLayouts>;

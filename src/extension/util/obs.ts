@@ -2,6 +2,7 @@
 
 import obsWebsocketJs from 'obs-websocket-js';
 import { Configschema } from '@gtam-layouts/types/schemas';
+import { TransformProperties } from '@gtam-layouts/types';
 import { get } from './nodecg';
 import { RunData } from '../../../../nodecg-speedcontrol/src/types';
 import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types/schemas';
@@ -44,6 +45,14 @@ enum MusicFolder {
   Mix = 'Mix',
 }
 
+interface GameLayoutSceneItemIds {
+  bingoBoard: number | undefined;
+  feed1: number | undefined;
+  feed2: number | undefined;
+  feed3: number | undefined;
+  feed4: number | undefined;
+}
+
 const nodecg = get();
 const config = nodecg.bundleConfig as Configschema;
 
@@ -62,6 +71,85 @@ class OBSUtility extends obsWebsocketJs {
     }
   }
 
+  /** Get IDs of the items on the game scene. */
+  async getGameLayoutSceneItemIds(): Promise<GameLayoutSceneItemIds> {
+    const gameLayoutScene = config.obs.names.scenes.gameLayout;
+    let ids: GameLayoutSceneItemIds = {
+      bingoBoard: undefined,
+      feed1: undefined,
+      feed2: undefined,
+      feed3: undefined,
+      feed4: undefined,
+    };
+    await this.call('GetSceneItemId', {
+      sceneName: config.obs.names.scenes.gameLayout,
+      sourceName: config.obs.names.sources.bingoBoard,
+    })
+      .then((data) => {
+        ids.bingoBoard = data.sceneItemId;
+      })
+      .catch((err) => {
+        nodecg.log.warn("[OBS] Couldn't get the ID for the bingo board: ", err);
+      });
+
+    await this.call('GetSceneItemId', {
+      sceneName: gameLayoutScene,
+      sourceName: config.obs.names.sources.runner1,
+    })
+      .then((data) => {
+        ids.feed1 = data.sceneItemId;
+      })
+      .catch((err) => {
+        nodecg.log.warn(
+          "[OBS] Couldn't get the ID for the runner 1 feed: ",
+          err
+        );
+      });
+
+    await this.call('GetSceneItemId', {
+      sceneName: gameLayoutScene,
+      sourceName: config.obs.names.sources.runner2,
+    })
+      .then((data) => {
+        ids.feed2 = data.sceneItemId;
+      })
+      .catch((err) => {
+        nodecg.log.warn(
+          "[OBS] Couldn't get the ID for the runner 2 feed: ",
+          err
+        );
+      });
+    await this.call('GetSceneItemId', {
+      sceneName: gameLayoutScene,
+      sourceName: config.obs.names.sources.runner3,
+    })
+      .then((data) => {
+        ids.feed3 = data.sceneItemId;
+      })
+      .catch((err) => {
+        nodecg.log.warn(
+          "[OBS] Couldn't get the ID for the runner 3 feed: ",
+          err
+        );
+      });
+
+    await this.call('GetSceneItemId', {
+      sceneName: gameLayoutScene,
+      sourceName: config.obs.names.sources.runner4,
+    })
+      .then((data) => {
+        ids.feed4 = data.sceneItemId;
+      })
+      .catch((err) => {
+        nodecg.log.warn(
+          "[OBS] Couldn't get the ID for the runner 4 feed: ",
+          err
+        );
+      });
+
+    return ids;
+  }
+
   /**
    * Change to the intermission based on name in config.
    */
@@ -75,6 +163,1046 @@ class OBSUtility extends obsWebsocketJs {
       await this.setStudioModeOnTheNextGameScene();
     } catch (err) {
       nodecg.log.warn('error during changeToIntermission', err);
+    }
+  }
+
+  /**
+   * Sets the layout and sets up required sources for the provided one.
+   * @param layout Name of the layout to change to
+   */
+  async setGameLayout(layout: string): Promise<void> {
+    const sceneItemIds = await this.getGameLayoutSceneItemIds();
+    const gameLayout = config.obs.names.scenes.gameLayout;
+    // Set used audio to feed 1
+    this.muteAudio().catch(() => {});
+    this.unmuteAudio().catch(() => {});
+    switch (layout) {
+      case '3x2-1p':
+        // (Un)hide not required sources, and set the transform properties where required
+        if (sceneItemIds.feed1) {
+          // Need to set the width/height in the browser source settings too
+          await this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 1440, height: 960 },
+          });
+          // Make the feed visible
+          await this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          // Set the feed's transform properties
+          await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 960,
+            positionX: 480,
+            positionY: 60,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 960,
+            sourceWidth: 1440,
+            width: 1440,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '4x3-1p':
+        // (Un)hide not required sources, and set the transform properties where required
+        if (sceneItemIds.feed1) {
+          // Need to set the width/height in the browser source settings too
+          await this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 1440, height: 1080 },
+          });
+          // Make the feed visible
+          await this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          // Set the feed's transform properties
+          await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 1080,
+            positionX: 480,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 1080,
+            sourceWidth: 1440,
+            width: 1440,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '4x3-2p':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 960, height: 720 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 720,
+            positionX: 0,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 720,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 960, height: 720 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 720,
+            positionX: 960,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 720,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '4x3-3p':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 696, height: 522 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 522,
+            positionX: 8,
+            positionY: 11,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 522,
+            sourceWidth: 696,
+            width: 696,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 696, height: 522 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 522,
+            positionX: 8,
+            positionY: 542,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 522,
+            sourceWidth: 696,
+            width: 696,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner3,
+            inputSettings: { width: 696, height: 522 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 522,
+            positionX: 1210,
+            positionY: 542,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 522,
+            sourceWidth: 696,
+            width: 696,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '16x9-1p':
+        // (Un)hide not required sources, and set the transform properties where required
+        if (sceneItemIds.feed1) {
+          // Need to set the width/height in the browser source settings too
+          await this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 1776, height: 999 },
+          });
+          // Make the feed visible
+          await this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          // Set the feed's transform properties
+          await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 999,
+            positionX: 144,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 999,
+            sourceWidth: 1776,
+            width: 1776,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '16x9-2p':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 960, height: 540 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 540,
+            positionX: 0,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 540,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 960, height: 540 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 540,
+            positionX: 960,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 540,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '16x9-3p':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 912, height: 514 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 522,
+            positionX: 8,
+            positionY: 8,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 522,
+            sourceWidth: 696,
+            width: 696,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 912, height: 514 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 514,
+            positionX: 8,
+            positionY: 558,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 514,
+            sourceWidth: 912,
+            width: 912,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner3,
+            inputSettings: { width: 912, height: 514 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 514,
+            positionX: 1000,
+            positionY: 283,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 514,
+            sourceWidth: 912,
+            width: 912,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '16x9-4p':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 912, height: 514 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 514,
+            positionX: 504,
+            positionY: 5,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 514,
+            sourceWidth: 912,
+            width: 912,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 630, height: 354 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 354,
+            positionX: 8,
+            positionY: 524,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 354,
+            sourceWidth: 630,
+            width: 630,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner3,
+            inputSettings: { width: 630, height: 354 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 354,
+            positionX: 645,
+            positionY: 524,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 354,
+            sourceWidth: 630,
+            width: 630,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner4,
+            inputSettings: { width: 630, height: 354 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed4, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 354,
+            positionX: 1282,
+            positionY: 524,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 354,
+            sourceWidth: 630,
+            width: 630,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
+      case '4x3-bingo':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 617, height: 463 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 463,
+            positionX: 16,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 463,
+            sourceWidth: 617,
+            width: 617,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 617, height: 463 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 463,
+            positionX: 652,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 463,
+            sourceWidth: 617,
+            width: 617,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner3,
+            inputSettings: { width: 617, height: 463 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 463,
+            positionX: 1286,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 463,
+            sourceWidth: 617,
+            width: 617,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.bingoBoard,
+            inputSettings: { width: 1430, height: 490 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.bingoBoard, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 490,
+            positionX: 480,
+            positionY: 580,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 490,
+            sourceWidth: 1430,
+            width: 1430,
+          }).catch(() => {});
+        }
+        break;
+      case '16x9-bingo':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 912, height: 514 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 514,
+            positionX: 8,
+            positionY: 8,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 514,
+            sourceWidth: 912,
+            width: 912,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 912, height: 514 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 514,
+            positionX: 1000,
+            positionY: 8,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 514,
+            sourceWidth: 912,
+            width: 912,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner3,
+            inputSettings: { width: 912, height: 514 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 514,
+            positionX: 8,
+            positionY: 558,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 514,
+            sourceWidth: 912,
+            width: 912,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            false
+          ).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.bingoBoard,
+            inputSettings: { width: 955, height: 375 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.bingoBoard, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 375,
+            positionX: 946,
+            positionY: 622,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 375,
+            sourceWidth: 955,
+            width: 955,
+          }).catch(() => {});
+        }
+        break;
+      default:
+        // If for some catastrophical reason there's no layout passed, rerun the function with the 4:3 1 player option
+        this.setGameLayout('4x3-1p');
+        break;
     }
   }
 
@@ -161,7 +1289,7 @@ class OBSUtility extends obsWebsocketJs {
         activeRun.value.teams.unshift(data.feed5);
         this.setTwitchUrlToSources(
           data.feed5.players[0].social.twitch || undefined,
-          [config.obs.names.sources.runner5_43]
+          [config.obs.names.sources.runner5]
         );
       }
     }
@@ -173,7 +1301,7 @@ class OBSUtility extends obsWebsocketJs {
         activeRun.value.teams.unshift(data.feed4);
         this.setTwitchUrlToSources(
           data.feed4.players[0].social.twitch || undefined,
-          [config.obs.names.sources.runner4_43]
+          [config.obs.names.sources.runner4]
         );
       }
     }
@@ -185,7 +1313,7 @@ class OBSUtility extends obsWebsocketJs {
         activeRun.value.teams.unshift(data.feed3);
         this.setTwitchUrlToSources(
           data.feed3.players[0].social.twitch || undefined,
-          [config.obs.names.sources.runner3_43]
+          [config.obs.names.sources.runner3]
         );
       }
     }
@@ -197,7 +1325,7 @@ class OBSUtility extends obsWebsocketJs {
         activeRun.value.teams.unshift(data.feed2);
         this.setTwitchUrlToSources(
           data.feed2.players[0].social.twitch || undefined,
-          [config.obs.names.sources.runner2_43]
+          [config.obs.names.sources.runner2]
         );
       }
     }
@@ -209,7 +1337,7 @@ class OBSUtility extends obsWebsocketJs {
         activeRun.value.teams.unshift(data.feed1);
         this.setTwitchUrlToSources(
           data.feed1.players[0].social.twitch || undefined,
-          [config.obs.names.sources.runner1_43]
+          [config.obs.names.sources.runner1]
         );
       }
     }
@@ -218,83 +1346,67 @@ class OBSUtility extends obsWebsocketJs {
   async focusOnRunnerX(runnerNumber: number): Promise<void> {
     switch (runnerNumber) {
       case 1: {
-        await this.changeScene(config.obs.names.scenes._4p169_1);
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner1_169,
-          false
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner2_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner3_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner4_169,
-          true
-        ).catch(() => {});
+        await this.changeScene(config.obs.names.scenes.gameLayout);
+        this.toggleSourceAudio(config.obs.names.sources.runner1, false).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner2, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner3, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner4, true).catch(
+          () => {}
+        );
         break;
       }
       case 2: {
-        await this.changeScene(config.obs.names.scenes._4p169_2);
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner1_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner2_169,
-          false
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner3_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner4_169,
-          true
-        ).catch(() => {});
+        await this.changeScene(config.obs.names.scenes.gameLayout);
+        this.toggleSourceAudio(config.obs.names.sources.runner1, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner2, false).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner3, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner4, true).catch(
+          () => {}
+        );
         break;
       }
       case 3: {
-        await this.changeScene(config.obs.names.scenes._4p169_3);
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner1_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner2_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner3_169,
-          false
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner4_169,
-          true
-        ).catch(() => {});
+        await this.changeScene(config.obs.names.scenes.gameLayout);
+        this.toggleSourceAudio(config.obs.names.sources.runner1, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner2, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner3, false).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner4, true).catch(
+          () => {}
+        );
         break;
       }
       case 4: {
-        await this.changeScene(config.obs.names.scenes._4p169_4);
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner1_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner2_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner3_169,
-          true
-        ).catch(() => {});
-        this.toggleSourceAudio(
-          config.obs.names.sources.runner4_169,
-          false
-        ).catch(() => {});
+        await this.changeScene(config.obs.names.scenes.gameLayout);
+        this.toggleSourceAudio(config.obs.names.sources.runner1, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner2, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner3, true).catch(
+          () => {}
+        );
+        this.toggleSourceAudio(config.obs.names.sources.runner4, false).catch(
+          () => {}
+        );
         break;
       }
       default: {
@@ -471,6 +1583,54 @@ class OBSUtility extends obsWebsocketJs {
       await this.call('SetInputMute', { inputName: source, inputMuted: mute });
     } catch (err: any) {
       nodecg.log.warn(`Cannot mute OBS source [${source}]: ${err.error}`);
+      throw err;
+    }
+  }
+
+  /**
+   * Hide or unhide the provided OBS source.
+   * @param scene Name of the scene the source is in.
+   * @param sourceId Scene Item ID of the source.
+   * @param visible Is the source going to be visible?
+   */
+  async toggleSourceVisibility(
+    scene: string,
+    sourceId: number,
+    visible = true
+  ): Promise<void> {
+    try {
+      await this.call('SetSceneItemEnabled', {
+        sceneName: scene,
+        sceneItemId: sourceId,
+        sceneItemEnabled: visible,
+      });
+    } catch (err: any) {
+      nodecg.log.warn(`Cannot (un)hide OBS source [${sourceId}]: ${err.error}`);
+      throw err;
+    }
+  }
+
+  /**
+   *
+   * @param scene Name of the scene the source is in.
+   * @param sourceId Scene Item ID of the source.
+   * @param sourceTransform Transform properties to apply to the source.
+   */
+  async setSceneItemTransform(
+    scene: string,
+    sourceId: number,
+    sourceTransform: TransformProperties
+  ): Promise<void> {
+    try {
+      await this.call('SetSceneItemTransform', {
+        sceneName: scene,
+        sceneItemId: sourceId,
+        sceneItemTransform: sourceTransform,
+      });
+    } catch (err: any) {
+      nodecg.log.warn(
+        `Cannot set source transform properties [${sourceId}]: ${err.error}`
+      );
       throw err;
     }
   }

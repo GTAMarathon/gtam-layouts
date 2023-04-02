@@ -6,6 +6,7 @@ import { updateOengusScheduleOnSwitchingRun } from './scheduling';
 import {
   timer as timerRep,
   runDataActiveRun as activeRun,
+  gameLayouts,
 } from './util/replicants';
 
 const nodecg = get();
@@ -13,12 +14,34 @@ const { sendMessage } = nodecg.extensions[
   'nodecg-speedcontrol'
 ] as unknown as ExtensionReturn;
 const config = nodecg.bundleConfig as Configschema;
+const defaultCode = '4x3-1p';
 
 timerRep.on('change', (newVal, oldVal) => {
   if (oldVal && oldVal.state !== 'finished' && newVal.state === 'finished') {
     nodecg.sendMessage('clearIntermission');
   }
 });
+
+activeRun.on('change', (newVal) => {
+  if (newVal.customData.gameLayout) {
+    gameLayouts.value.selected = newVal.customData.gameLayout;
+  } else {
+    gameLayouts.value.selected = defaultCode;
+  }
+});
+
+gameLayouts.on('change', (newVal, oldVal) => {
+  if (newVal.selected && oldVal?.selected) {
+    // if the selected layout didn't change, don't update
+    if (newVal.selected != oldVal?.selected) {
+      obs.setGameLayout(newVal.selected || defaultCode);
+    }
+  } else {
+    // if no previous value, change it to new one or use the default one
+    obs.setGameLayout(newVal.selected || defaultCode);
+  }
+});
+
 nodecg.listenFor('endOfMarathon', async (data, ack) => {
   obs.changeToIntermission().catch(() => {});
   if (ack && !ack.handled) {
@@ -70,9 +93,7 @@ nodecg.listenFor('changeRunnersOnVCHundo', (data, ack) => {
 });
 
 nodecg.listenFor('assignStreamToRunner', (data, ack) => {
-  var source32: string | undefined;
-  var source43: string | undefined;
-  var source169: string | undefined;
+  var source: string | undefined;
 
   if (
     data.runner &&
@@ -92,21 +113,16 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
 
     switch (index) {
       case 0:
-        source32 = config.obs.names.sources.runner1_43;
-        source43 = config.obs.names.sources.runner1_43;
-        source169 = config.obs.names.sources.runner1_169;
+        source = config.obs.names.sources.runner1;
         break;
       case 1:
-        source43 = config.obs.names.sources.runner2_43;
-        source169 = config.obs.names.sources.runner2_169;
+        source = config.obs.names.sources.runner2;
         break;
       case 2:
-        source43 = config.obs.names.sources.runner3_43;
-        source169 = config.obs.names.sources.runner3_169;
+        source = config.obs.names.sources.runner3;
         break;
       case 3:
-        source43 = config.obs.names.sources.runner4_43;
-        source169 = config.obs.names.sources.runner4_169;
+        source = config.obs.names.sources.runner4;
         break;
       default:
         nodecg.log.warn('cannot assign stream to runner: ', data.runner);
@@ -115,11 +131,7 @@ nodecg.listenFor('assignStreamToRunner', (data, ack) => {
         break;
     }
     obs
-      .setTwitchUrlToSources(data.stream.twitchAccount, [
-        source32,
-        source43,
-        source169,
-      ])
+      .setTwitchUrlToSources(data.stream.twitchAccount, [source])
       .catch(() => {});
 
     if (ack && !ack.handled) {
