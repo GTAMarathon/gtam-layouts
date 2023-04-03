@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
   import Timer from './components/Timer.vue';
-  import Player from '../_misc/components/Player.vue';
+  import Player from './components/Player.vue';
   import 'bootstrap';
   import 'bootstrap/dist/css/bootstrap.min.css';
 </script>

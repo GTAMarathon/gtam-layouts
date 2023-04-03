@@ -52,7 +52,8 @@
     "needle": "^3.2.0",
     "obs-websocket-js": "^5.0.2",
     "parse-duration": "^1.0.3",
-    "socket.io-client": "^2.4.0"
+    "socket.io-client": "^2.4.0",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@nodecg/types": "^2.0.4",
@@ -108,17 +109,24 @@
       },
       {
         "name": "streamAssign",
-        "title": "streamAssign",
+        "title": "Assign stream to player",
         "file": "streamAssign.html",
         "workspace": "GTAM",
         "width": 4
       },
       {
         "name": "vchundoselector",
-        "title": "vchundoselector",
+        "title": "Select player to focus on for VC Hundo",
         "file": "vchundoselector.html",
         "workspace": "GTAM",
         "width": 4
+      },
+      {
+        "name": "layoutOverride",
+        "title": "Game Layout Override",
+        "file": "layoutOverride.html",
+        "workspace": "GTAM",
+        "width": 3
       }
     ],
     "graphics": [
@@ -128,62 +136,7 @@
         "height": 1080
       },
       {
-        "file": "4x3-1p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "4x3-2p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "4x3-3p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "4x3-bingo.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-1p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-2p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-3p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-4p.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-4p2.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-4p3.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-4p4.html",
-        "width": 1920,
-        "height": 1080
-      },
-      {
-        "file": "16x9-bingo.html",
+        "file": "game-layout.html",
         "width": 1920,
         "height": 1080
       },
