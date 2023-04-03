@@ -31,6 +31,9 @@ activeRun.on('change', (newVal) => {
 });
 
 gameLayouts.on('change', (newVal, oldVal) => {
+  // Don't do anything if OBS integration is disabled or not connected
+  if (!config.obs.enable || !obs.connected) return;
+
   if (newVal.selected && oldVal?.selected) {
     // if the selected layout didn't change, don't update
     if (newVal.selected != oldVal?.selected) {

@@ -14,7 +14,6 @@ import {
   runDataActiveRunSurrounding,
   runDataArray,
   runDataActiveRun as activeRun,
-  currentOBSScene,
 } from './replicants';
 
 enum VideoFolder {
@@ -58,6 +57,9 @@ const config = nodecg.bundleConfig as Configschema;
 
 // Extending the OBS library with some of our own functions.
 class OBSUtility extends obsWebsocketJs {
+  connected = false;
+  currentScene = '';
+
   /**
    * Change to this OBS scene.
    * @param name Name of the scene.
@@ -1661,6 +1663,7 @@ function connect(): void {
     .connect(config.obs.address, config.obs.password)
     .then(() => {
       nodecg.log.info('OBS connection successful.');
+      obs.connected = true;
     })
     .catch((err) => {
       nodecg.log.warn('OBS connection error.');
@@ -1672,21 +1675,23 @@ if (config.obs.enable) {
   nodecg.log.info('Setting up OBS connection.');
   connect();
   obs.on('ConnectionClosed', () => {
+    obs.connected = false;
     nodecg.log.warn('OBS connection lost, retrying in 5 seconds.');
     setTimeout(connect, 5000);
   });
 
   obs.on('ConnectionError', (err) => {
+    obs.connected = false;
     nodecg.log.warn('OBS connection error.');
     nodecg.log.debug('OBS connection error:', err);
   });
 
   obs.on('CurrentProgramSceneChanged', (data) => {
-    if (data.sceneName != currentOBSScene.value) {
-      if (currentOBSScene.value == config.obs.names.scenes.intermission) {
+    if (data.sceneName != obs.currentScene) {
+      if (obs.currentScene == config.obs.names.scenes.intermission) {
         setStartHighlight();
       }
-      currentOBSScene.value = data.sceneName;
+      obs.currentScene = data.sceneName;
     }
   });
 }
