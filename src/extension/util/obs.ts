@@ -525,7 +525,7 @@ class OBSUtility extends obsWebsocketJs {
           // Need to set the width/height in the browser source settings too
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 1776, height: 999 },
+            inputSettings: { width: 1536, height: 864 },
           });
           // Make the feed visible
           await this.toggleSourceVisibility(
@@ -544,15 +544,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 999,
-            positionX: 144,
+            height: 864,
+            positionX: 384,
             positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 999,
-            sourceWidth: 1776,
-            width: 1776,
+            sourceHeight: 864,
+            sourceWidth: 1536,
+            width: 1536,
           }).catch(() => {});
         }
 
@@ -686,7 +686,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -698,15 +698,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 522,
-            positionX: 8,
-            positionY: 8,
+            height: 432,
+            positionX: 0,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 522,
-            sourceWidth: 696,
-            width: 696,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -718,7 +718,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
             alignment: 5,
@@ -730,15 +730,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 8,
-            positionY: 558,
+            height: 432,
+            positionX: 1152,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -750,7 +750,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
             alignment: 5,
@@ -762,15 +762,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 1000,
-            positionY: 283,
+            height: 432,
+            positionX: 576,
+            positionY: 432,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 

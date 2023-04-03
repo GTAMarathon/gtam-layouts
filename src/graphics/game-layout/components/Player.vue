@@ -5,7 +5,13 @@
         v-if="name"
         :key="name"
         class="Flex"
-        :style="{ position: 'absolute', 'font-size': '1.5em' }"
+        :style="{
+          position: 'absolute',
+          'font-size': '1.5em',
+          color: 'white',
+          textShadow:
+            '-2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c, 6px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c, -2px 0 0 #12222c',
+        }"
       >
         <div
           :style="{
@@ -31,7 +37,7 @@
     Timer,
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
-  import BigText from 'big-text.ts';
+  import fitty, { FittyInstance } from 'fitty';
 
   interface Props {
     size: number;
@@ -53,6 +59,7 @@
   let teamI = 0;
   let index = 0;
   let name = ref<string | null>(null);
+  let playerFitty: FittyInstance | undefined = undefined;
   const player = ref<HTMLDivElement | null>(null);
 
   const finishTime = computed<string | undefined>((): string | undefined => {
@@ -104,12 +111,13 @@
 
       setTimeout(() => {
         if (player.value) {
-          BigText(player.value, {
-            maximumFontSize: props.size,
-            textAlign: 'left',
+          playerFitty = fitty(player.value, {
+            maxSize: props.size,
+            minSize: 1,
+            multiLine: true,
           });
         }
-      }, 20);
+      }, 500);
     },
     { immediate: true }
   );

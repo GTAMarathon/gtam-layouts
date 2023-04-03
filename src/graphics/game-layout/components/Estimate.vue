@@ -1,34 +1,14 @@
 <template>
   <div class="Flex" :style="{ position: 'fixed' }">
     <div
-      v-if="activeRun && activeRun.data"
+      id="Time"
+      v-if="activeRun && activeRun.data && activeRun.data.estimate"
       :style="{
-        'font-size': '1.6em',
-        display: 'flex',
-        'flex-direction': 'row',
-        'justify-content': 'center',
-        width: '100%',
+        'font-size': '1.8em',
+        'margin-bottom': '-0.2em',
       }"
     >
-      <div :style="{ 'margin-left': '5px', width: estimateWidth }">
-        <transition name="fade">
-          <div
-            id="Estimate"
-            ref="estimate"
-            :key="`${activeRun.data.id}${activeRun.data.estimate}`"
-            :style="{ position: 'absolute' }"
-          >
-            <span
-              v-if="activeRun.data.estimate"
-              v-for="char in activeRun.data.estimate.split('')"
-              :key="`${Math.random()}${char}`"
-              :class="char === ':' ? 'Colon' : undefined"
-            >
-              {{ char }}
-            </span>
-          </div>
-        </transition>
-      </div>
+      EST: {{ activeRun.data.estimate }}
     </div>
   </div>
 </template>
@@ -63,14 +43,5 @@
 <style scoped>
   .Flex {
     flex-direction: column;
-  }
-
-  #Estimate > span {
-    display: inline-block;
-    width: 0.5em;
-    text-align: center;
-  }
-  #Estimate > .Colon {
-    width: 0.3em;
   }
 </style>

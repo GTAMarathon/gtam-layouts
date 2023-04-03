@@ -1,67 +1,66 @@
 <template>
   <div>
     <div id="backgrounds">
-      <img class="bg" src="./backgrounds/layoutbackground.png" />
       <img class="bg" src="./backgrounds/16x9-2p.png" />
     </div>
     <timer
       :style="{
-        left: '955px',
-        top: '900px',
-        width: '259px',
-        height: '77px',
-        fontSize: '26px',
+        left: '1285px',
+        top: '730px',
+        width: '635px',
+        height: '150px',
+        fontSize: '44px',
       }"
     ></timer>
     <estimate
       :style="{
-        left: '697px',
-        top: '950px',
-        width: '208px',
+        left: '1285px',
+        top: '865px',
+        width: '635px',
         height: '74px',
-        fontSize: '24px',
+        fontSize: '36px',
       }"
     ></estimate>
     <game
       :style="{
-        left: '750px',
-        top: '595px',
-        width: '445px',
+        left: '659px',
+        top: '810px',
+        width: '600px',
         height: '100px',
-        fontSize: '30px',
+        fontWeight: 'bold',
       }"
-      :size="50"
+      :size="64"
     ></game>
     <category
       :style="{
-        left: '750px',
-        top: '765px',
-        width: '448px',
-        height: '122px',
-        fontSize: '32px',
+        left: '652.5px',
+        top: '860px',
+        width: '615px',
+        height: '100px',
+        fontWeight: 'bold',
       }"
-      :size="52"
+      :size="35"
     ></category>
     <player
       :style="{
-        left: '20px',
-        top: '595px',
-        width: '450px',
-        height: '100px',
+        left: '12.5px',
+        top: '540px',
+        width: '611px',
+        height: '92px',
         fontSize: '24px',
       }"
-      :size="46"
+      :size="54"
       :team="1"
     ></player>
     <player
       :style="{
-        left: '1447px',
-        top: '595px',
-        width: '450px',
-        height: '100px',
+        left: '1296.5px',
+        top: '540px',
+        width: '611px',
+        height: '92px',
         fontSize: '24px',
       }"
-      :size="46"
+      :size="54"
       :team="2"
     ></player>
   </div>

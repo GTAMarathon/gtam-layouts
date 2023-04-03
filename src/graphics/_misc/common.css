@@ -1,5 +1,7 @@
 @import url('./fonts/alte_bebas.css');
 @import url('./fonts/slope_myriad_impact.css');
+@import url('./fonts/cabin.css');
+@import url('./fonts/europa.css');
 
 body {
   margin: 0;
@@ -7,7 +9,7 @@ body {
   overflow: hidden;
   color: white;
   font-weight: bold;
-  font-family: 'slope_operaregular';
+  font-family: 'Europa Grotesk SH DemBol';
 }
 
 #backgrounds {
@@ -20,4 +22,9 @@ body {
 
 #backgrounds .bg {
   position: absolute;
+}
+
+.stroke {
+  text-shadow: -2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c, 2px 0 0 #12222c,
+    2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c, -2px 0 0 #12222c;
 }

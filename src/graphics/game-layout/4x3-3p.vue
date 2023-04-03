@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="backgrounds">
-      <img class="bg" src="./backgrounds/layoutbackground.png" />
       <img class="bg" src="./backgrounds/4x3-3p.png" />
     </div>
     <timer

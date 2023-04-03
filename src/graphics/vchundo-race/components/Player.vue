@@ -31,7 +31,7 @@
     Timer,
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
-  import BigText from 'big-text.ts';
+  import fitty, { FittyInstance } from 'fitty';
 
   interface Props {
     size: number;
@@ -48,6 +48,7 @@
     'nodecg-speedcontrol'
   );
   const timer = useReplicant<Timer>('timer', 'nodecg-speedcontrol');
+  let playerFitty: FittyInstance | undefined = undefined;
 
   let timeout = 0;
   let teamI = 0;
@@ -104,12 +105,13 @@
 
       setTimeout(() => {
         if (player.value) {
-          BigText(player.value, {
-            maximumFontSize: props.size,
-            textAlign: 'left',
+          playerFitty = fitty(player.value, {
+            maxSize: props.size,
+            minSize: 1,
+            multiLine: true,
           });
         }
-      }, 20);
+      }, 500);
     },
     { immediate: true }
   );

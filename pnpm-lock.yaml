@@ -7,12 +7,12 @@ dependencies:
   '@popperjs/core':
     specifier: ^2.9.2
     version: 2.11.7
-  big-text.ts:
-    specifier: ^1.1.1
-    version: 1.1.1
   bootstrap:
     specifier: ^5.0.1
     version: 5.0.1(@popperjs/core@2.11.7)
+  fitty:
+    specifier: ^2.3.6
+    version: 2.3.6
   graphql:
     specifier: ^15.8.0
     version: 15.8.0
@@ -1361,10 +1361,6 @@ packages:
     engines: {node: ^4.5.0 || >= 5.9}
     dev: true
 
-  /big-text.ts@1.1.1:
-    resolution: {integrity: sha512-M9VogGRt5hQUQFN8tx3x3C1P+sNOh3TRvPXY764O56bAgONGQhIeYsD8pZoPHhGS6IvKKlxZBv7h0ShBwT3hew==}
-    dev: false
-
   /binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
@@ -2541,6 +2537,10 @@ packages:
       locate-path: 6.0.0
       path-exists: 4.0.0
     dev: true
+
+  /fitty@2.3.6:
+    resolution: {integrity: sha512-ENp/+MqqYmXBGHC0dlltCX75+5zL5m0uiIGCgYdoThao99BrJpNYzEh3xrvhiy4b7O5X82CQT7dPTiB53H6stw==}
+    dev: false
 
   /flat-cache@3.0.4:
     resolution: {integrity: sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg==}

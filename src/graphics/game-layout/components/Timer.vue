@@ -5,7 +5,7 @@
       v-if="timer && timer.data"
       :class="timer.data.state"
       :style="{
-        'font-size': '2.3em',
+        'font-size': '2.8em',
         transition: '1s',
         'margin-bottom': '-0.2em',
       }"
@@ -37,7 +37,7 @@
   #Time > span,
   #Estimate > span {
     display: inline-block;
-    width: 0.5em;
+    width: 0.52em;
     text-align: center;
   }
   #Time > .Colon,
@@ -55,6 +55,6 @@
     color: #00b1ba;
   }
   .finished {
-    color: #63d760;
+    color: #ffd557;
   }
 </style>

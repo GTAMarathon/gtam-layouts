@@ -28,7 +28,7 @@
   import { ref, watch } from 'vue';
   import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
-  import BigText from 'big-text.ts';
+  import fitty, { FittyInstance } from 'fitty';
 
   interface Props {
     size: number;
@@ -43,17 +43,20 @@
     'nodecg-speedcontrol'
   );
   const game = ref<HTMLDivElement | null>(null);
+  let gameFitty: FittyInstance | undefined = undefined;
 
   watch(
     () => activeRun?.data,
     () => {
       setTimeout(() => {
         if (game.value) {
-          BigText(game.value, {
-            maximumFontSize: props.size,
+          gameFitty = fitty(game.value, {
+            maxSize: props.size,
+            minSize: 1,
+            multiLine: true,
           });
         }
-      }, 20);
+      }, 500);
     },
     { immediate: true }
   );

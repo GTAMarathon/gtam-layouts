@@ -1,54 +1,53 @@
 <template>
   <div>
     <div id="backgrounds">
-      <img class="bg" src="./backgrounds/layoutbackground.png" />
       <img class="bg" src="./backgrounds/4x3-2p.png" />
     </div>
     <timer
       :style="{
-        left: '950px',
-        top: '907px',
-        width: '259px',
-        height: '75px',
-        'font-size': '26px',
+        left: '1285px',
+        top: '815px',
+        width: '635px',
+        height: '150px',
+        'font-size': '36px',
       }"
     ></timer>
     <estimate
       :style="{
-        left: '680px',
-        top: '960px',
-        width: '259px',
+        left: '1285px',
+        top: '940px',
+        width: '635px',
         height: '75px',
         'font-weight': 'regular',
-        'font-size': '22px',
+        'font-size': '30px',
       }"
     ></estimate>
     <game
       :style="{
-        left: '500px',
-        top: '770px',
-        width: '450px',
+        left: '659px',
+        top: '890px',
+        width: '600px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="55"
+      :size="64"
     ></game>
     <category
       :style="{
-        left: '975px',
-        top: '770px',
-        width: '450px',
+        left: '652.5px',
+        top: '940px',
+        width: '615px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="55"
+      :size="35"
     ></category>
     <player
       :style="{
-        left: '30px',
-        top: '770px',
-        width: '450px',
-        height: '100px',
+        left: '12.5px',
+        top: '720px',
+        width: '610px',
+        height: '85px',
         fontWeight: 'bold',
       }"
       :size="50"
@@ -56,10 +55,10 @@
     ></player>
     <player
       :style="{
-        left: '1445px',
-        top: '770px',
-        width: '450px',
-        height: '100px',
+        left: '1297.5px',
+        top: '720px',
+        width: '610px',
+        height: '85px',
         fontWeight: 'bold',
       }"
       :size="50"

@@ -49,7 +49,7 @@
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue';
   import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
-  import BigText from 'big-text.ts';
+  import fitty, { FittyInstance } from 'fitty';
 
   interface Props {
     run: RunData | null;
@@ -69,20 +69,28 @@
   let bigWidth = 1284;
   let catRatio = 0.75;
   let minSizeRatio = 0.4;
+  let gameFitty: FittyInstance | undefined = undefined;
+  let categoryFitty: FittyInstance | undefined = undefined;
 
   function fit() {
     if (game.value) {
-      BigText(game.value, {
-        maximumFontSize: props.small ? smallFontSize : bigFontSize,
-        textAlign: 'left',
+      gameFitty = fitty(game.value, {
+        maxSize: props.small ? smallFontSize : bigFontSize,
+        minSize: props.small
+          ? smallFontSize * minSizeRatio
+          : bigFontSize * minSizeRatio,
+        multiLine: true,
       });
     }
     if (category.value) {
-      BigText(category.value, {
-        maximumFontSize: props.small
+      categoryFitty = fitty(category.value, {
+        maxSize: props.small
           ? smallFontSize * catRatio
           : bigFontSize * catRatio,
-        textAlign: 'left',
+        minSize: props.small
+          ? smallFontSize * minSizeRatio * catRatio
+          : bigFontSize * minSizeRatio * catRatio,
+        multiLine: true,
       });
     }
   }
@@ -90,7 +98,7 @@
   onMounted(() => {
     setTimeout(() => {
       fit();
-    }, 50);
+    }, 500);
   });
 
   watch(
@@ -98,7 +106,7 @@
     () => {
       setTimeout(() => {
         fit();
-      }, 30);
+      }, 500);
     }
   );
 </script>
