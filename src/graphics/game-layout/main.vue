@@ -7,7 +7,7 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
   import { GameLayouts } from '@gtam-layouts/types/schemas';
-  import { onMounted, watch } from 'vue';
+  import { watch } from 'vue';
   import { useReplicant } from 'nodecg-vue-composable';
   import { layoutsList, defaultCode } from './layouts';
 
