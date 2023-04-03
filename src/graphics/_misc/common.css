@@ -1,4 +1,5 @@
 @import url('./fonts/alte_bebas.css');
+@import url('./fonts/slope_myriad_impact.css');
 
 body {
   margin: 0;
@@ -6,7 +7,7 @@ body {
   overflow: hidden;
   color: white;
   font-weight: bold;
-  font-family: 'Alte Haas Grotesk';
+  font-family: 'slope_operaregular';
 }
 
 #backgrounds {
