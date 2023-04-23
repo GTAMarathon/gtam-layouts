@@ -62,6 +62,7 @@
   import Game from './components/Game.vue';
   import Category from './components/Category.vue';
   import Player from './components/Player.vue';
+  import MediaBox from './components/MediaBox.vue';
 </script>
 
 <style>

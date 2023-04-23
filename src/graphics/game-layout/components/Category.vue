@@ -20,7 +20,8 @@
 
 <script setup lang="ts">
   import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
-  import { ref, watch } from 'vue';
+  import { watch } from 'vue';
+  import { $ref } from 'vue/macros';
   import { useReplicant } from 'nodecg-vue-composable';
   import fitty, { FittyInstance } from 'fitty';
 
@@ -37,15 +38,15 @@
     'nodecg-speedcontrol'
   );
 
-  const category = ref<HTMLDivElement | null>(null);
+  const category = $ref<HTMLDivElement | null>(null);
   let categoryFitty: FittyInstance | undefined = undefined;
 
   watch(
     () => activeRun?.data,
     () => {
       setTimeout(() => {
-        if (category.value) {
-          categoryFitty = fitty(category.value, {
+        if (category) {
+          categoryFitty = fitty(category, {
             maxSize: props.size,
             minSize: 1,
             multiLine: true,

@@ -156,6 +156,16 @@
           "png",
           "svg"
         ]
+      },
+      {
+        "name": "merch-images",
+        "title": "Merch Images",
+        "allowedTypes": [
+          "jpg",
+          "jpeg",
+          "png",
+          "svg"
+        ]
       }
     ]
   }

@@ -25,7 +25,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
+  import { watch } from 'vue';
+  import { $ref } from 'vue/macros';
   import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
   import fitty, { FittyInstance } from 'fitty';
@@ -42,15 +43,15 @@
     'runDataActiveRun',
     'nodecg-speedcontrol'
   );
-  const game = ref<HTMLDivElement | null>(null);
+  const game = $ref<HTMLDivElement | null>(null);
   let gameFitty: FittyInstance | undefined = undefined;
 
   watch(
     () => activeRun?.data,
     () => {
       setTimeout(() => {
-        if (game.value) {
-          gameFitty = fitty(game.value, {
+        if (game) {
+          gameFitty = fitty(game, {
             maxSize: props.size,
             minSize: 1,
             multiLine: true,

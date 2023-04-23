@@ -16,7 +16,7 @@ export default defineConfig({
     port: 5173, // Temp workaround for vite-plugin-nodecg having the wrong default
   },
   plugins: [
-    vue({ template: { transformAssetUrls } }),
+    vue({ template: { transformAssetUrls }, reactivityTransform: true }),
     quasar({ autoImportComponentCase: 'combined' }),
     checker({ vueTsc: { tsconfigPath: 'tsconfig.browser.json' } }),
     NodeCGPlugin(),

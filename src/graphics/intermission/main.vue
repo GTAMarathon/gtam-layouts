@@ -102,7 +102,8 @@
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
   import UpcomingRun from './components/UpcomingRun.vue';
   import humanizeDuration from 'humanize-duration';
-  import { onMounted, ref, watch } from 'vue';
+  import { onMounted, watch } from 'vue';
+  import { $ref } from 'vue/macros';
   import { useReplicant } from 'nodecg-vue-composable';
 
   type IntermissionType =
@@ -114,15 +115,15 @@
     | 'END OF MARATHON'
     | null;
 
-  let type = ref<IntermissionType>(null);
-  let upNext = ref<RunData | null>(null);
-  let upNextTimer = ref('');
-  let upNextCountDownCycle = ref(0);
-  let onDeckArr = ref<RunData[]>([]);
-  let onDeck = ref<RunData | null>(null);
-  let onDeckTimer = ref('');
-  let onDeckIndex = ref(0);
-  let onDeckInterval = ref(0);
+  let type = $ref<IntermissionType>(null);
+  let upNext = $ref<RunData | null>(null);
+  let upNextTimer = $ref('');
+  let upNextCountDownCycle = $ref(0);
+  let onDeckArr = $ref<RunData[]>([]);
+  let onDeck = $ref<RunData | null>(null);
+  let onDeckTimer = $ref('');
+  let onDeckIndex = $ref(0);
+  let onDeckInterval = $ref(0);
   const runDataArray = useReplicant<RunDataArray>(
     'runDataArray',
     'nodecg-speedcontrol'
@@ -135,9 +136,9 @@
   onMounted(() => {
     update();
     nodecg.listenFor('endOfMarathon', () => {
-      type.value = 'END OF MARATHON';
-      upNext.value = null;
-      onDeckArr.value = [];
+      type = 'END OF MARATHON';
+      upNext = null;
+      onDeckArr = [];
     });
     nodecg.listenFor('clearIntermission', () => {
       clear();
@@ -145,11 +146,11 @@
   });
 
   function clear() {
-    onDeckArr.value = [];
-    upNext.value = null;
-    upNextTimer.value = 'Next run';
-    onDeckTimer.value = 'Coming up';
-    type.value = null;
+    onDeckArr = [];
+    upNext = null;
+    upNextTimer = 'Next run';
+    onDeckTimer = 'Coming up';
+    type = null;
   }
 
   function update() {
@@ -180,40 +181,40 @@
 
     if (!currentRun) {
       if (nextRun) {
-        type.value = 'START OF MARATHON';
-        upNext.value = nextRun;
+        type = 'START OF MARATHON';
+        upNext = nextRun;
         let index = runDataArray!.data!.findIndex(
           (run) => run.id === nextRun?.id
         );
         nextRun = runDataArray!.data![index + 1];
       }
     } else if (!previousRun) {
-      type.value = 'START OF MARATHON';
-      upNext.value = currentRun;
+      type = 'START OF MARATHON';
+      upNext = currentRun;
     } else if (!nextRun) {
-      type.value = 'FINAL RUN';
-      upNext.value = currentRun;
+      type = 'FINAL RUN';
+      upNext = currentRun;
     } else if (currentRun.gameTwitch == 'Just Chatting') {
       let now = Math.floor(Date.now() / 1000);
       let timerS = (nextRun.scheduledS as number) - now;
-      upNext.value = nextRun;
+      upNext = nextRun;
       updateUpNextTimer();
       let index = runDataArray!.data!.findIndex(
         (run) => run.id === nextRun?.id
       );
       nextRun = runDataArray!.data![index + 1];
       if (timerS > 3600) {
-        type.value = 'END OF DAY';
+        type = 'END OF DAY';
       } else {
-        type.value = 'START OF DAY';
+        type = 'START OF DAY';
       }
     } else {
-      upNext.value = currentRun;
+      upNext = currentRun;
       if (previousRun.gameTwitch == 'Just Chatting') {
-        type.value = 'START OF DAY';
-        upNextTimer.value = upNextTimer + timeToRun(upNext.value);
+        type = 'START OF DAY';
+        upNextTimer = upNextTimer + timeToRun(upNext);
       } else {
-        type.value = 'INTERMISSION';
+        type = 'INTERMISSION';
       }
     }
     while (nextRun && nextRun.gameTwitch == 'Just Chatting') {
@@ -224,11 +225,11 @@
     }
 
     if (nextRun) {
-      onDeckArr.value.push(nextRun);
+      onDeckArr.push(nextRun);
       let index = runDataArray!.data!.findIndex(
         (run) => run.id === nextRun?.id
       );
-      onDeckArr.value = onDeckArr.value.concat(
+      onDeckArr = onDeckArr.concat(
         runDataArray!
           .data!.slice(index + 1)
           .filter(
@@ -262,8 +263,8 @@
   }
 
   function updateUpNextTimer() {
-    if (upNext.value) {
-      upNextTimer.value = 'Next run' + timeToRun(upNext.value);
+    if (upNext) {
+      upNextTimer = 'Next run' + timeToRun(upNext);
     }
   }
 
@@ -289,36 +290,39 @@
   }
 
   function cycleOnDeck() {
-    onDeck.value = onDeckArr.value[onDeckIndex.value];
-    onDeckTimer.value = 'Coming up' + timeToRun(onDeck.value);
-    onDeckIndex.value += 1;
-    if (onDeckIndex.value >= onDeckArr.value.length) {
-      onDeckIndex.value = 0;
+    onDeck = onDeckArr[onDeckIndex];
+    onDeckTimer = 'Coming up' + timeToRun(onDeck);
+    onDeckIndex += 1;
+    if (onDeckIndex >= onDeckArr.length) {
+      onDeckIndex = 0;
     }
   }
 
   watch(onDeckArr, () => {
-    window.clearInterval(onDeckInterval.value);
-    onDeckIndex.value = 0;
-    if (onDeckArr.value.length) {
+    window.clearInterval(onDeckInterval);
+    onDeckIndex = 0;
+    if (onDeckArr.length) {
       cycleOnDeck();
-      onDeckInterval.value = window.setInterval(cycleOnDeck, 10000);
+      onDeckInterval = window.setInterval(cycleOnDeck, 10000);
     } else {
-      onDeck.value = null;
+      onDeck = null;
     }
   });
 
-  watch(upNext, () => {
-    window.clearInterval(upNextCountDownCycle.value);
-    if (
-      type.value == 'START OF MARATHON' ||
-      type.value == 'END OF DAY' ||
-      type.value == 'START OF DAY'
-    ) {
-      updateUpNextTimer();
-      upNextCountDownCycle.value = window.setInterval(updateUpNextTimer, 10000);
+  watch(
+    () => upNext,
+    () => {
+      window.clearInterval(upNextCountDownCycle);
+      if (
+        type == 'START OF MARATHON' ||
+        type == 'END OF DAY' ||
+        type == 'START OF DAY'
+      ) {
+        updateUpNextTimer();
+        upNextCountDownCycle = window.setInterval(updateUpNextTimer, 10000);
+      }
     }
-  });
+  );
 
   watch(
     () => runDataActiveRunSurrounding?.data,
