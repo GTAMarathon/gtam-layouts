@@ -25,6 +25,7 @@ body {
 }
 
 .stroke {
-  text-shadow: -2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c, 2px 0 0 #12222c,
-    2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c, -2px 0 0 #12222c;
+  text-shadow: -2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c,
+    2px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c,
+    -2px 0 0 #12222c;
 }

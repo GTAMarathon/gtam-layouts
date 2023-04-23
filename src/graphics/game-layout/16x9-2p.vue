@@ -63,6 +63,14 @@
       :size="54"
       :team="2"
     ></player>
+    <media-box
+      :style="{
+        left: '0px',
+        bottom: '0px',
+        width: '605px',
+        height: '420px',
+      }"
+    />
   </div>
 </template>
 
@@ -72,6 +80,7 @@
   import Game from './components/Game.vue';
   import Category from './components/Category.vue';
   import Player from './components/Player.vue';
+  import MediaBox from './components/MediaBox.vue';
 </script>
 
 <style>

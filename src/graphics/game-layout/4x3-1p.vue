@@ -48,11 +48,19 @@
         top: '241px',
         width: '451px',
         height: '91px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
       }"
       :size="56"
       :team="1"
     ></player>
+    <media-box
+      :style="{
+        left: '0px',
+        bottom: '0px',
+        width: '446px',
+        height: '434px',
+      }"
+    />
   </div>
 </template>
 
