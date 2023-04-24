@@ -13,11 +13,7 @@
 
 <script setup lang="ts">
   import { $ref } from 'vue/macros';
-  import {
-    defineAsyncComponent,
-    markRaw,
-    onMounted,
-  } from 'vue';
+  import { defineAsyncComponent, markRaw, onMounted } from 'vue';
   import { useAssetReplicant, useReplicant } from 'nodecg-vue-composable';
   import {
     SubQueueItem,
@@ -135,13 +131,8 @@
   // current component object
   // using any here is a massive hack, but it works
   let currentComponent = $ref<{ name: any; data: {} }>({
-    name: components.imports.TwitchBits,
-    data: {
-      bitsInfo: {
-        name: 'test',
-        amount: 40000,
-      },
-    },
+    name: '',
+    data: {},
   });
 
   // set up replicants
@@ -188,11 +179,11 @@
 
   onMounted(() => {
     // a bit of a hack, but it works
-    /*     setTimeout(() => {
+    setTimeout(() => {
       if (merchImages && merchImages.value) {
         setNextStage();
       }
-    }, 500); */
+    }, 500);
   });
 </script>
 
