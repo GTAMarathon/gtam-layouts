@@ -1,5 +1,15 @@
 <template>
-  <div id="MediaBox">
+  <div
+    id="MediaBox"
+    :style="{
+      margin: '15px',
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      verticalAlign: 'middle',
+      position: 'fixed',
+    }"
+  >
     <transition name="fade" mode="out-in" appear>
       <component
         :is="currentComponent.name"
@@ -186,14 +196,3 @@
     }, 500);
   });
 </script>
-
-<style scoped>
-  #MediaBox {
-    margin: 15px;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    vertical-align: middle;
-    position: fixed;
-  }
-</style>
