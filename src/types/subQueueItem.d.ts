@@ -1,4 +1,5 @@
 export type SubQueueItem = {
     name: string,
-    months: number
+    months: number,
+    tier: number
 }

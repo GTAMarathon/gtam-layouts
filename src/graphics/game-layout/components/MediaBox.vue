@@ -13,27 +13,138 @@
 
 <script setup lang="ts">
   import { $ref } from 'vue/macros';
-  import { defineAsyncComponent, markRaw, onMounted } from 'vue';
+  import {
+    defineAsyncComponent,
+    markRaw,
+    onMounted,
+  } from 'vue';
   import { useAssetReplicant, useReplicant } from 'nodecg-vue-composable';
-  import { SubQueueItem, BitsQueueItem } from '@gtam-layouts/types';
+  import {
+    SubQueueItem,
+    BitsQueueItem,
+    MerchQueueItem,
+  } from '@gtam-layouts/types';
 
-  type MediaBoxStages =
-    | 'MerchImage'
-    | 'SponsorImage'
-    | 'TwitchSub'
-    | 'TwitchBits';
+  type MediaBoxStages = 'MerchImage' | 'SponsorImage';
 
   let lastStage: MediaBoxStages;
   let timestamp = $ref<number>(Date.now());
   const components = {
-    Image: markRaw(
-      defineAsyncComponent(() => import('./MediaBox/MediaBoxImage.vue'))
-    ),
+    imports: {
+      Image: markRaw(
+        defineAsyncComponent(() => import('./MediaBox/Image.vue'))
+      ),
+      TwitchSub: markRaw(
+        defineAsyncComponent(() => import('./MediaBox/TwitchSub.vue'))
+      ),
+      TwitchBits: markRaw(
+        defineAsyncComponent(() => import('./MediaBox/TwitchBits.vue'))
+      ),
+    },
+    functions: {
+      TwitchSub: () => {
+        const subInfo = twitchSubsQueue!.data!.shift();
+        // save modified array to replicant
+        twitchSubsQueue?.save();
+        return {
+          name: components.imports.TwitchSub,
+          data: {
+            subInfo: {
+              name: subInfo!.name,
+              months: subInfo!.months,
+              tier: subInfo!.tier,
+            },
+          },
+        };
+      },
+      TwitchBits: () => {
+        const bitsInfo = twitchBitsQueue!.data!.shift();
+        twitchBitsQueue?.save();
+        return {
+          name: components.imports.TwitchBits,
+          data: {
+            bitsInfo: {
+              name: bitsInfo!.name,
+              amount: bitsInfo!.amount,
+            },
+          },
+        };
+      },
+      SponsorImage: () => {
+        lastStage = 'SponsorImage';
+        return {
+          name: components.imports.Image,
+          data: {
+            image:
+              sponsorImages.value[
+                Math.floor(Math.random() * merchImages.value.length)
+              ],
+          },
+        };
+      },
+      MerchImage: () => {
+        lastStage = 'MerchImage';
+        return {
+          name: components.imports.Image,
+          data: {
+            image:
+              merchImages.value[
+                Math.floor(Math.random() * merchImages.value.length)
+              ],
+          },
+        };
+      },
+    },
+    checks: {
+      IsTwitchSubQueued: () => {
+        if (
+          twitchSubsQueue &&
+          twitchSubsQueue.data &&
+          twitchSubsQueue.data.length
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      IsTwitchBitsQueued: () => {
+        if (
+          twitchBitsQueue &&
+          twitchBitsQueue.data &&
+          twitchBitsQueue.data.length
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      IsMerchPurchaseQueued: () => {
+        if (
+          merchPurchaseQueue &&
+          merchPurchaseQueue.data &&
+          merchPurchaseQueue.data.length
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+    },
   };
-  let currentComponent = $ref({
-    name: components.Image,
-    data: {},
+
+  // current component object
+  // using any here is a massive hack, but it works
+  let currentComponent = $ref<{ name: any; data: {} }>({
+    name: components.imports.TwitchBits,
+    data: {
+      bitsInfo: {
+        name: 'test',
+        amount: 40000,
+      },
+    },
   });
+
+  // set up replicants
   const sponsorImages = useAssetReplicant('sponsor-logos', 'gtam-layouts');
   const merchImages = useAssetReplicant('merch-images', 'gtam-layouts');
   const twitchSubsQueue = useReplicant<SubQueueItem[]>(
@@ -44,67 +155,44 @@
     'twitchBitsQueue',
     'gtam-layouts'
   );
+  const merchPurchaseQueue = useReplicant<MerchQueueItem[]>(
+    'merchPurchaseQueue',
+    'gtam-layouts'
+  );
 
   function setNextStage(): void {
     timestamp = Date.now();
 
     // if there was no last stage, start from the beginning
     if (lastStage) {
-      if (lastStage === 'MerchImage') {
-        currentComponent = sponsorImage();
+      if (components.checks.IsTwitchSubQueued()) {
+        currentComponent = components.functions.TwitchSub();
+        return;
+      } else if (components.checks.IsTwitchBitsQueued()) {
+        currentComponent = components.functions.TwitchBits();
+        return;
+      } else if (components.checks.IsMerchPurchaseQueued()) {
+        return;
+      } else if (lastStage === 'MerchImage') {
+        currentComponent = components.functions.SponsorImage();
         return;
       } else if (lastStage === 'SponsorImage') {
-        /*         if (twitchSubsQueue?.data && twitchSubsQueue.data.length) {
-          lastStage = 'TwitchSub';
-          return;
-        } else if (twitchBitsQueue?.data && twitchBitsQueue.data.length) {
-          lastStage = 'TwitchBits';
-          return;
-        } else {
-          currentComponent = merchImage();
-          return;
-        } */
-        currentComponent = merchImage();
+        currentComponent = components.functions.MerchImage();
         return;
       }
     } else {
-      currentComponent = merchImage();
+      currentComponent = components.functions.MerchImage();
+      return;
     }
-  }
-
-  function merchImage() {
-    lastStage = 'MerchImage';
-    return {
-      name: components.Image,
-      data: {
-        image:
-          merchImages.value[
-            Math.floor(Math.random() * merchImages.value.length)
-          ],
-      },
-    };
-  }
-
-  function sponsorImage() {
-    lastStage = 'SponsorImage';
-    return {
-      name: components.Image,
-      data: {
-        image:
-          sponsorImages.value[
-            Math.floor(Math.random() * merchImages.value.length)
-          ],
-      },
-    };
   }
 
   onMounted(() => {
     // a bit of a hack, but it works
-    setTimeout(() => {
+    /*     setTimeout(() => {
       if (merchImages && merchImages.value) {
         setNextStage();
       }
-    }, 500);
+    }, 500); */
   });
 </script>
 

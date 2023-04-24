@@ -77,6 +77,7 @@
         bottom: '0px',
         width: '540px',
         height: '520px',
+        fontSize: '34px',
       }"
     />
   </div>

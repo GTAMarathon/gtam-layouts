@@ -17,7 +17,7 @@
   onMounted(() => {
     setTimeout(() => {
       emit('end');
-    }, 5000);
+    }, 15000);
   });
 </script>
 

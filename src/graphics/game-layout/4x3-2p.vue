@@ -70,6 +70,7 @@
         bottom: '0px',
         width: '600px',
         height: '250px',
+        fontSize: '30px'
       }"
     />
   </div>

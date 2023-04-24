@@ -59,6 +59,7 @@
         bottom: '0px',
         width: '446px',
         height: '434px',
+        fontSize: '30px'
       }"
     />
   </div>

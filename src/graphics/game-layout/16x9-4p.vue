@@ -88,6 +88,7 @@
         bottom: '0px',
         width: '350px',
         height: '310px',
+        fontSize: '30px'
       }"
     />
   </div>

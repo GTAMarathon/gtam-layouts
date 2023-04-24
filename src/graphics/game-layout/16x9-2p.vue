@@ -69,6 +69,7 @@
         bottom: '0px',
         width: '605px',
         height: '420px',
+        fontSize: '34px',
       }"
     />
   </div>

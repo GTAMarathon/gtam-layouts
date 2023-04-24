@@ -57,6 +57,7 @@
         bottom: '0px',
         width: '355px',
         height: '720px',
+        fontSize: '30px',
       }"
     />
   </div>
