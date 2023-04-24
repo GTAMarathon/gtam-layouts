@@ -67,4 +67,9 @@ export interface Configschema {
 		enabled: boolean;
 		port: number;
 	};
+	streamElements: {
+		enabled: boolean;
+		token?: string;
+		handleTestEvents?: boolean;
+	};
 }

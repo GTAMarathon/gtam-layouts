@@ -1,4 +1,6 @@
+import type { MerchItem } from '@gtam-layouts/types';
+
 export type MerchQueueItem = {
-    name: string,
-    merchName: string
-}
+  name: string;
+  items: MerchItem[];
+};

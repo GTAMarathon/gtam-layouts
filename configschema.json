@@ -283,6 +283,25 @@
         "enabled",
         "port"
       ]
+    },
+    "streamElements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "token": {
+          "type": "string",
+          "default": ""
+        },
+        "handleTestEvents": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": ["enabled"]
     }
   },
   "required": [
@@ -292,6 +311,7 @@
     "feeds",
     "schedule",
     "betting",
-    "hundo"
+    "hundo",
+    "streamElements"
   ]
 }

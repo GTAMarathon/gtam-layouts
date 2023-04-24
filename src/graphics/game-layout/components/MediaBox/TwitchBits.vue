@@ -28,7 +28,7 @@
   }>();
   const emit = defineEmits(['end']);
 
-    onMounted(() => {
+  onMounted(() => {
     setTimeout(() => {
       emit('end');
     }, 25000);

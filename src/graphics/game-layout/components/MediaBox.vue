@@ -16,6 +16,7 @@
         :key="timestamp"
         :data="currentComponent.data"
         @end="setNextStage"
+        @merchEnd="showMerchFollowup"
       />
     </transition>
   </div>
@@ -46,6 +47,9 @@
       TwitchBits: markRaw(
         defineAsyncComponent(() => import('./MediaBox/TwitchBits.vue'))
       ),
+      MerchAlert: markRaw(
+        defineAsyncComponent(() => import('./MediaBox/MerchAlert.vue'))
+      ),
     },
     functions: {
       TwitchSub: () => {
@@ -72,6 +76,19 @@
             bitsInfo: {
               name: bitsInfo!.name,
               amount: bitsInfo!.amount,
+            },
+          },
+        };
+      },
+      MerchAlert: () => {
+        const merchAlertInfo = merchPurchaseQueue!.data!.shift();
+        merchPurchaseQueue?.save();
+        return {
+          name: components.imports.MerchAlert,
+          data: {
+            merchInfo: {
+              name: merchAlertInfo!.name,
+              items: merchAlertInfo!.items,
             },
           },
         };
@@ -140,10 +157,7 @@
 
   // current component object
   // using any here is a massive hack, but it works
-  let currentComponent = $ref<{ name: any; data: {} }>({
-    name: '',
-    data: {},
-  });
+  let currentComponent = $ref<{ name: any; data: {} }>({ name: '', data: {} });
 
   // set up replicants
   const sponsorImages = useAssetReplicant('sponsor-logos', 'gtam-layouts');
@@ -173,6 +187,7 @@
         currentComponent = components.functions.TwitchBits();
         return;
       } else if (components.checks.IsMerchPurchaseQueued()) {
+        currentComponent = components.functions.MerchAlert();
         return;
       } else if (lastStage === 'MerchImage') {
         currentComponent = components.functions.SponsorImage();
@@ -187,11 +202,23 @@
     }
   }
 
+  function showMerchFollowup(): void {
+    currentComponent = {
+      name: components.imports.Image,
+      data: {
+        image: {
+          name: 'Merch Followup',
+          url: new URL('./MediaBox/emotes/gtaPOGGERS.png', import.meta.url).href,
+        },
+      },
+    };
+  }
+
   onMounted(() => {
     // a bit of a hack, but it works
     setTimeout(() => {
       if (merchImages && merchImages.value) {
-        setNextStage();
+        currentComponent = components.functions.MerchImage();
       }
     }, 500);
   });
