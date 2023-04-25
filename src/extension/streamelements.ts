@@ -65,9 +65,7 @@ function handleSEEvent(data: any) {
       isGift: event.gifted || false,
       sender: event.sender,
     };
-    if (!event.bulkGifted) {
-      twitchSubQueue.value!.push(subInfo);
-    }
+    twitchSubQueue.value!.push(subInfo);
   } else if (data.listener == SEEvents.WindowEventType.MerchLatest) {
     const event = data.event as SEEvents.MerchLatestEvent;
     const merchInfo: MerchQueueItem = {
@@ -79,15 +77,14 @@ function handleSEEvent(data: any) {
 }
 
 function getSubTier(tier: string) {
-  switch (tier) {
-    case SEEvents.SubscribeTier.First:
-    case SEEvents.SubscribeTier.Prime:
-      return 1;
-    case SEEvents.SubscribeTier.Second:
-      return 2;
-    case SEEvents.SubscribeTier.Third:
-      return 3;
-    default:
-      return 1;
+  const subTier = tier.toString();
+  if (subTier === '1000' || subTier === 'prime') {
+    return 1;
+  } else if (subTier === '2000') {
+    return 2;
+  } else if (subTier === '3000') {
+    return 3;
+  } else {
+    return 1;
   }
 }
