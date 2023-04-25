@@ -69,8 +69,8 @@ nodecg.listenFor('nextRun', async (data, ack) => {
     .catch((err: any) => {
       nodecg.log.warn('Cannot play ads: ', err);
     });
+  sendMessage('changeToNextRun').catch(() => {});
   obs.changeToIntermission().catch(() => {});
-  setTimeout(() => sendMessage('changeToNextRun').catch(() => {}), 1000);
   obs.muteAudio();
   obs.unmuteAudio();
 

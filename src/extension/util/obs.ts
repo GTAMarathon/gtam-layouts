@@ -158,7 +158,7 @@ class OBSUtility extends obsWebsocketJs {
   async changeToIntermission(): Promise<void> {
     try {
       await this.changeIntermissionVid();
-      await new Promise((r) => setTimeout(r, 700));
+      await new Promise((r) => setTimeout(r, 80));
 
       await this.changeScene(config.obs.names.scenes.intermission);
 

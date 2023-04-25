@@ -1,42 +1,54 @@
 <template>
   <div>
     <div id="backgrounds">
-      <img class="bg" src="./bgs/mediabox-logo.png" />
-      <img class="bg" src="./bgs/intermissionnameblob.png" />
       <img
         class="bg"
-        v-if="intermissionRunData.length === 1"
-        src="./bgs/1box.png"
+        v-if="type != 'END OF MARATHON'"
+        src="./bgs/mediabox-logo.png"
       />
       <img
         class="bg"
-        v-else-if="intermissionRunData.length === 2"
-        src="./bgs/2box.png"
+        v-if="type != 'END OF MARATHON'"
+        src="./bgs/intermissionnameblob.png"
       />
-      <img
-        class="bg"
-        v-else-if="intermissionRunData.length === 3"
-        src="./bgs/3box.png"
-      />
+      <template v-if="type != 'END OF MARATHON'">
+        <img
+          class="bg"
+          v-if="intermissionRunData.length === 1"
+          src="./bgs/1box.png"
+          rel="preload"
+        />
+        <img
+          class="bg"
+          v-else-if="intermissionRunData.length === 2"
+          src="./bgs/2box.png"
+          rel="preload"
+        />
+        <img class="bg" v-else src="./bgs/3box.png" rel="preload" />
+      </template>
       <img
         class="bg"
         v-if="type == 'START OF MARATHON' || type == 'START OF DAY'"
         src="./labels/stream_starting.png"
+        rel="preload"
       />
       <img
         class="bg"
         v-else-if="type == 'END OF DAY'"
         src="./labels/stream_ending.png"
+        rel="preload"
       />
       <img
         class="bg"
         v-else-if="type == 'INTERMISSION' || type == 'FINAL RUN'"
         src="./labels/intermission.png"
+        rel="preload"
       />
       <img
         class="bg"
         v-else-if="type == 'END OF MARATHON'"
-        src="./background_end_marathon.png"
+        src="./bgs/marathonend.png"
+        rel="preload"
       />
     </div>
 
@@ -67,7 +79,7 @@
           whiteSpace: 'nowrap',
           position: 'absolute',
           top: '0px',
-          left: '280px'
+          left: '280px',
         }"
       >
         {{ intermissionRunData[0].etaUntil }}
@@ -121,7 +133,7 @@
           whiteSpace: 'nowrap',
           position: 'absolute',
           top: '0px',
-          left: '430px'
+          left: '430px',
         }"
       >
         {{ intermissionRunData[1].etaUntil }}
@@ -175,7 +187,7 @@
           whiteSpace: 'nowrap',
           position: 'absolute',
           top: '0px',
-          left: '225px'
+          left: '225px',
         }"
       >
         {{ intermissionRunData[2].etaUntil }}
@@ -218,6 +230,7 @@
         height: '674px',
         fontSize: '44px',
       }"
+      v-if="type != 'END OF MARATHON'"
     />
   </div>
 </template>
