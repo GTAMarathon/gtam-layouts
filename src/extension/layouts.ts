@@ -23,10 +23,12 @@ timerRep.on('change', (newVal, oldVal) => {
 });
 
 activeRun.on('change', (newVal) => {
-  if (newVal.customData.gameLayout) {
-    gameLayouts.value.selected = newVal.customData.gameLayout;
-  } else {
-    gameLayouts.value.selected = defaultCode;
+  if (newVal) {
+    if (newVal.customData.gameLayout) {
+      gameLayouts.value.selected = newVal.customData.gameLayout;
+    } else {
+      gameLayouts.value.selected = defaultCode;
+    }
   }
 });
 

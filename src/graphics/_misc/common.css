@@ -29,3 +29,9 @@ body {
     2px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c,
     -2px 0 0 #12222c;
 }
+
+.stroke-white {
+  text-shadow: -2px -2px 0 white, 0 -2px 0 white, 2px -2px 0 white,
+    2px 0 0 white, 2px 2px 0 white, 0 2px 0 white, -2px 2px 0 white,
+    -2px 0 0 white;
+}

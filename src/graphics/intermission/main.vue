@@ -1,96 +1,224 @@
 <template>
   <div>
-    <div
-      :style="{
-        position: 'fixed',
-        left: '0px',
-        top: '0px',
-      }"
-    >
+    <div id="backgrounds">
+      <img class="bg" src="./bgs/mediabox-logo.png" />
+      <img class="bg" src="./bgs/intermissionnameblob.png" />
       <img
-        v-if="type != 'FINAL RUN' && type != 'END OF MARATHON'"
-        src="./background_2boxes.png"
+        class="bg"
+        v-if="intermissionRunData.length === 1"
+        src="./bgs/1box.png"
       />
-      <img v-else-if="type != 'END OF MARATHON'" src="./background_1box.png" />
-    </div>
-
-    <div
-      :style="{
-        position: 'fixed',
-        left: '0px',
-        top: '0px',
-      }"
-    >
       <img
+        class="bg"
+        v-else-if="intermissionRunData.length === 2"
+        src="./bgs/2box.png"
+      />
+      <img
+        class="bg"
+        v-else-if="intermissionRunData.length === 3"
+        src="./bgs/3box.png"
+      />
+      <img
+        class="bg"
         v-if="type == 'START OF MARATHON' || type == 'START OF DAY'"
-        src="./background_start.png"
+        src="./labels/stream_starting.png"
       />
-      <img v-else-if="type == 'END OF DAY'" src="./background_end.png" />
       <img
+        class="bg"
+        v-else-if="type == 'END OF DAY'"
+        src="./labels/stream_ending.png"
+      />
+      <img
+        class="bg"
         v-else-if="type == 'INTERMISSION' || type == 'FINAL RUN'"
-        src="./background_intermission.png"
+        src="./labels/intermission.png"
       />
       <img
+        class="bg"
         v-else-if="type == 'END OF MARATHON'"
         src="./background_end_marathon.png"
       />
     </div>
 
-    <div v-if="type != 'END OF MARATHON'">
-      <div
+    <div
+      :style="{
+        position: 'fixed',
+        left: '0px',
+        top: '0px',
+      }"
+    ></div>
+
+    <div
+      v-if="intermissionRunData[0]"
+      :style="{
+        position: 'fixed',
+        top: '239px',
+        left: '86px',
+        height: '200px',
+        width: '887px',
+      }"
+    >
+      <p
         :style="{
-          position: 'fixed',
-          left: '116px',
-          top: '320px',
-          'padding-left': '20px',
-          'font-size': '80px',
-          'font-weight': 'normal',
-          'font-family': 'Bebas Neue',
+          lineHeight: '5px',
+          fontFamily: 'slope_operaregular',
+          fontSize: '30px',
+          overflow: 'visible',
+          whiteSpace: 'nowrap',
+          position: 'absolute',
+          top: '0px',
+          left: '280px'
         }"
       >
-        {{ upNextTimer }}
-      </div>
+        {{ intermissionRunData[0].etaUntil }}
+      </p>
       <upcoming-run
-        :small="false"
-        :run="upNext"
+        :run="intermissionRunData[0].run"
         :style="{
-          left: '116px',
-          top: '410px',
-          height: '234px',
+          position: 'absolute',
+          top: '65px',
+          height: '102px',
+          width: '887px',
+          lineHeight: '40px',
+        }"
+      />
+      <transition name="fade" mode="out-in" appear>
+        <p
+          :style="{
+            position: 'absolute',
+            top: '35px',
+            lineHeight: '5px',
+            fontFamily: 'slope_operaregular',
+            fontSize: '30px',
+            overflow: 'visible',
+            whiteSpace: 'nowrap',
+            marginTop: '160px',
+            color: '#4fbafe',
+          }"
+          :key="intermissionRunData[0].run.id"
+        >
+          {{ formatPlayers(intermissionRunData[0].run) }}
+        </p>
+      </transition>
+    </div>
+
+    <div
+      v-if="intermissionRunData[1]"
+      :style="{
+        position: 'fixed',
+        top: '530px',
+        left: '86px',
+        height: '200px',
+        width: '887px',
+      }"
+    >
+      <p
+        :style="{
+          lineHeight: '5px',
+          fontFamily: 'slope_operaregular',
+          fontSize: '30px',
+          overflow: 'visible',
+          whiteSpace: 'nowrap',
+          position: 'absolute',
+          top: '0px',
+          left: '430px'
         }"
       >
-      </upcoming-run>
-
-      <div v-if="type != 'FINAL RUN'">
-        <transition name="fade">
-          <div
-            :key="onDeckTimer"
-            :style="{
-              position: 'fixed',
-              left: '116px',
-              top: '739px',
-              'padding-left': '20px',
-              'font-size': '60px',
-              'font-weight': 'normal',
-              'font-family': 'Bebas Neue',
-            }"
-          >
-            {{ onDeckTimer }}
-          </div>
-        </transition>
-
-        <upcoming-run
-          :small="true"
-          :run="onDeck"
+        {{ intermissionRunData[1].etaUntil }}
+      </p>
+      <upcoming-run
+        :run="intermissionRunData[1].run"
+        :style="{
+          position: 'absolute',
+          top: '65px',
+          height: '102px',
+          width: '887px',
+          lineHeight: '40px',
+        }"
+      />
+      <transition name="fade" mode="out-in" appear>
+        <p
           :style="{
-            left: '116px',
-            top: '809px',
-            height: '185px',
+            position: 'absolute',
+            top: '35px',
+            lineHeight: '5px',
+            fontFamily: 'slope_operaregular',
+            fontSize: '30px',
+            overflow: 'visible',
+            whiteSpace: 'nowrap',
+            marginTop: '160px',
+            color: '#4fbafe',
           }"
+          :key="intermissionRunData[1].run.id"
         >
-        </upcoming-run>
-      </div>
+          {{ formatPlayers(intermissionRunData[1].run) }}
+        </p>
+      </transition>
     </div>
+
+    <div
+      v-if="intermissionRunData[2]"
+      :style="{
+        position: 'fixed',
+        top: '820px',
+        left: '86px',
+        height: '200px',
+        width: '887px',
+      }"
+    >
+      <p
+        :style="{
+          lineHeight: '5px',
+          fontFamily: 'slope_operaregular',
+          fontSize: '30px',
+          overflow: 'visible',
+          whiteSpace: 'nowrap',
+          position: 'absolute',
+          top: '0px',
+          left: '225px'
+        }"
+      >
+        {{ intermissionRunData[2].etaUntil }}
+      </p>
+      <upcoming-run
+        :run="intermissionRunData[2].run"
+        :style="{
+          position: 'absolute',
+          top: '65px',
+          height: '102px',
+          width: '887px',
+          lineHeight: '40px',
+        }"
+      />
+      <transition name="fade" mode="out-in" appear>
+        <p
+          :style="{
+            position: 'absolute',
+            top: '35px',
+            lineHeight: '5px',
+            fontFamily: 'slope_operaregular',
+            fontSize: '30px',
+            overflow: 'visible',
+            whiteSpace: 'nowrap',
+            marginTop: '160px',
+            color: '#4fbafe',
+          }"
+          :key="intermissionRunData[2].run.id"
+        >
+          {{ formatPlayers(intermissionRunData[2].run) }}
+        </p>
+      </transition>
+    </div>
+
+    <media-box
+      :style="{
+        right: '115px',
+        bottom: '80px',
+        width: '632px',
+        height: '674px',
+        fontSize: '44px',
+      }"
+    />
   </div>
 </template>
 
@@ -101,6 +229,7 @@
     RunDataArray,
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
   import UpcomingRun from './components/UpcomingRun.vue';
+  import MediaBox from '../game-layout/components/MediaBox.vue';
   import humanizeDuration from 'humanize-duration';
   import { onMounted, watch } from 'vue';
   import { $ref } from 'vue/macros';
@@ -115,17 +244,18 @@
     | 'END OF MARATHON'
     | null;
 
+  type IntermissionRunData = {
+    run: RunData;
+    etaUntil: string;
+  };
   let type = $ref<IntermissionType>(null);
-  let upNext = $ref<RunData | null>(null);
-  let upNextTimer = $ref('');
-  let upNextCountDownCycle = $ref(0);
-  let onDeckArr = $ref<RunData[]>([]);
-  let onDeck = $ref<RunData | null>(null);
-  let onDeckTimer = $ref('');
-  let onDeckIndex = $ref(0);
-  let onDeckInterval = $ref(0);
+  let intermissionRunData = $ref<IntermissionRunData[]>([]);
   const runDataArray = useReplicant<RunDataArray>(
     'runDataArray',
+    'nodecg-speedcontrol'
+  );
+  const runDataActiveRun = useReplicant<RunData>(
+    'runDataActiveRun',
     'nodecg-speedcontrol'
   );
   const runDataActiveRunSurrounding = useReplicant<RunDataActiveRunSurrounding>(
@@ -137,8 +267,7 @@
     update();
     nodecg.listenFor('endOfMarathon', () => {
       type = 'END OF MARATHON';
-      upNext = null;
-      onDeckArr = [];
+      intermissionRunData = [];
     });
     nodecg.listenFor('clearIntermission', () => {
       clear();
@@ -146,100 +275,88 @@
   });
 
   function clear() {
-    onDeckArr = [];
-    upNext = null;
-    upNextTimer = 'Next run';
-    onDeckTimer = 'Coming up';
+    intermissionRunData = [];
     type = null;
   }
 
   function update() {
     clear();
-    let previousRun: RunData | null = null;
-    let currentRun: RunData | null = null;
-    let nextRun: RunData | null = null;
-    if (runDataActiveRunSurrounding && runDataActiveRunSurrounding.data) {
-      if (runDataActiveRunSurrounding!.data!.previous) {
-        let index = runDataArray!.data!.findIndex(
-          (run) => run.id === runDataActiveRunSurrounding!.data!.previous
-        );
-        previousRun = runDataArray!.data![index];
-      }
-      if (runDataActiveRunSurrounding!.data!.current) {
-        let index = runDataArray!.data!.findIndex(
-          (run) => run.id === runDataActiveRunSurrounding!.data!.current
-        );
-        currentRun = runDataArray!.data![index];
-      }
-      if (runDataActiveRunSurrounding!.data!.next) {
-        let index = runDataArray!.data!.findIndex(
-          (run) => run.id === runDataActiveRunSurrounding!.data!.next
-        );
-        nextRun = runDataArray!.data![index];
-      }
-    }
-
-    if (!currentRun) {
-      if (nextRun) {
-        type = 'START OF MARATHON';
-        upNext = nextRun;
-        let index = runDataArray!.data!.findIndex(
-          (run) => run.id === nextRun?.id
-        );
-        nextRun = runDataArray!.data![index + 1];
-      }
-    } else if (!previousRun) {
-      type = 'START OF MARATHON';
-      upNext = currentRun;
-    } else if (!nextRun) {
-      type = 'FINAL RUN';
-      upNext = currentRun;
-    } else if (currentRun.gameTwitch == 'Just Chatting') {
-      let now = Math.floor(Date.now() / 1000);
-      let timerS = (nextRun.scheduledS as number) - now;
-      upNext = nextRun;
-      updateUpNextTimer();
-      let index = runDataArray!.data!.findIndex(
-        (run) => run.id === nextRun?.id
-      );
-      nextRun = runDataArray!.data![index + 1];
-      if (timerS > 3600) {
+    if (
+      runDataActiveRun &&
+      runDataActiveRun.data &&
+      runDataActiveRunSurrounding &&
+      runDataActiveRunSurrounding.data &&
+      runDataArray &&
+      runDataArray.data &&
+      runDataArray.data.length
+    ) {
+      // if current run is stream offline, set type to end of day and get next 3 runs
+      if (runDataActiveRun.data.gameTwitch === 'Just Chatting') {
         type = 'END OF DAY';
+        const index = runDataArray?.data?.findIndex(
+          (run) => run.id === runDataActiveRunSurrounding.data?.next
+        );
+        if (index != undefined) {
+          let runDataIndex = 0;
+          for (let i = index; i < index + 3; i++) {
+            const run = runDataArray!.data![i];
+            if (run) {
+              // if we hit a stream offline run, cut the loop early
+              if (run.gameTwitch === 'Just Chatting') {
+                break;
+              }
+              intermissionRunData[runDataIndex] = {
+                run,
+                etaUntil: timeToRun(run),
+              };
+              runDataIndex++;
+            }
+          }
+        }
       } else {
-        type = 'START OF DAY';
-      }
-    } else {
-      upNext = currentRun;
-      if (previousRun.gameTwitch == 'Just Chatting') {
-        type = 'START OF DAY';
-        upNextTimer = upNextTimer + timeToRun(upNext);
-      } else {
+        // if current run is first run in the schedule, set 'start of marathon' type
         type = 'INTERMISSION';
+        if (!runDataActiveRunSurrounding.data.previous) {
+          type = 'START OF MARATHON';
+        } else {
+          // if previous run is stream offline, set type to 'start of day'
+          const previousRun = runDataArray.data.find(
+            (run) => run.id === runDataActiveRunSurrounding.data?.previous
+          );
+          if (previousRun && previousRun.gameTwitch === 'Just Chatting') {
+            type = 'START OF DAY';
+          } else {
+            type = 'INTERMISSION';
+          }
+        }
+        // if current run is last in schedule, set type to 'final run'
+        if (
+          runDataActiveRun.data.id ===
+          runDataArray.data[runDataArray.data.length - 1].id
+        ) {
+          type = 'FINAL RUN';
+        }
+        const index = runDataArray.data.findIndex(
+          (run) => run.id === runDataActiveRunSurrounding.data?.current
+        );
+        if (index != undefined) {
+          let runDataIndex = 0;
+          for (let i = index; i < index + 3; i++) {
+            const run = runDataArray!.data![i];
+            if (run) {
+              // if we hit a stream offline run, cut the loop early
+              if (run.gameTwitch === 'Just Chatting') {
+                break;
+              }
+              intermissionRunData[runDataIndex] = {
+                run,
+                etaUntil: timeToRun(run),
+              };
+              runDataIndex++;
+            }
+          }
+        }
       }
-    }
-    while (nextRun && nextRun.gameTwitch == 'Just Chatting') {
-      let index = runDataArray!.data!.findIndex(
-        (run) => run.id === nextRun?.id
-      );
-      nextRun = runDataArray!.data![index + 1];
-    }
-
-    if (nextRun) {
-      onDeckArr.push(nextRun);
-      let index = runDataArray!.data!.findIndex(
-        (run) => run.id === nextRun?.id
-      );
-      onDeckArr = onDeckArr.concat(
-        runDataArray!
-          .data!.slice(index + 1)
-          .filter(
-            (run) =>
-              run.scheduledS &&
-              run.gameTwitch != 'Just Chatting' &&
-              run.scheduledS < Math.floor(Date.now() / 1000) + 10800
-          )
-          .slice(0, 2)
-      );
     }
   }
 
@@ -251,7 +368,7 @@
       if (timerS > 30) {
         var roundedS = customizedRounding(timerS);
         value =
-          ' in about ' +
+          ' in ' +
           humanizeDuration(roundedS * 1000, {
             conjunction: ' and ',
             serialComma: false,
@@ -260,12 +377,6 @@
       }
     }
     return value;
-  }
-
-  function updateUpNextTimer() {
-    if (upNext) {
-      upNextTimer = 'Next run' + timeToRun(upNext);
-    }
   }
 
   function customizedRounding(time: number): number {
@@ -289,46 +400,31 @@
     return rounded;
   }
 
-  function cycleOnDeck() {
-    onDeck = onDeckArr[onDeckIndex];
-    onDeckTimer = 'Coming up' + timeToRun(onDeck);
-    onDeckIndex += 1;
-    if (onDeckIndex >= onDeckArr.length) {
-      onDeckIndex = 0;
-    }
+  function formatPlayers(run: RunData) {
+    return (
+      run.teams
+        .map(
+          (team) =>
+            team.name || team.players.map((player) => player.name).join(', ')
+        )
+        .join(' vs. ') || 'No Player(s)'
+    );
   }
-
-  watch(onDeckArr, () => {
-    window.clearInterval(onDeckInterval);
-    onDeckIndex = 0;
-    if (onDeckArr.length) {
-      cycleOnDeck();
-      onDeckInterval = window.setInterval(cycleOnDeck, 10000);
-    } else {
-      onDeck = null;
-    }
-  });
-
-  watch(
-    () => upNext,
-    () => {
-      window.clearInterval(upNextCountDownCycle);
-      if (
-        type == 'START OF MARATHON' ||
-        type == 'END OF DAY' ||
-        type == 'START OF DAY'
-      ) {
-        updateUpNextTimer();
-        upNextCountDownCycle = window.setInterval(updateUpNextTimer, 10000);
-      }
-    }
-  );
 
   watch(
     () => runDataActiveRunSurrounding?.data,
     () => {
       update();
     }
+  );
+
+  // if no current run set, clear the intermission
+  watch(
+    () => runDataActiveRun?.data,
+    (newVal) => {
+      if (!newVal) clear();
+    },
+    { immediate: true }
   );
 </script>
 
