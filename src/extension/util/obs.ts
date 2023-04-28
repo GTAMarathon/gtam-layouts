@@ -1220,7 +1220,7 @@ class OBSUtility extends obsWebsocketJs {
     if (
       nextRun &&
       allScenes &&
-      allScenes.includes(nextRun.customData.obsScene)
+      allScenes.includes(config.obs.names.scenes.gameLayout)
     ) {
       this.call('GetStudioModeEnabled')
         .then((response) => {
@@ -1228,7 +1228,7 @@ class OBSUtility extends obsWebsocketJs {
             this.call('SetStudioModeEnabled', { studioModeEnabled: true })
               .then(() => {
                 this.call('SetCurrentPreviewScene', {
-                  sceneName: nextRun.customData.obsScene,
+                  sceneName: config.obs.names.scenes.gameLayout,
                 }).catch((err) => {
                   nodecg.log.warn('StudioMode not enabled', err);
                 });
