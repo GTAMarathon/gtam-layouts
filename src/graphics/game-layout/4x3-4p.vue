@@ -1,43 +1,43 @@
 <template>
   <div>
     <div id="backgrounds">
-      <img class="bg" src="./backgrounds/16x9-4p.png" />
+      <img class="bg" src="./backgrounds/4x3-4p.png" />
     </div>
     <timer
       :style="{
-        left: '777px',
-        top: '547px',
-        width: '366px',
-        height: '80px',
-        'font-size': '32px',
+        left: '745px',
+        top: '527px',
+        width: '426px',
+        height: '100px',
+        'font-size': '40px',
       }"
     ></timer>
     <estimate
       :style="{
-        left: '777px',
-        top: '620px',
-        width: '366px',
-        height: '55px',
+        left: '628px',
+        top: '625px',
+        width: '664px',
+        height: '75px',
         'font-weight': 'regular',
-        'font-size': '28px',
+        'font-size': '32px',
       }"
     ></estimate>
     <game
       :style="{
-        left: '777px',
+        left: '628px',
         top: '261px',
-        width: '366px',
-        height: '50px',
+        width: '664px',
+        height: '75px',
         fontWeight: 'bold',
       }"
       :size="72"
     ></game>
     <category
       :style="{
-        left: '777px',
+        left: '628px',
         top: '320px',
-        width: '366px',
-        height: '50px',
+        width: '664px',
+        height: '75px',
         fontWeight: 'bold',
       }"
       :size="44"
@@ -45,19 +45,19 @@
     <player
       :style="{
         left: '0px',
-        top: '432px',
-        width: '768px',
-        height: '107px',
+        top: '459px',
+        width: '614px',
+        height: '81px',
       }"
       :size="50"
       :team="1"
     ></player>
     <player
       :style="{
-        left: '1152px',
-        top: '432px',
-        width: '768px',
-        height: '107px',
+        left: '1306px',
+        top: '459px',
+        width: '614px',
+        height: '81px',
       }"
       :size="50"
       :team="2"
@@ -65,19 +65,19 @@
     <player
       :style="{
         left: '0px',
-        top: '973px',
-        width: '768px',
-        height: '107px',
+        top: '999px',
+        width: '614px',
+        height: '81px',
       }"
       :size="50"
       :team="3"
     ></player>
     <player
       :style="{
-        left: '1152px',
-        top: '973px',
-        width: '768px',
-        height: '107px',
+        left: '1306px',
+        top: '999px',
+        width: '614px',
+        height: '81px',
       }"
       :size="50"
       :team="4"
@@ -88,7 +88,7 @@
         bottom: '0px',
         width: '350px',
         height: '310px',
-        fontSize: '30px'
+        fontSize: '30px',
       }"
     />
   </div>

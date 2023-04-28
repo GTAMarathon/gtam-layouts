@@ -29,17 +29,17 @@
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="64"
+      :size="72"
     ></game>
     <category
       :style="{
         left: '652.5px',
-        top: '860px',
+        top: '869px',
         width: '615px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="35"
+      :size="44"
     ></category>
     <player
       :style="{

@@ -15,7 +15,7 @@
     <estimate
       :style="{
         left: '1285px',
-        top: '940px',
+        top: '935px',
         width: '635px',
         height: '75px',
         'font-weight': 'regular',
@@ -25,12 +25,12 @@
     <game
       :style="{
         left: '659px',
-        top: '890px',
+        top: '884px',
         width: '600px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="64"
+      :size="72"
     ></game>
     <category
       :style="{
@@ -40,7 +40,7 @@
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="35"
+      :size="44"
     ></category>
     <player
       :style="{

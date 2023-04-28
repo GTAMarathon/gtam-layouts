@@ -26,6 +26,11 @@ const routes = [
     component: Layouts.L_4x3_3p,
   },
   {
+    name: '4x3 - 4 Players',
+    path: '/4x3-4p',
+    component: Layouts.L_4x3_4p,
+  },
+  {
     name: '4x3 - Bingo',
     path: '/4x3-bingo',
     component: Layouts.L_4x3_Bingo,
