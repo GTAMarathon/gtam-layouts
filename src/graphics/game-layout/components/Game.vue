@@ -17,7 +17,7 @@
           ref="game"
           id="game"
         >
-          {{ activeRun.data.customData.gameShort }}
+          {{ activeRun.data.customData.gameShort || activeRun.data.game }}
         </div>
       </div>
     </transition>
