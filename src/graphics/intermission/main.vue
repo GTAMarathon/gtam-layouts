@@ -12,19 +12,21 @@
         src="./bgs/intermissionnameblob.png"
       />
       <template v-if="type != 'END OF MARATHON'">
-        <img
-          class="bg"
-          v-if="intermissionRunData.length === 1"
-          src="./bgs/1box.png"
-          rel="preload"
-        />
-        <img
-          class="bg"
-          v-else-if="intermissionRunData.length === 2"
-          src="./bgs/2box.png"
-          rel="preload"
-        />
-        <img class="bg" v-else src="./bgs/3box.png" rel="preload" />
+        <transition name="fade" appear>
+          <img
+            class="bg"
+            v-if="intermissionRunData.length === 1"
+            src="./bgs/1box.png"
+            rel="preload"
+          />
+          <img
+            class="bg"
+            v-else-if="intermissionRunData.length === 2"
+            src="./bgs/2box.png"
+            rel="preload"
+          />
+          <img class="bg" v-else src="./bgs/3box.png" rel="preload" />
+        </transition>
       </template>
       <img
         class="bg"
