@@ -9,7 +9,7 @@
         class="Flex"
         :key="currentItem.name"
       >
-        <img src="./emotes/gtaCop.png" />
+        <img :src="getItemImage(currentItem.name)" />
         <span>
           <b class="highlight">{{ data.merchInfo.name }}</b> has bought
           <b class="highlight"
@@ -35,8 +35,13 @@
   let index = 0;
   let timeout: NodeJS.Timeout;
 
+  function getItemImage(item: string): string {
+    return new URL(`./merch/${item}.png`, import.meta.url).href;
+  }
+
   function setNextItem() {
     index++;
+    clearTimeout(timeout);
     if (index >= props.data.merchInfo!.items.length) {
       emit('merchEnd');
     }
@@ -56,6 +61,8 @@
         timeout = setTimeout(() => {
           setNextItem();
         }, 25000 / props.data.merchInfo.items.length);
+      } else {
+        emit('merchEnd');
       }
     },
     { immediate: true }
