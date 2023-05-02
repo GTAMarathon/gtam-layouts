@@ -30,7 +30,7 @@
   const props = defineProps<{
     data: { merchInfo: MerchQueueItem | undefined };
   }>();
-  const emit = defineEmits(['merchEnd']);
+  const emit = defineEmits(['merchEnd', 'end']);
   let currentItem = $ref<MerchItem | null>(null);
   let index = 0;
   let timeout: NodeJS.Timeout;
@@ -62,7 +62,7 @@
           setNextItem();
         }, 25000 / props.data.merchInfo.items.length);
       } else {
-        emit('merchEnd');
+        emit('end');
       }
     },
     { immediate: true }
