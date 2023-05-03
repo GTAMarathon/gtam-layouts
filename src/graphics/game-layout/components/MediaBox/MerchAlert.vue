@@ -36,7 +36,12 @@
   let timeout: NodeJS.Timeout;
 
   function getItemImage(item: string): string {
-    return new URL(`./merch/${item}.png`, import.meta.url).href;
+    const url = new URL(`./merch/${item}.png`, import.meta.url).href;
+    if (!url.endsWith('undefined')) {
+      return url;
+    } else {
+      return new URL('./emotes/gtaPOGGERS.png', import.meta.url).href;
+    }
   }
 
   function setNextItem() {
