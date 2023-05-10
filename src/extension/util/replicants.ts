@@ -11,6 +11,11 @@ import {
   OengusImportStatus,
   RunDataActiveRunSurrounding,
 } from '../../../../nodecg-speedcontrol/src/types/schemas';
+import {
+  SubQueueItem,
+  BitsQueueItem,
+  MerchQueueItem,
+} from '@gtam-layouts/types';
 const nodecg = get();
 
 export const timer = nodecg.Replicant<Timer>(
@@ -45,3 +50,15 @@ export const runDataArray = nodecg.Replicant<RunDataArray>(
 export const gameLayouts = nodecg.Replicant<GameLayouts>(
   'gameLayouts'
 ) as unknown as NodeCG.ServerReplicantWithSchemaDefault<GameLayouts>;
+export const twitchSubQueue = nodecg.Replicant<SubQueueItem[]>(
+  'twitchSubQueue',
+  { defaultValue: [] }
+) as unknown as NodeCG.ServerReplicant<SubQueueItem[]>;
+export const twitchBitsQueue = nodecg.Replicant<BitsQueueItem[]>(
+  'twitchBitsQueue',
+  { defaultValue: [] }
+) as unknown as NodeCG.ServerReplicant<BitsQueueItem[]>;
+export const merchPurchaseQueue = nodecg.Replicant<MerchQueueItem[]>(
+  'merchPurchaseQueue',
+  { defaultValue: [] }
+) as unknown as NodeCG.ServerReplicant<MerchQueueItem[]>;

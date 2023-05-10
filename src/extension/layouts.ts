@@ -23,10 +23,18 @@ timerRep.on('change', (newVal, oldVal) => {
 });
 
 activeRun.on('change', (newVal) => {
-  if (newVal.customData.gameLayout) {
-    gameLayouts.value.selected = newVal.customData.gameLayout;
-  } else {
-    gameLayouts.value.selected = defaultCode;
+  if (newVal) {
+    // Set game layout
+    if (newVal.customData.gameLayout) {
+      gameLayouts.value.selected = newVal.customData.gameLayout;
+    } else {
+      gameLayouts.value.selected = defaultCode;
+    }
+
+    // Set bingo board URL if needed
+    if (newVal.category?.includes('Bingo') && newVal.customData.bingoURL) {
+      obs.updateBingoBoardURL(newVal.customData.bingoURL);
+    }
   }
 });
 
@@ -67,8 +75,8 @@ nodecg.listenFor('nextRun', async (data, ack) => {
     .catch((err: any) => {
       nodecg.log.warn('Cannot play ads: ', err);
     });
+  sendMessage('changeToNextRun').catch(() => {});
   obs.changeToIntermission().catch(() => {});
-  setTimeout(() => sendMessage('changeToNextRun').catch(() => {}), 1000);
   obs.muteAudio();
   obs.unmuteAudio();
 

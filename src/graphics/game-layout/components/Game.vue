@@ -17,7 +17,7 @@
           ref="game"
           id="game"
         >
-          {{ activeRun.data.customData.gameShort }}
+          {{ activeRun.data.customData.gameShort || activeRun.data.game }}
         </div>
       </div>
     </transition>
@@ -25,10 +25,11 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
+  import { watch } from 'vue';
+  import { $ref } from 'vue/macros';
   import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
-  import BigText from 'big-text.ts';
+  import fitty, { FittyInstance } from 'fitty';
 
   interface Props {
     size: number;
@@ -42,18 +43,21 @@
     'runDataActiveRun',
     'nodecg-speedcontrol'
   );
-  const game = ref<HTMLDivElement | null>(null);
+  const game = $ref<HTMLDivElement | null>(null);
+  let gameFitty: FittyInstance | undefined = undefined;
 
   watch(
     () => activeRun?.data,
     () => {
       setTimeout(() => {
-        if (game.value) {
-          BigText(game.value, {
-            maximumFontSize: props.size,
+        if (game) {
+          gameFitty = fitty(game, {
+            maxSize: props.size,
+            minSize: 1,
+            multiLine: true,
           });
         }
-      }, 20);
+      }, 500);
     },
     { immediate: true }
   );

@@ -1,54 +1,53 @@
 <template>
   <div>
     <div id="backgrounds">
-      <img class="bg" src="./backgrounds/layoutbackground.png" />
       <img class="bg" src="./backgrounds/4x3-3p.png" />
     </div>
     <timer
       :style="{
-        left: '1422px',
-        top: '270px',
-        width: '259px',
-        height: '75px',
-        'font-size': '28px',
+        left: '1314px',
+        top: '745px',
+        width: '606px',
+        height: '125px',
+        'font-size': '45px',
       }"
     ></timer>
     <estimate
       :style="{
-        left: '1160px',
-        top: '325px',
-        width: '259px',
+        left: '1314px',
+        top: '855px',
+        width: '606px',
         height: '75px',
         fontWeight: 'regular',
-        'font-size': '24px',
+        'font-size': '32px',
       }"
     ></estimate>
     <game
       :style="{
         left: '740px',
-        top: '210px',
+        top: '220px',
         width: '440px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="56"
+      :size="72"
     ></game>
     <category
       :style="{
         left: '740px',
-        top: '380px',
+        top: '280px',
         width: '440px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="56"
+      :size="44"
     ></category>
     <player
       :style="{
-        left: '717px',
-        top: '40px',
-        width: '330px',
-        height: '100px',
+        left: '0px',
+        top: '541px',
+        width: '593px',
+        height: '91px',
         fontWeight: 'bold',
       }"
       :size="50"
@@ -56,10 +55,10 @@
     ></player>
     <player
       :style="{
-        left: '717px',
-        top: '560px',
-        width: '330px',
-        height: '100px',
+        left: '720px',
+        top: '450px',
+        width: '479px',
+        height: '91px',
         fontWeight: 'bold',
       }"
       :size="50"
@@ -67,15 +66,26 @@
     ></player>
     <player
       :style="{
-        left: '870px',
-        top: '940px',
-        width: '330px',
-        height: '100px',
+        left: '1314px',
+        top: '541px',
+        width: '606px',
+        height: '91px',
         fontWeight: 'bold',
       }"
       :size="50"
       :team="3"
     ></player>
+    <media-box
+      :style="{
+        left: '0px',
+        bottom: '0px',
+        width: '555px',
+        height: '420px',
+        fontSize: '34px',
+      }"
+      :sponsor-images="sponsorImages"
+      :merch-images="merchImages"
+    />
   </div>
 </template>
 
@@ -85,6 +95,11 @@
   import Game from './components/Game.vue';
   import Category from './components/Category.vue';
   import Player from './components/Player.vue';
+  import MediaBox from './components/MediaBox.vue';
+  import { useAssetReplicant } from 'nodecg-vue-composable';
+
+  const sponsorImages = useAssetReplicant('sponsor-logos', 'gtam-layouts');
+  const merchImages = useAssetReplicant('merch-images', 'gtam-layouts');
 </script>
 
 <style>

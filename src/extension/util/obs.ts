@@ -158,7 +158,7 @@ class OBSUtility extends obsWebsocketJs {
   async changeToIntermission(): Promise<void> {
     try {
       await this.changeIntermissionVid();
-      await new Promise((r) => setTimeout(r, 700));
+      await new Promise((r) => setTimeout(r, 80));
 
       await this.changeScene(config.obs.names.scenes.intermission);
 
@@ -415,7 +415,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 696, height: 522 },
+            inputSettings: { width: 721, height: 541 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -427,15 +427,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 522,
-            positionX: 8,
-            positionY: 11,
+            height: 541,
+            positionX: 0,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 522,
-            sourceWidth: 696,
-            width: 696,
+            sourceHeight: 541,
+            sourceWidth: 721,
+            width: 721,
           }).catch(() => {});
         }
 
@@ -447,7 +447,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 696, height: 522 },
+            inputSettings: { width: 721, height: 540 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
             alignment: 5,
@@ -459,15 +459,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 522,
-            positionX: 8,
-            positionY: 542,
+            height: 540,
+            positionX: 593,
+            positionY: 540,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 522,
-            sourceWidth: 696,
-            width: 696,
+            sourceHeight: 540,
+            sourceWidth: 721,
+            width: 721,
           }).catch(() => {});
         }
 
@@ -479,7 +479,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
-            inputSettings: { width: 696, height: 522 },
+            inputSettings: { width: 721, height: 541 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
             alignment: 5,
@@ -491,15 +491,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 522,
-            positionX: 1210,
-            positionY: 542,
+            height: 541,
+            positionX: 1198,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 522,
-            sourceWidth: 696,
-            width: 696,
+            sourceHeight: 541,
+            sourceWidth: 721,
+            width: 721,
           }).catch(() => {});
         }
 
@@ -519,13 +519,150 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
         }
         break;
+      case '4x3-4p':
+        if (sceneItemIds.feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed1,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner1,
+            inputSettings: { width: 614, height: 461 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 461,
+            positionX: 0,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 461,
+            sourceWidth: 614,
+            width: 614,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed2,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner2,
+            inputSettings: { width: 614, height: 461 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 461,
+            positionX: 1306,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 461,
+            sourceWidth: 614,
+            width: 614,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed3) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed3,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner3,
+            inputSettings: { width: 614, height: 461 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 461,
+            positionX: 0,
+            positionY: 540,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 461,
+            sourceWidth: 614,
+            width: 614,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.feed4) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.feed4,
+            true
+          ).catch(() => {});
+          this.call('SetInputSettings', {
+            inputName: config.obs.names.sources.runner4,
+            inputSettings: { width: 614, height: 461 },
+          });
+          this.setSceneItemTransform(gameLayout, sceneItemIds.feed4, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 461,
+            positionX: 1306,
+            positionY: 540,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 461,
+            sourceWidth: 614,
+            width: 614,
+          }).catch(() => {});
+        }
+
+        if (sceneItemIds.bingoBoard) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.bingoBoard,
+            false
+          ).catch(() => {});
+        }
+        break;
       case '16x9-1p':
         // (Un)hide not required sources, and set the transform properties where required
         if (sceneItemIds.feed1) {
           // Need to set the width/height in the browser source settings too
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 1776, height: 999 },
+            inputSettings: { width: 1536, height: 864 },
           });
           // Make the feed visible
           await this.toggleSourceVisibility(
@@ -544,15 +681,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 999,
-            positionX: 144,
+            height: 864,
+            positionX: 384,
             positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 999,
-            sourceWidth: 1776,
-            width: 1776,
+            sourceHeight: 864,
+            sourceWidth: 1536,
+            width: 1536,
           }).catch(() => {});
         }
 
@@ -686,7 +823,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -698,15 +835,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 522,
-            positionX: 8,
-            positionY: 8,
+            height: 432,
+            positionX: 0,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 522,
-            sourceWidth: 696,
-            width: 696,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -718,7 +855,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
             alignment: 5,
@@ -730,15 +867,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 8,
-            positionY: 558,
+            height: 432,
+            positionX: 1152,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -750,7 +887,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
             alignment: 5,
@@ -762,15 +899,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 1000,
-            positionY: 283,
+            height: 432,
+            positionX: 576,
+            positionY: 432,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -799,7 +936,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -811,15 +948,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 504,
-            positionY: 5,
+            height: 432,
+            positionX: 0,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -831,7 +968,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 630, height: 354 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
             alignment: 5,
@@ -843,15 +980,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 354,
-            positionX: 8,
-            positionY: 524,
+            height: 432,
+            positionX: 1152,
+            positionY: 0,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 354,
-            sourceWidth: 630,
-            width: 630,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -863,7 +1000,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
-            inputSettings: { width: 630, height: 354 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
             alignment: 5,
@@ -875,15 +1012,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 354,
-            positionX: 645,
-            positionY: 524,
+            height: 432,
+            positionX: 0,
+            positionY: 540,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 354,
-            sourceWidth: 630,
-            width: 630,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -895,7 +1032,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner4,
-            inputSettings: { width: 630, height: 354 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed4, {
             alignment: 5,
@@ -907,15 +1044,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 354,
-            positionX: 1282,
-            positionY: 524,
+            height: 432,
+            positionX: 1152,
+            positionY: 540,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 354,
-            sourceWidth: 630,
-            width: 630,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -936,7 +1073,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 617, height: 463 },
+            inputSettings: { width: 614, height: 461 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -948,15 +1085,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 463,
-            positionX: 16,
-            positionY: 0,
+            height: 461,
+            positionX: 0,
+            positionY: 4,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 463,
-            sourceWidth: 617,
-            width: 617,
+            sourceHeight: 461,
+            sourceWidth: 614,
+            width: 614,
           }).catch(() => {});
         }
 
@@ -968,7 +1105,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 617, height: 463 },
+            inputSettings: { width: 614, height: 461 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
             alignment: 5,
@@ -980,15 +1117,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 463,
-            positionX: 652,
-            positionY: 0,
+            height: 461,
+            positionX: 1306,
+            positionY: 4,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 463,
-            sourceWidth: 617,
-            width: 617,
+            sourceHeight: 461,
+            sourceWidth: 614,
+            width: 614,
           }).catch(() => {});
         }
 
@@ -1000,7 +1137,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
-            inputSettings: { width: 617, height: 463 },
+            inputSettings: { width: 614, height: 461 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
             alignment: 5,
@@ -1012,15 +1149,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 463,
-            positionX: 1286,
-            positionY: 0,
+            height: 461,
+            positionX: 0,
+            positionY: 540,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 463,
-            sourceWidth: 617,
-            width: 617,
+            sourceHeight: 461,
+            sourceWidth: 614,
+            width: 614,
           }).catch(() => {});
         }
 
@@ -1040,7 +1177,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.bingoBoard,
-            inputSettings: { width: 1430, height: 490 },
+            inputSettings: { width: 614, height: 540 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.bingoBoard, {
             alignment: 5,
@@ -1052,15 +1189,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 490,
-            positionX: 480,
-            positionY: 580,
+            height: 540,
+            positionX: 1306,
+            positionY: 540,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 490,
-            sourceWidth: 1430,
-            width: 1430,
+            sourceHeight: 540,
+            sourceWidth: 614,
+            width: 614,
           }).catch(() => {});
         }
         break;
@@ -1073,7 +1210,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -1085,15 +1222,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 8,
-            positionY: 8,
+            height: 432,
+            positionX: 0,
+            positionY: 5,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -1105,7 +1242,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
             alignment: 5,
@@ -1117,15 +1254,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 1000,
-            positionY: 8,
+            height: 432,
+            positionX: 1152,
+            positionY: 5,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -1137,7 +1274,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
-            inputSettings: { width: 912, height: 514 },
+            inputSettings: { width: 768, height: 432 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed3, {
             alignment: 5,
@@ -1149,15 +1286,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 514,
-            positionX: 8,
-            positionY: 558,
+            height: 432,
+            positionX: 0,
+            positionY: 545,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 514,
-            sourceWidth: 912,
-            width: 912,
+            sourceHeight: 432,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
 
@@ -1177,7 +1314,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.bingoBoard,
-            inputSettings: { width: 955, height: 375 },
+            inputSettings: { width: 768, height: 540 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.bingoBoard, {
             alignment: 5,
@@ -1189,15 +1326,15 @@ class OBSUtility extends obsWebsocketJs {
             cropLeft: 0,
             cropRight: 0,
             cropTop: 0,
-            height: 375,
-            positionX: 946,
-            positionY: 622,
+            height: 540,
+            positionX: 1152,
+            positionY: 540,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
-            sourceHeight: 375,
-            sourceWidth: 955,
-            width: 955,
+            sourceHeight: 540,
+            sourceWidth: 768,
+            width: 768,
           }).catch(() => {});
         }
         break;
@@ -1205,6 +1342,17 @@ class OBSUtility extends obsWebsocketJs {
         // If for some catastrophical reason there's no layout passed, rerun the function with the 4:3 1 player option
         this.setGameLayout('4x3-1p');
         break;
+    }
+  }
+
+  async updateBingoBoardURL(url: string): Promise<void> {
+    if (url) {
+      await this.call('SetInputSettings', {
+        inputName: config.obs.names.sources.bingoBoard,
+        inputSettings: { url: url },
+      }).catch((err) => {
+        nodecg.log.warn('[OBS] Failed to set bingo board URL: ', err);
+      });
     }
   }
 
@@ -1220,7 +1368,7 @@ class OBSUtility extends obsWebsocketJs {
     if (
       nextRun &&
       allScenes &&
-      allScenes.includes(nextRun.customData.obsScene)
+      allScenes.includes(config.obs.names.scenes.gameLayout)
     ) {
       this.call('GetStudioModeEnabled')
         .then((response) => {
@@ -1228,7 +1376,7 @@ class OBSUtility extends obsWebsocketJs {
             this.call('SetStudioModeEnabled', { studioModeEnabled: true })
               .then(() => {
                 this.call('SetCurrentPreviewScene', {
-                  sceneName: nextRun.customData.obsScene,
+                  sceneName: config.obs.names.scenes.gameLayout,
                 }).catch((err) => {
                   nodecg.log.warn('StudioMode not enabled', err);
                 });

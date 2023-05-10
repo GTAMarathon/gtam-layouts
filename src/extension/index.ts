@@ -24,4 +24,5 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
   require('./featured');
   require('./pollsandpredictions');
   require('./hundo');
+  require('./streamelements');
 };

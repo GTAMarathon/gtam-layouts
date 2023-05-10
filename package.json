@@ -42,8 +42,8 @@
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@popperjs/core": "^2.9.2",
-    "big-text.ts": "^1.1.1",
     "bootstrap": "^5.0.1",
+    "fitty": "^2.3.6",
     "graphql": "^15.8.0",
     "graphql-request": "^3.7.0",
     "humanize-duration": "^3.28.0",
@@ -52,7 +52,7 @@
     "needle": "^3.2.0",
     "obs-websocket-js": "^5.0.2",
     "parse-duration": "^1.0.3",
-    "socket.io-client": "^2.4.0",
+    "socket.io-client": "^4.6.1",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
@@ -150,6 +150,36 @@
       {
         "name": "sponsor-logos",
         "title": "Sponsor Logos",
+        "allowedTypes": [
+          "jpg",
+          "jpeg",
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsor-logos-widescreen",
+        "title": "Sponsor Logos (Widescreen)",
+        "allowedTypes": [
+          "jpg",
+          "jpeg",
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "merch-images",
+        "title": "Merch Images",
+        "allowedTypes": [
+          "jpg",
+          "jpeg",
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "merch-images-widescreen",
+        "title": "Merch Images (Widescreen)",
         "allowedTypes": [
           "jpg",
           "jpeg",

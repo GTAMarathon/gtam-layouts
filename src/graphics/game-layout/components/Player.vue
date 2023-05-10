@@ -5,7 +5,13 @@
         v-if="name"
         :key="name"
         class="Flex"
-        :style="{ position: 'absolute', 'font-size': '1.5em' }"
+        :style="{
+          position: 'absolute',
+          'font-size': '1.5em',
+          color: 'white',
+          textShadow:
+            '-2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c, 6px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c, -2px 0 0 #12222c',
+        }"
       >
         <div
           :style="{
@@ -25,13 +31,14 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref, watch } from 'vue';
+  import { computed, watch } from 'vue';
+  import { $ref } from 'vue/macros';
   import {
     RunDataActiveRun,
     Timer,
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useReplicant } from 'nodecg-vue-composable';
-  import BigText from 'big-text.ts';
+  import fitty, { FittyInstance } from 'fitty';
 
   interface Props {
     size: number;
@@ -52,8 +59,9 @@
   let timeout = 0;
   let teamI = 0;
   let index = 0;
-  let name = ref<string | null>(null);
-  const player = ref<HTMLDivElement | null>(null);
+  let name = $ref<string | null>(null);
+  let playerFitty: FittyInstance | undefined = undefined;
+  const player = $ref<HTMLDivElement | null>(null);
 
   const finishTime = computed<string | undefined>((): string | undefined => {
     if (activeRun && timer) {
@@ -83,7 +91,7 @@
       window.clearTimeout(timeout);
       teamI = props.team - 1;
       index = 0;
-      name.value = null;
+      name = null;
       const coop = !!(
         newValue &&
         newValue.teams.length === 1 &&
@@ -92,7 +100,7 @@
 
       if (newValue) {
         if (coop && newValue.teams[0].players[teamI]) {
-          name.value = newValue.teams[0].players[teamI].name;
+          name = newValue.teams[0].players[teamI].name;
         } else if (
           !coop &&
           newValue.teams[teamI] &&
@@ -103,13 +111,14 @@
       }
 
       setTimeout(() => {
-        if (player.value) {
-          BigText(player.value, {
-            maximumFontSize: props.size,
-            textAlign: 'left',
+        if (player) {
+          playerFitty = fitty(player, {
+            maxSize: props.size,
+            minSize: 1,
+            multiLine: true,
           });
         }
-      }, 20);
+      }, 500);
     },
     { immediate: true }
   );
@@ -120,7 +129,7 @@
         return;
       }
       const { players } = activeRun.data.teams[teamI];
-      name.value = players[index].name;
+      name = players[index].name;
       timeout = window.setTimeout(() => showNextName(), 30 * 1000);
       index = players.length <= index + 1 ? 0 : index + 1;
     }
