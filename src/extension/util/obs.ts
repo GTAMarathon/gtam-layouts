@@ -1345,6 +1345,17 @@ class OBSUtility extends obsWebsocketJs {
     }
   }
 
+  async updateBingoBoardURL(url: string): Promise<void> {
+    if (url) {
+      await this.call('SetInputSettings', {
+        inputName: config.obs.names.sources.bingoBoard,
+        inputSettings: { url: url },
+      }).catch((err) => {
+        nodecg.log.warn('[OBS] Failed to set bingo board URL: ', err);
+      });
+    }
+  }
+
   async setStudioModeOnTheNextGameScene(): Promise<void> {
     let index = runDataArray.value.findIndex(
       (run: RunData) => run.id === runDataActiveRunSurrounding.value.next

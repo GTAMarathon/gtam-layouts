@@ -24,10 +24,16 @@ timerRep.on('change', (newVal, oldVal) => {
 
 activeRun.on('change', (newVal) => {
   if (newVal) {
+    // Set game layout
     if (newVal.customData.gameLayout) {
       gameLayouts.value.selected = newVal.customData.gameLayout;
     } else {
       gameLayouts.value.selected = defaultCode;
+    }
+
+    // Set bingo board URL if needed
+    if (newVal.category?.includes('Bingo') && newVal.customData.bingoURL) {
+      obs.updateBingoBoardURL(newVal.customData.bingoURL);
     }
   }
 });
