@@ -80,6 +80,8 @@
         height: '520px',
         fontSize: '34px',
       }"
+      :sponsor-images="sponsorImages"
+      :merch-images="merchImages"
     />
   </div>
 </template>
@@ -91,6 +93,16 @@
   import Category from './components/Category.vue';
   import Player from './components/Player.vue';
   import MediaBox from './components/MediaBox.vue';
+  import { useAssetReplicant } from 'nodecg-vue-composable';
+
+  const sponsorImages = useAssetReplicant(
+    'sponsor-logos-widescreen',
+    'gtam-layouts'
+  );
+  const merchImages = useAssetReplicant(
+    'merch-images-widescreen',
+    'gtam-layouts'
+  );
 </script>
 
 <style>

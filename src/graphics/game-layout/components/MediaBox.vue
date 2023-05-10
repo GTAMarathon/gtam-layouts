@@ -24,8 +24,8 @@
 
 <script setup lang="ts">
   import { $ref } from 'vue/macros';
-  import { defineAsyncComponent, markRaw, onMounted } from 'vue';
-  import { useAssetReplicant, useReplicant } from 'nodecg-vue-composable';
+  import { defineAsyncComponent, markRaw, onMounted, defineProps } from 'vue';
+  import { useReplicant, Asset } from 'nodecg-vue-composable';
   import {
     SubQueueItem,
     BitsQueueItem,
@@ -33,6 +33,21 @@
   } from '@gtam-layouts/types';
 
   type MediaBoxStages = 'MerchImage' | 'SponsorImage';
+
+  // set up data
+  const props = defineProps<{ sponsorImages: Asset[]; merchImages: Asset[] }>();
+  const twitchSubsQueue = useReplicant<SubQueueItem[]>(
+    'twitchSubQueue',
+    'gtam-layouts'
+  );
+  const twitchBitsQueue = useReplicant<BitsQueueItem[]>(
+    'twitchBitsQueue',
+    'gtam-layouts'
+  );
+  const merchPurchaseQueue = useReplicant<MerchQueueItem[]>(
+    'merchPurchaseQueue',
+    'gtam-layouts'
+  );
 
   let lastStage: MediaBoxStages;
   let timestamp = $ref<number>(Date.now());
@@ -99,8 +114,8 @@
           name: components.imports.Image,
           data: {
             image:
-              sponsorImages.value[
-                Math.floor(Math.random() * merchImages.value.length)
+              props.sponsorImages[
+                Math.floor(Math.random() * props.sponsorImages.length)
               ],
           },
         };
@@ -111,8 +126,8 @@
           name: components.imports.Image,
           data: {
             image:
-              merchImages.value[
-                Math.floor(Math.random() * merchImages.value.length)
+              props.merchImages[
+                Math.floor(Math.random() * props.merchImages.length)
               ],
           },
         };
@@ -159,22 +174,6 @@
   // using any here is a massive hack, but it works
   let currentComponent = $ref<{ name: any; data: {} }>({ name: '', data: {} });
 
-  // set up replicants
-  const sponsorImages = useAssetReplicant('sponsor-logos', 'gtam-layouts');
-  const merchImages = useAssetReplicant('merch-images', 'gtam-layouts');
-  const twitchSubsQueue = useReplicant<SubQueueItem[]>(
-    'twitchSubQueue',
-    'gtam-layouts'
-  );
-  const twitchBitsQueue = useReplicant<BitsQueueItem[]>(
-    'twitchBitsQueue',
-    'gtam-layouts'
-  );
-  const merchPurchaseQueue = useReplicant<MerchQueueItem[]>(
-    'merchPurchaseQueue',
-    'gtam-layouts'
-  );
-
   function setNextStage(): void {
     timestamp = Date.now();
 
@@ -208,7 +207,8 @@
       data: {
         image: {
           name: 'Merch Followup',
-          url: new URL('./MediaBox/emotes/gtaPOGGERS.png', import.meta.url).href,
+          url: new URL('./MediaBox/emotes/gtaPOGGERS.png', import.meta.url)
+            .href,
         },
       },
     };
@@ -217,7 +217,7 @@
   onMounted(() => {
     // a bit of a hack, but it works
     setTimeout(() => {
-      if (merchImages && merchImages.value) {
+      if (props.merchImages && props.merchImages.length) {
         currentComponent = components.functions.MerchImage();
       }
     }, 500);

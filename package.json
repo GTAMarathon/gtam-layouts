@@ -158,8 +158,28 @@
         ]
       },
       {
+        "name": "sponsor-logos-widescreen",
+        "title": "Sponsor Logos (Widescreen)",
+        "allowedTypes": [
+          "jpg",
+          "jpeg",
+          "png",
+          "svg"
+        ]
+      },
+      {
         "name": "merch-images",
         "title": "Merch Images",
+        "allowedTypes": [
+          "jpg",
+          "jpeg",
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "merch-images-widescreen",
+        "title": "Merch Images (Widescreen)",
         "allowedTypes": [
           "jpg",
           "jpeg",
