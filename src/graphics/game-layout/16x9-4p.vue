@@ -25,9 +25,9 @@
     <game
       :style="{
         left: '777px',
-        top: '261px',
+        top: '246px',
         width: '366px',
-        height: '50px',
+        height: '65px',
         fontWeight: 'bold',
       }"
       :size="72"

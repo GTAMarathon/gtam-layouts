@@ -233,6 +233,8 @@
         fontSize: '44px',
       }"
       v-if="type != 'END OF MARATHON'"
+      :sponsor-images="sponsorImages"
+      :merch-images="merchImages"
     />
   </div>
 </template>
@@ -248,7 +250,10 @@
   import humanizeDuration from 'humanize-duration';
   import { onMounted, watch } from 'vue';
   import { $ref } from 'vue/macros';
-  import { useReplicant } from 'nodecg-vue-composable';
+  import { useReplicant, useAssetReplicant } from 'nodecg-vue-composable';
+
+  const sponsorImages = useAssetReplicant('sponsor-logos', 'gtam-layouts');
+  const merchImages = useAssetReplicant('merch-images', 'gtam-layouts');
 
   type IntermissionType =
     | 'START OF MARATHON'
