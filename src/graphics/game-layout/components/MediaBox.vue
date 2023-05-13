@@ -214,7 +214,7 @@
       data: {
         image: {
           name: 'Merch Followup',
-          url: new URL('./MediaBox/emotes/gtaPOGGERS.png', import.meta.url)
+          url: new URL('./MediaBox/StoreImage.png', import.meta.url)
             .href,
         },
       },
