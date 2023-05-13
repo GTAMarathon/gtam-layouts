@@ -7,7 +7,6 @@
         class="Flex"
         :style="{
           position: 'absolute',
-          'font-size': '1.5em',
           color: 'white',
           textShadow:
             '-2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c, 6px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c, -2px 0 0 #12222c',
@@ -16,12 +15,11 @@
         <div
           :style="{
             'margin-left': '5px',
-            'font-size': '1.3em',
           }"
           ref="player"
         >
           {{ name }}
-          <span v-if="finishTime" :style="{ 'font-size': '0.75em' }">
+          <span v-if="finishTime" :style="{ fontSize: '0.7em' }">
             [{{ finishTime }}]
           </span>
         </div>
@@ -112,13 +110,14 @@
 
       setTimeout(() => {
         if (player) {
+          console.log('fitting');
           playerFitty = fitty(player, {
             maxSize: props.size,
-            minSize: 1,
+            minSize: 24,
             multiLine: true,
           });
         }
-      }, 500);
+      }, 200);
     },
     { immediate: true }
   );
