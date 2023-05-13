@@ -58,8 +58,8 @@
     'merchPurchaseQueue',
     'gtam-layouts'
   );
-  let sponsorIndex = 0;
-  let merchIndex = 0;
+  let sponsorIndex = $ref(0);
+  let merchIndex = $ref(0);
 
   let lastStage: MediaBoxStages;
   let timestamp = $ref<number>(Date.now());
@@ -206,7 +206,7 @@
         if (merchIndex >= props.merchImages.length) {
           merchIndex = 0;
         }
-        currentComponent = components.functions.MerchImage(sponsorIndex);
+        currentComponent = components.functions.MerchImage(merchIndex);
         return;
       }
     } else {
