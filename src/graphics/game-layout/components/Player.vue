@@ -110,14 +110,13 @@
 
       setTimeout(() => {
         if (player) {
-          console.log('fitting');
           playerFitty = fitty(player, {
             maxSize: props.size,
             minSize: 24,
             multiLine: true,
           });
         }
-      }, 200);
+      }, 300);
     },
     { immediate: true }
   );
