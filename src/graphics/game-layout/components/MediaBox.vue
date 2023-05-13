@@ -2,23 +2,30 @@
   <div
     id="MediaBox"
     :style="{
-      margin: '15px',
+      margin: '0',
       width: '100%',
       height: '100%',
       objectFit: 'contain',
       verticalAlign: 'middle',
       position: 'fixed',
+      '-webkit-box-sizing': 'border-box',
+      boxSizing: 'border-box',
+      justifyContent: 'center',
+      alignItems: 'center',
     }"
+    class="Flex"
   >
-    <transition name="fade" mode="out-in" appear>
-      <component
-        :is="currentComponent.name"
-        :key="timestamp"
-        :data="currentComponent.data"
-        @end="setNextStage"
-        @merchEnd="showMerchFollowup"
-      />
-    </transition>
+    <div id="MediaBoxContainer" :style="{ width: '100%', height: '100%', margin: 'auto' }">
+      <transition name="fade" mode="out-in" appear>
+        <component
+          :is="currentComponent.name"
+          :key="timestamp"
+          :data="currentComponent.data"
+          @end="setNextStage"
+          @merchEnd="showMerchFollowup"
+        />
+      </transition>
+    </div>
   </div>
 </template>
 

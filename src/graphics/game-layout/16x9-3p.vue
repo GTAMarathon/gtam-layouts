@@ -74,10 +74,10 @@
     ></player>
     <media-box
       :style="{
-        left: '0px',
-        bottom: '0px',
-        width: '540px',
-        height: '520px',
+        left: '7.5px',
+        bottom: '5px',
+        width: '556px',
+        height: '547px',
         fontSize: '34px',
       }"
       :sponsor-images="sponsorImages"
@@ -96,11 +96,11 @@
   import { useAssetReplicant } from 'nodecg-vue-composable';
 
   const sponsorImages = useAssetReplicant(
-    'sponsor-logos-widescreen',
+    'sponsor-logos',
     'gtam-layouts'
   );
   const merchImages = useAssetReplicant(
-    'merch-images-widescreen',
+    'merch-images',
     'gtam-layouts'
   );
 </script>

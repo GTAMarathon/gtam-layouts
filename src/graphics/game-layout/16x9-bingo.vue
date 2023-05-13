@@ -74,10 +74,10 @@
     ></player>
     <media-box
       :style="{
-        left: '770px',
-        bottom: '0px',
-        width: '350px',
-        height: '310px',
+        left: '780.5px',
+        bottom: '5px',
+        width: '360px',
+        height: '319px',
         fontSize: '30px',
       }"
       :sponsor-images="sponsorImages"

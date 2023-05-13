@@ -66,10 +66,10 @@
     ></player>
     <media-box
       :style="{
-        left: '0px',
-        bottom: '0px',
-        width: '600px',
-        height: '250px',
+        left: '7.5px',
+        bottom: '5px',
+        width: '621px',
+        height: '266px',
         fontSize: '30px',
       }"
       :sponsor-images="sponsorImages"

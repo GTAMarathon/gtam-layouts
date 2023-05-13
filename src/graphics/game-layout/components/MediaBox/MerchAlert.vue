@@ -1,5 +1,9 @@
 <template>
-  <div id="MediaBoxMerchAlert" v-if="data && data.merchInfo && currentItem">
+  <div
+    id="MediaBoxMerchAlert"
+    :style="{ width: '100%', height: '100%' }"
+    v-if="data && data.merchInfo && currentItem"
+  >
     <transition name="fade" mode="out-in">
       <div
         :style="{
@@ -80,14 +84,12 @@
   }
 
   .Flex {
-    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
     overflow: hidden;
     text-align: center;
+    margin: auto;
   }
 </style>

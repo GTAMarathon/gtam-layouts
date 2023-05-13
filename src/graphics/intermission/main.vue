@@ -226,10 +226,10 @@
 
     <media-box
       :style="{
-        right: '115px',
-        bottom: '80px',
-        width: '632px',
-        height: '674px',
+        right: '125.5px',
+        bottom: '87px',
+        width: '637px',
+        height: '686px',
         fontSize: '44px',
       }"
       v-if="type != 'END OF MARATHON'"

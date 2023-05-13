@@ -1,5 +1,5 @@
 <template>
-  <div id="MediaBoxImage">
+  <div id="MediaBoxImage" class="Flex">
     <img
       v-if="data && data.image"
       :key="data.image.name"
@@ -27,6 +27,9 @@
     height: 100%;
     object-fit: contain;
     vertical-align: middle;
+    align-items: center;
+    align-content: center;
+    margin: auto;
   }
 
   img {
@@ -34,11 +37,5 @@
     max-height: 100%;
     width: auto;
     height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
   }
 </style>
