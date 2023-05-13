@@ -89,7 +89,6 @@
         width: '360px',
         height: '319px',
         fontSize: '30px',
-        background: 'green'
       }"
       :sponsor-images="sponsorImages"
       :merch-images="merchImages"
