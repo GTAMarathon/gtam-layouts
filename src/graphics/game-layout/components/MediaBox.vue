@@ -15,7 +15,10 @@
     }"
     class="Flex"
   >
-    <div id="MediaBoxContainer" :style="{ width: '100%', height: '100%', margin: 'auto' }">
+    <div
+      id="MediaBoxContainer"
+      :style="{ width: '100%', height: '100%', margin: 'auto' }"
+    >
       <transition name="fade" mode="out-in" appear>
         <component
           :is="currentComponent.name"
@@ -55,6 +58,8 @@
     'merchPurchaseQueue',
     'gtam-layouts'
   );
+  let sponsorIndex = 0;
+  let merchIndex = 0;
 
   let lastStage: MediaBoxStages;
   let timestamp = $ref<number>(Date.now());
@@ -115,27 +120,21 @@
           },
         };
       },
-      SponsorImage: () => {
+      SponsorImage: (index: number) => {
         lastStage = 'SponsorImage';
         return {
           name: components.imports.Image,
           data: {
-            image:
-              props.sponsorImages[
-                Math.floor(Math.random() * props.sponsorImages.length)
-              ],
+            image: props.sponsorImages[index],
           },
         };
       },
-      MerchImage: () => {
+      MerchImage: (index: number) => {
         lastStage = 'MerchImage';
         return {
           name: components.imports.Image,
           data: {
-            image:
-              props.merchImages[
-                Math.floor(Math.random() * props.merchImages.length)
-              ],
+            image: props.merchImages[index],
           },
         };
       },
@@ -196,14 +195,22 @@
         currentComponent = components.functions.MerchAlert();
         return;
       } else if (lastStage === 'MerchImage') {
-        currentComponent = components.functions.SponsorImage();
+        sponsorIndex++;
+        if (sponsorIndex >= props.sponsorImages.length) {
+          sponsorIndex = 0;
+        }
+        currentComponent = components.functions.SponsorImage(sponsorIndex);
         return;
       } else if (lastStage === 'SponsorImage') {
-        currentComponent = components.functions.MerchImage();
+        merchIndex++;
+        if (merchIndex >= props.merchImages.length) {
+          merchIndex = 0;
+        }
+        currentComponent = components.functions.MerchImage(sponsorIndex);
         return;
       }
     } else {
-      currentComponent = components.functions.MerchImage();
+      currentComponent = components.functions.MerchImage(0);
       return;
     }
   }
@@ -214,8 +221,7 @@
       data: {
         image: {
           name: 'Merch Followup',
-          url: new URL('./MediaBox/StoreImage.png', import.meta.url)
-            .href,
+          url: new URL('./MediaBox/StoreImage.png', import.meta.url).href,
         },
       },
     };
@@ -225,7 +231,7 @@
     // a bit of a hack, but it works
     setTimeout(() => {
       if (props.merchImages && props.merchImages.length) {
-        currentComponent = components.functions.MerchImage();
+        currentComponent = components.functions.MerchImage(0);
       }
     }, 500);
   });
