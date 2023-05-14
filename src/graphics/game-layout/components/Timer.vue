@@ -49,7 +49,7 @@
     color: #a3a3a3;
   }
   .running {
-    color: #03f0fc;
+    color: #4fbafe;
   }
   .paused {
     color: #00b1ba;
