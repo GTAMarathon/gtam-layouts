@@ -1106,7 +1106,7 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {});
           this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 614, height: 461 },
+            inputSettings: { width: 615, height: 461 },
           });
           this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
             alignment: 5,
@@ -1119,14 +1119,14 @@ class OBSUtility extends obsWebsocketJs {
             cropRight: 0,
             cropTop: 0,
             height: 461,
-            positionX: 1306,
+            positionX: 1305,
             positionY: 4,
             rotation: 0,
             scaleX: 1,
             scaleY: 1,
             sourceHeight: 461,
-            sourceWidth: 614,
-            width: 614,
+            sourceWidth: 615,
+            width: 615,
           }).catch(() => {});
         }
 
