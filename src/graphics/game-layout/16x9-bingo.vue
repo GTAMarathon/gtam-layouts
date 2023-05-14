@@ -24,9 +24,9 @@
     ></estimate>
     <game
       :style="{
-        left: '777px',
+        left: '798px',
         top: '246px',
-        width: '366px',
+        width: '326px',
         height: '65px',
         fontWeight: 'bold',
       }"
@@ -34,9 +34,9 @@
     ></game>
     <category
       :style="{
-        left: '777px',
+        left: '798px',
         top: '320px',
-        width: '366px',
+        width: '326px',
         height: '50px',
         fontWeight: 'bold',
       }"
