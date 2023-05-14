@@ -5,3 +5,4 @@ export * from './subQueueItem';
 export * from './bitsQueueItem';
 export * from './merchQueueItem';
 export * as SEEvents from './seEvents';
+export * from './mediaBoxItem';

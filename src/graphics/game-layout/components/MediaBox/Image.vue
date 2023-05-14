@@ -1,24 +1,24 @@
 <template>
   <div id="MediaBoxImage" class="Flex">
-    <img
-      v-if="data && data.image"
-      :key="data.image.name"
-      :src="data.image.url"
-    />
+    <img v-if="image && image.name" :key="image.name" :src="image.url" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { defineProps, onMounted, defineEmits } from 'vue';
-  import type { Asset } from '@gtam-layouts/types';
-  const props = defineProps<{ data: { image: Asset | undefined } }>();
-  const emit = defineEmits(['end']);
-
-  onMounted(() => {
-    setTimeout(() => {
-      emit('end');
-    }, 15000);
+  import { defineProps } from 'vue';
+  import { $ref } from 'vue/macros';
+  const props = defineProps({
+    image: {
+      type: Object,
+      required: true,
+    },
+    useWidescreen: {
+      type: Boolean,
+    },
   });
+  const image = $ref(
+    props.useWidescreen ? props.image.widescreen : props.image.standard
+  );
 </script>
 
 <style scoped>

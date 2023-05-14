@@ -15,6 +15,8 @@ import {
   SubQueueItem,
   BitsQueueItem,
   MerchQueueItem,
+  Asset,
+  MediaBoxItem,
 } from '@gtam-layouts/types';
 const nodecg = get();
 
@@ -62,3 +64,21 @@ export const merchPurchaseQueue = nodecg.Replicant<MerchQueueItem[]>(
   'merchPurchaseQueue',
   { defaultValue: [] }
 ) as unknown as NodeCG.ServerReplicant<MerchQueueItem[]>;
+export const currentOBSScene = nodecg.Replicant<string>('currentOBSScene', {
+  defaultValue: '',
+}) as unknown as NodeCG.ServerReplicant<string>;
+export const sponsorImages = nodecg.Replicant<Asset[]>(
+  'assets:sponsor-logos'
+) as unknown as NodeCG.ServerReplicant<Asset[]>;
+export const sponsorImagesWidescreen = nodecg.Replicant<Asset[]>(
+  'assets:sponsor-logos-widescreen'
+) as unknown as NodeCG.ServerReplicant<Asset[]>;
+export const merchImages = nodecg.Replicant<Asset[]>(
+  'assets:merch-images'
+) as unknown as NodeCG.ServerReplicant<Asset[]>;
+export const merchImagesWidescreen = nodecg.Replicant<Asset[]>(
+  'assets:merch-images-widescreen'
+) as unknown as NodeCG.ServerReplicant<Asset[]>;
+export const currentMediaBoxItem = nodecg.Replicant<MediaBoxItem>(
+  'currentMediaBoxItem'
+) as unknown as NodeCG.ServerReplicant<MediaBoxItem>;

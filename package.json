@@ -43,6 +43,7 @@
     "@mdi/font": "^7.2.96",
     "@popperjs/core": "^2.9.2",
     "bootstrap": "^5.0.1",
+    "clone": "^2.1.2",
     "fitty": "^2.3.6",
     "graphql": "^15.8.0",
     "graphql-request": "^3.7.0",

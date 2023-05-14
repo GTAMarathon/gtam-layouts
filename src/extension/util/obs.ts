@@ -14,6 +14,7 @@ import {
   runDataActiveRunSurrounding,
   runDataArray,
   runDataActiveRun as activeRun,
+  currentOBSScene,
 } from './replicants';
 
 enum VideoFolder {
@@ -1840,6 +1841,7 @@ if (config.obs.enable) {
         setStartHighlight();
       }
       obs.currentScene = data.sceneName;
+      currentOBSScene.value = data.sceneName;
     }
   });
 }

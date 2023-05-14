@@ -1,7 +1,7 @@
 <template>
   <div
     id="MediaBoxTwitchSub"
-    v-if="data && data.subInfo"
+    v-if="subInfo"
     :style="{
       textShadow: '2px 2px 2px #12222c',
       flexDirection: 'column',
@@ -11,31 +11,28 @@
   >
     <img :src="getRandomEmote()" />
     <span :style="{ fontWeight: 'normal' }"
-      ><template v-if="data.subInfo.isGift && data.subInfo.sender">
-        <b class="highlight">{{ data.subInfo.name }}</b> has received a
-        <b class="highlight">Tier {{ data.subInfo.tier }}</b> subscription from
-        <b class="highlight">{{ data.subInfo.sender }}</b
+      ><template v-if="subInfo.isGift && subInfo.sender">
+        <b class="highlight">{{ subInfo.name }}</b> has received a
+        <b class="highlight">Tier {{ subInfo.tier }}</b> subscription from
+        <b class="highlight">{{ subInfo.sender }}</b
         >!</template
       ><template v-else
-        ><b class="highlight">{{ data.subInfo.name }}</b> has subscribed with a
-        <b class="highlight">Tier {{ data.subInfo.tier }}</b> subscription for
-        <b class="highlight">{{ data.subInfo.months }} months</b>!</template
+        ><b class="highlight">{{ subInfo.name }}</b> has subscribed with a
+        <b class="highlight">Tier {{ subInfo.tier }}</b> subscription for
+        <b class="highlight">{{ subInfo.months }} months</b>!</template
       ></span
     >
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { SubQueueItem } from '@gtam-layouts/types';
-  import { defineProps, defineEmits, onMounted } from 'vue';
+  import { defineProps } from 'vue';
   import { getRandomEmote } from './randomEmote';
-  const props = defineProps<{ data: { subInfo: SubQueueItem | undefined } }>();
-  const emit = defineEmits(['end']);
-
-  onMounted(() => {
-    setTimeout(() => {
-      emit('end');
-    }, 25000);
+  const props = defineProps({
+    subInfo: {
+      type: Object,
+      required: true,
+    },
   });
 </script>
 

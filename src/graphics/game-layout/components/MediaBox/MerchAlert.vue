@@ -2,7 +2,7 @@
   <div
     id="MediaBoxMerchAlert"
     :style="{ width: '100%', height: '100%' }"
-    v-if="data && data.merchInfo && currentItem"
+    v-if="merchInfo && currentItem"
   >
     <transition name="fade" mode="out-in">
       <div
@@ -15,7 +15,7 @@
       >
         <img :src="getItemImage(currentItem.name)" />
         <span>
-          <b class="highlight">{{ data.merchInfo.name }}</b> has bought
+          <b class="highlight">{{ merchInfo.name }}</b> has bought
           <b class="highlight"
             >{{ currentItem.quantity }}x {{ currentItem.name }}</b
           >!
@@ -26,14 +26,16 @@
 </template>
 
 <script setup lang="ts">
-  import type { MerchQueueItem } from '@gtam-layouts/types';
   import { MerchItem } from '@gtam-layouts/types/seEvents';
   import { defineProps, defineEmits, watch } from 'vue';
   import { $ref } from 'vue/macros';
 
-  const props = defineProps<{
-    data: { merchInfo: MerchQueueItem | undefined };
-  }>();
+  const props = defineProps({
+    merchInfo: {
+      type: Object,
+      required: true,
+    },
+  });
   const emit = defineEmits(['merchEnd', 'end']);
   let currentItem = $ref<MerchItem | null>(null);
   let index = 0;
@@ -51,27 +53,25 @@
   function setNextItem() {
     index++;
     clearTimeout(timeout);
-    if (index >= props.data.merchInfo!.items.length) {
+    if (index >= props.merchInfo!.items.length) {
       emit('merchEnd');
     }
-    currentItem = props.data.merchInfo!.items[index];
+    currentItem = props.merchInfo!.items[index];
     timeout = setTimeout(() => {
       setNextItem();
-    }, 25000 / props.data.merchInfo!.items.length);
+    }, 20000 / props.merchInfo!.items.length);
   }
 
   watch(
     () => {
-      props.data.merchInfo;
+      props.merchInfo;
     },
     () => {
-      if (props.data.merchInfo && props.data.merchInfo.items.length) {
-        currentItem = props.data.merchInfo.items[index];
+      if (props.merchInfo && props.merchInfo.items.length) {
+        currentItem = props.merchInfo.items[index];
         timeout = setTimeout(() => {
           setNextItem();
-        }, 25000 / props.data.merchInfo.items.length);
-      } else {
-        emit('end');
+        }, 20000 / props.merchInfo.items.length);
       }
     },
     { immediate: true }

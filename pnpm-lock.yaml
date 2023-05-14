@@ -10,6 +10,9 @@ dependencies:
   bootstrap:
     specifier: ^5.0.1
     version: 5.0.1(@popperjs/core@2.11.7)
+  clone:
+    specifier: ^2.1.2
+    version: 2.1.2
   fitty:
     specifier: ^2.3.6
     version: 2.3.6
@@ -1558,7 +1561,6 @@ packages:
   /clone@2.1.2:
     resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
     engines: {node: '>=0.8'}
-    dev: true
 
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}

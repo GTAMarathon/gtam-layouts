@@ -1,7 +1,7 @@
 <template>
   <div
     id="MediaBoxTwitchSub"
-    v-if="data && data.bitsInfo"
+    v-if="bitsInfo"
     :style="{
       textShadow: '2px 2px 2px #12222c',
       flexDirection: 'column',
@@ -11,27 +11,22 @@
   >
     <img :src="getRandomEmote()" />
     <span :style="{ fontWeight: 'normal' }"
-      ><b class="highlight">{{ data.bitsInfo.name }}</b> has cheered
-      <b :style="{ color: getBitsColor(data.bitsInfo.amount) }"
-        >{{ data.bitsInfo.amount }} bits</b
+      ><b class="highlight">{{ bitsInfo.name }}</b> has cheered
+      <b :style="{ color: getBitsColor(bitsInfo.amount) }"
+        >{{ bitsInfo.amount }} bits</b
       >!</span
     >
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { BitsQueueItem } from '@gtam-layouts/types';
-  import { defineProps, defineEmits, onMounted } from 'vue';
+  import { defineProps } from 'vue';
   import { getRandomEmote } from './randomEmote';
-  const props = defineProps<{
-    data: { bitsInfo: BitsQueueItem | undefined };
-  }>();
-  const emit = defineEmits(['end']);
-
-  onMounted(() => {
-    setTimeout(() => {
-      emit('end');
-    }, 25000);
+  const props = defineProps({
+    bitsInfo: {
+      type: Object,
+      required: true,
+    },
   });
 
   function getBitsColor(amount: number) {
