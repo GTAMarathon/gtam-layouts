@@ -299,10 +299,10 @@ timer.on('change', (newVal, oldVal) => {
 async function updateOengusScheduleOnRunStart(): Promise<void> {
   if (config.enable) {
     try {
-      await sendMessage('importOengusSchedule', {
+/*       await sendMessage('importOengusSchedule', {
         marathonShort: config.marathonShort,
         useJapanese: false,
-      });
+      }); */
       var now = Math.floor(Date.now() / 1000);
       if (runDataActiveRunSurrounding.value.current) {
         var currentRun = runDataArray.value.find(
@@ -324,14 +324,14 @@ async function updateOengusScheduleOnRunStart(): Promise<void> {
               );
             }
 
-            await sendMessage('updateOengusSchedule', {
+/*             await sendMessage('updateOengusSchedule', {
               marathonShort: config.marathonShort,
               lines: lines,
             });
             await sendMessage('importOengusSchedule', {
               marathonShort: config.marathonShort,
               useJapanese: false,
-            });
+            }); */
           }
         }
       }
@@ -387,14 +387,14 @@ export async function updateOengusScheduleOnSwitchingRun(): Promise<void> {
                 editSetupBufferLengthToCompensateDelta(nextRun, delta)
               );
 
-              await sendMessage('updateOengusSchedule', {
+/*               await sendMessage('updateOengusSchedule', {
                 marathonShort: config.marathonShort,
                 lines: lines,
               });
               await sendMessage('importOengusSchedule', {
                 marathonShort: config.marathonShort,
                 useJapanese: false,
-              });
+              }); */
             }
           }
         }
