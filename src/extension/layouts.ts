@@ -61,10 +61,10 @@ nodecg.listenFor('endOfMarathon', async (data, ack) => {
 });
 
 nodecg.listenFor('nextRun', async (data, ack) => {
-  await sendMessage('importOengusSchedule', {
+  nodecg.sendMessageToBundle('importOengusSchedule', 'nodecg-speedcontrol', {
     marathonShort: config.schedule.marathonShort,
     useJapanese: false,
-  }).catch(() => {});
+  });
   nodecg.sendMessage('clearIntermission');
   await new Promise((f) => setTimeout(f, 60));
 
@@ -76,11 +76,18 @@ nodecg.listenFor('nextRun', async (data, ack) => {
       nodecg.log.warn('Cannot play ads: ', err);
     });
   sendMessage('changeToNextRun').catch(() => {});
+
   obs.changeToIntermission().catch(() => {});
   obs.muteAudio();
   obs.unmuteAudio();
 
-  await updateOengusScheduleOnSwitchingRun();
+  // 3 minutes of commercials
+  sendMessage('twitchStartCommercial', {
+    duration: 180,
+    fromDashboard: false,
+  }).catch((err) => {
+    nodecg.log.warn('[Twitch Ads] Failed to start intermission ads: ', err);
+  });
 
   if (ack && !ack.handled) {
     ack(null);
