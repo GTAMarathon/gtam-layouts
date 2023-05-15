@@ -81,14 +81,6 @@ nodecg.listenFor('nextRun', async (data, ack) => {
   obs.muteAudio();
   obs.unmuteAudio();
 
-  // 3 minutes of commercials
-  sendMessage('twitchStartCommercial', {
-    duration: 180,
-    fromDashboard: false,
-  }).catch((err) => {
-    nodecg.log.warn('[Twitch Ads] Failed to start intermission ads: ', err);
-  });
-
   if (ack && !ack.handled) {
     ack(null);
   }

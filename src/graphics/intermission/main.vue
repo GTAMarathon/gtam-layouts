@@ -6,11 +6,6 @@
         v-if="type != 'END OF MARATHON'"
         src="./bgs/mediabox-logo.png"
       />
-      <img
-        class="bg"
-        v-if="type != 'END OF MARATHON'"
-        src="./bgs/intermissionnameblob.png"
-      />
       <template v-if="type != 'END OF MARATHON'">
         <transition name="fade" appear>
           <img
