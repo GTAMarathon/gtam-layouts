@@ -2,7 +2,6 @@ import { Configschema } from '@gtam-layouts/types/schemas';
 import { ExtensionReturn } from '../../../nodecg-speedcontrol/src/types';
 import { get } from './util/nodecg';
 import obs from './util/obs';
-import { updateOengusScheduleOnSwitchingRun } from './scheduling';
 import {
   timer as timerRep,
   runDataActiveRun as activeRun,
