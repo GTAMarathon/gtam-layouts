@@ -20,7 +20,9 @@
   import { useReplicant } from 'nodecg-vue-composable';
   import { GameLayouts } from '@gtam-layouts/types/schemas';
   import { computed } from 'vue';
+  import { useHead } from '@vueuse/head';
   const gameLayouts = useReplicant<GameLayouts>('gameLayouts', 'gtam-layouts');
+  useHead({ title: 'Game LayoutOverride' });
 
   const layoutOptions = computed(() => {
     if (gameLayouts && gameLayouts.data && gameLayouts.data.available) {

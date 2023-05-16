@@ -101,10 +101,10 @@
     feed5: RunDataTeam | undefined;
   }
 
-  useHead({ title: 'Assign streams to players (VC Hundo version)' });
-
   export default defineComponent({
     setup() {
+      useHead({ title: 'Assign streams to players (VC Hundo version)' });
+
       const runDataActiveRun = useReplicant<RunDataActiveRun>(
         'runDataActiveRun',
         'nodecg-speedcontrol'

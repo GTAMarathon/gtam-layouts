@@ -31,10 +31,10 @@
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useHead } from '@vueuse/head';
 
-  useHead({ title: 'Switch to next game' });
-
   export default defineComponent({
     setup() {
+      useHead({ title: 'Switch to next game' });
+
       const runDataArray = useReplicant<RunDataArray>(
         'runDataArray',
         'nodecg-speedcontrol'

@@ -86,10 +86,10 @@
     selectedRunner: Player | undefined;
   }
 
-  useHead({ title: 'Assign streams to players' });
-
   export default defineComponent({
     setup() {
+      useHead({ title: 'Assign streams to players' });
+
       const runDataActiveRun = useReplicant<RunDataActiveRun>(
         'runDataActiveRun',
         'nodecg-speedcontrol'

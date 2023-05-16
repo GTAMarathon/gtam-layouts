@@ -18,10 +18,10 @@
   import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
   import { useHead } from '@vueuse/head';
 
-  useHead({ title: 'Focus on specific runner' });
-
   export default defineComponent({
     setup() {
+      useHead({ title: 'Focus on specific runner' });
+
       const runDataActiveRun = useReplicant<RunDataActiveRun>(
         'runDataActiveRun',
         'nodecg-speedcontrol'
