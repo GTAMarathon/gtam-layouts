@@ -102,13 +102,6 @@
         "width": 3
       },
       {
-        "name": "adReminder",
-        "title": "Twitch Ad Reminder",
-        "file": "adReminder.html",
-        "workspace": "GTAM",
-        "width": 4
-      },
-      {
         "name": "4 Players Focus on Runner",
         "title": "4 Players Focus on Runner",
         "file": "focus.html",
