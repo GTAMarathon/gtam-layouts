@@ -231,6 +231,29 @@
       :sponsor-images="sponsorImages"
       :merch-images="merchImages"
     />
+
+    <transition name="fade" mode="out-in" appear>
+      <div
+        v-if="
+          twitchCommercialTimer &&
+          twitchCommercialTimer.data &&
+          twitchCommercialTimer.data.secondsRemaining > 0 &&
+          type != 'END OF MARATHON'
+        "
+        :style="{
+          position: 'absolute',
+          fontSize: '36px',
+          right: '109px',
+          bottom: '15px',
+          width: '670px',
+          height: '60px',
+          textAlign: 'center',
+        }"
+      >
+        Ads are running:
+        <span :style="{ color: '#4fbafe' }">{{ adTimer }}</span>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -239,14 +262,19 @@
   import {
     RunDataActiveRunSurrounding,
     RunDataArray,
+    TwitchCommercialTimer,
   } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
   import UpcomingRun from './components/UpcomingRun.vue';
   import MediaBox from '../game-layout/components/MediaBox.vue';
   import humanizeDuration from 'humanize-duration';
   import { onMounted, watch } from 'vue';
-  import { $ref } from 'vue/macros';
+  import { $computed, $ref } from 'vue/macros';
   import { useReplicant, useAssetReplicant } from 'nodecg-vue-composable';
 
+  const twitchCommercialTimer = useReplicant<TwitchCommercialTimer>(
+    'twitchCommercialTimer',
+    'nodecg-speedcontrol'
+  );
   const sponsorImages = useAssetReplicant('sponsor-logos', 'gtam-layouts');
   const merchImages = useAssetReplicant('merch-images', 'gtam-layouts');
 
@@ -263,6 +291,7 @@
     run: RunData;
     etaUntil: string;
   };
+
   let type = $ref<IntermissionType>(null);
   let intermissionRunData = $ref<IntermissionRunData[]>([]);
   const runDataArray = useReplicant<RunDataArray>(
@@ -277,6 +306,17 @@
     'runDataActiveRunSurrounding',
     'nodecg-speedcontrol'
   );
+  const adTimer = $computed(() => {
+    if (
+      twitchCommercialTimer &&
+      twitchCommercialTimer.data &&
+      twitchCommercialTimer.data.secondsRemaining
+    ) {
+      return timeFormat(twitchCommercialTimer.data.secondsRemaining);
+    } else {
+      return '';
+    }
+  });
 
   onMounted(() => {
     update();
@@ -424,6 +464,25 @@
         )
         .join(' vs. ') || 'No Player(s)'
     );
+  }
+
+  function timeFormat(duration: number): string {
+    // Hours, minutes and seconds
+    const hrs = ~~(duration / 3600);
+    const mins = ~~((duration % 3600) / 60);
+    const secs = ~~duration % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    let ret = '';
+
+    if (hrs > 0) {
+      ret += '' + hrs + ':' + (mins < 10 ? '0' : '');
+    }
+
+    ret += '' + mins + ':' + (secs < 10 ? '0' : '');
+    ret += '' + secs;
+
+    return ret;
   }
 
   watch(
