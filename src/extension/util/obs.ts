@@ -17,7 +17,7 @@ import {
   currentOBSScene,
 } from './replicants';
 
-enum VideoFolder {
+enum VideoFile {
   III = 'III',
   IIIDE = 'IIIDE',
   VC = 'VC',
@@ -26,8 +26,11 @@ enum VideoFolder {
   SADE = 'SADE',
   LCS = 'LCS',
   VCS = 'VCS',
-  IV = 'IVEFLC',
+  IV = 'IV',
   V = 'V',
+  WD = 'WatchDogs',
+  WD2 = 'WatchDogs2',
+  SR2022 = 'SaintsRow2022',
 }
 
 enum MusicFolder {
@@ -1387,7 +1390,7 @@ class OBSUtility extends obsWebsocketJs {
               });
           } else {
             this.call('SetCurrentPreviewScene', {
-              sceneName: nextRun.customData.obsScene,
+              sceneName: config.obs.names.scenes.gameLayout,
             }).catch((err) => {
               nodecg.log.warn('preview scene not set', err);
             });
@@ -1577,7 +1580,7 @@ class OBSUtility extends obsWebsocketJs {
       if (nextRun && nextRun.gameTwitch == 'Just Chatting') {
         nextRun = runDataArray.value[index + 1] || null;
       }
-      let videoFolder;
+      let videoFile;
       let musicFolder;
       if (nextRun) {
         switch (nextRun.game) {
@@ -1602,43 +1605,43 @@ class OBSUtility extends obsWebsocketJs {
             musicFolder = MusicFolder._2;
             break;
           case 'Grand Theft Auto III':
-            videoFolder = VideoFolder.III;
+            videoFile = VideoFile.III;
             musicFolder = MusicFolder.III;
             break;
           case 'Grand Theft Auto III: The Definitive Edition':
           case 'Grand Theft Auto III - The Definitive Edition':
           case 'Grand Theft Auto III – The Definitive Edition':
-            videoFolder = VideoFolder.IIIDE;
+            videoFile = VideoFile.IIIDE;
             musicFolder = MusicFolder.III;
             break;
           case 'Grand Theft Auto: Vice City':
-            videoFolder = VideoFolder.VC;
+            videoFile = VideoFile.VC;
             musicFolder = MusicFolder.VC;
             break;
           case 'Grand Theft Auto: Vice City - The Definitive Edition':
           case 'Grand Theft Auto: Vice City – The Definitive Edition':
-            videoFolder = VideoFolder.VCDE;
+            videoFile = VideoFile.VCDE;
             musicFolder = MusicFolder.VC;
             break;
           case 'Grand Theft Auto: San Andreas':
-            videoFolder = VideoFolder.SA;
+            videoFile = VideoFile.SA;
             musicFolder = MusicFolder.SA;
             break;
           case 'Grand Theft Auto: San Andreas - The Definitive Edition':
           case 'Grand Theft Auto: San Andreas – The Definitive Edition':
-            videoFolder = VideoFolder.SADE;
+            videoFile = VideoFile.SADE;
             musicFolder = MusicFolder.SA;
             break;
           case 'Grand Theft Auto: Liberty City Stories':
-            videoFolder = VideoFolder.LCS;
+            videoFile = VideoFile.LCS;
             musicFolder = MusicFolder.LCS;
             break;
           case 'Grand Theft Auto: Vice City Stories':
-            videoFolder = VideoFolder.VCS;
+            videoFile = VideoFile.VCS;
             musicFolder = MusicFolder.VCS;
             break;
           case 'Grand Theft Auto IV':
-            videoFolder = VideoFolder.IV;
+            videoFile = VideoFile.IV;
             musicFolder = MusicFolder.IV;
             break;
           case 'Grand Theft Auto: Chinatown Wars':
@@ -1647,24 +1650,38 @@ class OBSUtility extends obsWebsocketJs {
             break;
           case 'Grand Theft Auto: The Lost and Damned':
           case 'Grand Theft Auto IV: The Lost and Damned':
-            videoFolder = VideoFolder.IV;
+            videoFile = VideoFile.IV;
             musicFolder = MusicFolder.EFLC;
             break;
           case 'Grand Theft Auto: The Ballad of Gay Tony':
-            videoFolder = VideoFolder.IV;
+            videoFile = VideoFile.IV;
             musicFolder = MusicFolder.EFLC;
             break;
           case 'Grand Theft Auto V':
-            videoFolder = VideoFolder.V;
+            videoFile = VideoFile.V;
             musicFolder = MusicFolder.V;
             break;
           case 'Grand Theft Auto Online':
-            videoFolder = VideoFolder.V;
+            videoFile = VideoFile.V;
             musicFolder = MusicFolder.V;
             break;
           case 'Yakuza 3':
             // no specific video
             musicFolder = MusicFolder.Yakuza;
+            break;
+          case 'Saints Row (2022)':
+            videoFile = VideoFile.SR2022;
+            // no specific music
+            break;
+          case 'Watch_Dogs':
+          case 'Watch Dogs':
+            videoFile = VideoFile.WD;
+            // no specific music
+            break;
+          case 'Watch_Dogs 2':
+          case 'Watch Dogs 2':
+            videoFile = VideoFile.WD2;
+            // no specific music
             break;
           default:
             // no specific video
@@ -1673,11 +1690,11 @@ class OBSUtility extends obsWebsocketJs {
         }
 
         // no specific video
-        if (!videoFolder) {
-          const keys = Object.keys(VideoFolder);
+        if (!videoFile) {
+          const keys = Object.keys(VideoFile);
           const random = keys[Math.floor(Math.random() * keys.length)];
           // @ts-ignore
-          videoFolder = VideoFolder[random];
+          videoFile = VideoFile[random];
         }
 
         // set video input
@@ -1689,7 +1706,10 @@ class OBSUtility extends obsWebsocketJs {
                 hidden: false,
                 selected: false,
                 value:
-                  config.obs.names.paths.intermissionVideo + '/' + videoFolder,
+                  config.obs.names.paths.intermissionVideo +
+                  '/' +
+                  videoFile +
+                  '.mp4',
               },
             ],
             shuffle: true,

@@ -43,12 +43,12 @@
     ></category>
     <player
       :style="{
-        left: '12.5px',
+        left: '10px',
         top: '240px',
-        width: '355px',
+        width: '365px',
         height: '93px',
       }"
-      :size="56"
+      :size="46"
       :team="1"
     ></player>
     <media-box
