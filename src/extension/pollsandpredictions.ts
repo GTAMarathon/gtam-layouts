@@ -44,7 +44,9 @@ currentPoll.on('change', (newValue, oldValue) => {
 enum PredictionType {
   GoalTime,
   Winner,
+  Estimate,
 }
+
 enum PredictionStatus {
   ACTIVE = 'ACTIVE',
   LOCKED = 'LOCKED',
@@ -114,6 +116,9 @@ type Poll = {
                 1800,
                 newVal.teams[0].id
               );
+            } else {
+              // if no goal time, make a prediction about the estimate
+              createPredictionEstimate(newVal.id, 1800, newVal.teams[0].id);
             }
           } else if (newVal.teams.length < 11) {
             createPredictionWinner(
@@ -137,6 +142,7 @@ type Poll = {
           currentPrediction.value.type == PredictionType.GoalTime &&
           currentPrediction.value.goalTime
         ) {
+          // goal time prediction
           if (
             newVal.milliseconds >= currentPrediction.value.goalTime ||
             (newVal.state === 'finished' &&
@@ -162,6 +168,7 @@ type Poll = {
             );
           }
         } else if (currentPrediction.value.type == PredictionType.Winner) {
+          // race winner prediction
           if (
             oldVal &&
             oldVal.state !== 'finished' &&
@@ -198,6 +205,32 @@ type Poll = {
                 cancelPrediction(currentPrediction.value.id);
               }
             }
+          }
+        } else if (currentPrediction.value.type == PredictionType.Estimate) {
+          // estimate prediction
+          if (
+            newVal.milliseconds / 1000 >= runDataActiveRun.value.estimateS! ||
+            (newVal.state === 'finished' &&
+              newVal.teamFinishTimes[
+                currentPrediction.value.outcomes[0].teamId
+              ] &&
+              newVal.teamFinishTimes[currentPrediction.value.outcomes[0].teamId]
+                .state === 'forfeit')
+          ) {
+            // OVERESTIMATE
+            resolvePrediction(
+              currentPrediction.value.id,
+              currentPrediction.value.outcomes[1].id
+            );
+          } else if (
+            newVal.state == 'finished' &&
+            newVal.milliseconds / 1000 < runDataActiveRun.value.estimateS!
+          ) {
+            // UNDERESTIMATE
+            resolvePrediction(
+              currentPrediction.value.id,
+              currentPrediction.value.outcomes[0].id
+            );
           }
         }
       }
@@ -506,6 +539,47 @@ async function createPredictionGoalTime(
         { id: resp.body.data[0].outcomes[1].id, teamId: teamId },
       ],
       goalTime: parseDuration(goalTimeString),
+      status: PredictionStatus.ACTIVE,
+    };
+    nodecg.log.info('[PollsAndPredictions] Prediction created');
+  } catch (err) {
+    nodecg.log.error(
+      '[PollsAndPredictions] Failed to create a new Prediction',
+      err
+    );
+    currentPrediction.value = undefined;
+  }
+}
+
+async function createPredictionEstimate(
+  runId: string,
+  duration: number,
+  teamId: string
+): Promise<void> {
+  try {
+    var data: SendMessageArgsMap['twitchAPIRequest'] = {
+      method: 'post',
+      endpoint: predictionEndpoint,
+      data: {
+        broadcaster_id: config.broadcaster_id,
+        title: 'Will this run be over or under the estimate?',
+        outcomes: [
+          { title: 'Under the estimate' },
+          { title: 'Over the estimate' },
+        ],
+        prediction_window: duration,
+      },
+      newAPI: true,
+    };
+    var resp = await speedcontrol.sendMessage('twitchAPIRequest', data);
+    currentPrediction.value = {
+      id: resp.body.data[0].id,
+      runId: runId,
+      type: PredictionType.Estimate,
+      outcomes: [
+        { id: resp.body.data[0].outcomes[0].id, teamId: teamId },
+        { id: resp.body.data[0].outcomes[1].id, teamId: teamId },
+      ],
       status: PredictionStatus.ACTIVE,
     };
     nodecg.log.info('[PollsAndPredictions] Prediction created');
