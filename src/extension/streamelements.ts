@@ -37,15 +37,6 @@ if (config.enabled) {
     nodecg.log.error('[StreamElements] Unauthorized socket error: ', err);
   });
 
-  if (config.handleTestEvents) {
-    socket.on('event:test', (data) => {
-      nodecg.log.debug(
-        '[StreamElements] Received test event: ' + JSON.stringify(data)
-      );
-      handleSEEvent(data);
-    });
-  }
-
   socket.on('event', (data) => {
     nodecg.log.debug(
       '[StreamElements] Received event: ' + JSON.stringify(data)
