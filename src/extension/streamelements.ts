@@ -45,7 +45,9 @@ if (config.enabled) {
   }
 
   socket.on('event', (data) => {
-    nodecg.log.debug('[StreamElements] Received event');
+    nodecg.log.debug(
+      '[StreamElements] Received event: ' + JSON.stringify(data)
+    );
     handleSEEvent(data);
   });
 }

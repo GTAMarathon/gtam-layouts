@@ -358,10 +358,8 @@ async function createPredictionWinner(
   teams: RunDataTeam[],
   duration: number
 ): Promise<void> {
-  if (teams.length == 2) {
+  if (teams.length < 11) {
     await createPredictionWinnerWithAPI(runId, title, teams, duration);
-  } else if (teams.length < 11) {
-    await createPredictionWinnerWithGQL(runId, title, teams, duration);
   }
 }
 async function createPredictionWinnerWithAPI(
