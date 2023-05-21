@@ -31,30 +31,30 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
   ],
   [
     'Grand Theft Auto: Vice City',
-    { gameShort: 'GTA Vice City', gameTwitch: 'Grand Theft Auto: Vice City' },
+    { gameShort: 'GTA: Vice City', gameTwitch: 'Grand Theft Auto: Vice City' },
   ],
   [
     'Grand Theft Auto: San Andreas',
     {
-      gameShort: 'GTA San Andreas',
+      gameShort: 'GTA: San Andreas',
       gameTwitch: 'Grand Theft Auto: San Andreas',
     },
   ],
   [
     'Grand Theft Auto Advance',
-    { gameShort: 'GTA Advance', gameTwitch: 'Grand Theft Auto Advance' },
+    { gameShort: 'GTA: Advance', gameTwitch: 'Grand Theft Auto Advance' },
   ],
   [
     'Grand Theft Auto: Liberty City Stories',
     {
-      gameShort: 'GTA Liberty City Stories',
+      gameShort: 'GTA: Liberty City Stories',
       gameTwitch: 'Grand Theft Auto: Liberty City Stories',
     },
   ],
   [
     'Grand Theft Auto: Vice City Stories',
     {
-      gameShort: 'GTA Vice City Stories',
+      gameShort: 'GTA: Vice City Stories',
       gameTwitch: 'Grand Theft Auto: Vice City Stories',
     },
   ],
@@ -65,28 +65,28 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
   [
     'Grand Theft Auto: The Lost and Damned',
     {
-      gameShort: 'GTA The Lost and Damned',
+      gameShort: 'GTA IV: TLaD',
       gameTwitch: 'Grand Theft Auto IV: The Lost and Damned',
     },
   ],
   [
     'Grand Theft Auto IV: The Lost and Damned',
     {
-      gameShort: 'GTA The Lost and Damned',
+      gameShort: 'GTA IV: TLaD',
       gameTwitch: 'Grand Theft Auto IV: The Lost and Damned',
     },
   ],
   [
     'Grand Theft Auto: Chinatown Wars',
     {
-      gameShort: 'GTA Chinatown Wars',
+      gameShort: 'GTA: Chinatown Wars',
       gameTwitch: 'Grand Theft Auto: Chinatown Wars',
     },
   ],
   [
     'Grand Theft Auto: The Ballad of Gay Tony',
     {
-      gameShort: 'GTA The Ballad of Gay Tony',
+      gameShort: 'GTA IV: TBoGT',
       gameTwitch: 'Grand Theft Auto IV: The Ballad of Gay Tony',
     },
   ],
@@ -96,7 +96,7 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
   ],
   [
     'Grand Theft Auto Online',
-    { gameShort: 'GTA Online', gameTwitch: 'Grand Theft Auto V' },
+    { gameShort: 'GTA: Online', gameTwitch: 'Grand Theft Auto V' },
   ],
   [
     'Multi Theft Auto',
@@ -105,56 +105,56 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
   [
     'Grand Theft Auto III: The Definitive Edition',
     {
-      gameShort: 'GTA III DE',
+      gameShort: 'GTA III Definitive Edition',
       gameTwitch: 'Grand Theft Auto III: The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto III - The Definitive Edition',
     {
-      gameShort: 'GTA III DE',
+      gameShort: 'GTA III Definitive Edition',
       gameTwitch: 'Grand Theft Auto III: The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto III – The Definitive Edition',
     {
-      gameShort: 'GTA III DE',
+      gameShort: 'GTA III Definitive Edition',
       gameTwitch: 'Grand Theft Auto III: The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: Vice City - The Definitive Edition',
     {
-      gameShort: 'GTA Vice City DE',
+      gameShort: 'GTA: VC Definitive Edition',
       gameTwitch: 'Grand Theft Auto: Vice City – The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: Vice City – The Definitive Edition',
     {
-      gameShort: 'GTA Vice City DE',
+      gameShort: 'GTA: VC Definitive Edition',
       gameTwitch: 'Grand Theft Auto: Vice City – The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: San Andreas - The Definitive Edition',
     {
-      gameShort: 'GTA San Andreas DE',
+      gameShort: 'GTA: SA Definitive Edition',
       gameTwitch: 'Grand Theft Auto: San Andreas – The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: San Andreas – The Definitive Edition',
     {
-      gameShort: 'GTA San Andreas DE',
+      gameShort: 'GTA: SA Definitive Edition',
       gameTwitch: 'Grand Theft Auto: San Andreas – The Definitive Edition',
     },
   ],
 
   [
     'Grand Theft Auto: Long Night',
-    { gameShort: 'GTA Long Night', gameTwitch: 'Grand Theft Auto: Vice City' },
+    { gameShort: 'GTA: Long Night', gameTwitch: 'Grand Theft Auto: Vice City' },
   ],
 
   [
@@ -194,20 +194,20 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
   [
     'Red Dead Redemption: Undead Nightmare',
     {
-      gameShort: 'RDR Undead Nightmare',
+      gameShort: 'RDR: Undead Nightmare',
       gameTwitch: 'Red Dead Redemption: Undead Nightmare',
     },
   ],
   [
     'Red Dead Redemption 2',
-    { gameShort: 'Red Dead Redemption 2', gameTwitch: 'Red Dead Redemption 2' },
+    { gameShort: 'RDR 2', gameTwitch: 'Red Dead Redemption 2' },
   ],
   [
     'Retro City Rampage',
     { gameShort: 'Retro City Rampage', gameTwitch: 'Retro City Rampage' },
   ],
   ['Saints Row', { gameShort: 'Saints Row', gameTwitch: 'Saints Row (2006)' }],
-  ['Saints Row (2022)', { gameShort: 'Saints Row', gameTwitch: 'Saints Row' }],
+  ['Saints Row (2022)', { gameShort: 'Saints Row (2022)', gameTwitch: 'Saints Row' }],
   [
     'Saints Row: The Third',
     { gameShort: 'Saints Row: The Third', gameTwitch: 'Saints Row: The Third' },
