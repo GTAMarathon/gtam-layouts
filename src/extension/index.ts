@@ -26,4 +26,5 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
   require('./hundo');
   require('./streamelements');
   require('./media-box');
+  require('./scheduling');
 };
