@@ -206,7 +206,8 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
     'Retro City Rampage',
     { gameShort: 'Retro City Rampage', gameTwitch: 'Retro City Rampage' },
   ],
-  ['Saints Row', { gameShort: 'Saints Row', gameTwitch: 'Saints Row' }],
+  ['Saints Row', { gameShort: 'Saints Row', gameTwitch: 'Saints Row (2006)' }],
+  ['Saints Row (2022)', { gameShort: 'Saints Row', gameTwitch: 'Saints Row' }],
   [
     'Saints Row: The Third',
     { gameShort: 'Saints Row: The Third', gameTwitch: 'Saints Row: The Third' },
@@ -251,8 +252,8 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
       gameTwitch: 'True Crime: New York City',
     },
   ],
-  ['Watch_Dogs', { gameShort: 'Watch_Dogs', gameTwitch: 'Watch_Dogs' }],
-  ['WATCH_DOGS 2', { gameShort: 'WATCH_DOGS 2', gameTwitch: 'Watch Dogs 2' }],
+  ['Watch_Dogs', { gameShort: 'Watch_Dogs', gameTwitch: 'Watch Dogs' }],
+  ['Watch_Dogs 2', { gameShort: 'Watch_Dogs 2', gameTwitch: 'Watch Dogs 2' }],
   [
     'Watch Dogs: Legion',
     { gameShort: 'Watch Dogs: Legion', gameTwitch: 'Watch Dogs: Legion' },
@@ -261,6 +262,23 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
     'Yakuza 3 Remastered',
     { gameShort: 'Yakuza 3 Remastered', gameTwitch: 'Yakuza 3 Remastered' },
   ],
+  ['Manhunt', { gameShort: 'Manhunt', gameTwitch: 'Manhunt' }],
+  [
+    'Postal 4: No Regerts',
+    { gameShort: 'Postal 4', gameTwitch: 'Postal 4: No Regerts' },
+  ],
+  [
+    'Reservoir Dogs',
+    { gameShort: 'Reservoir Dogs', gameTwitch: 'Reservoir Dogs' },
+  ],
+  [
+    'Scarface: The World Is Yours',
+    {
+      gameShort: 'Scarface: The World Is Yours',
+      gameTwitch: 'Scarface: The World Is Yours',
+    },
+  ],
+  ['Paris Chase', { gameShort: 'Paris Chase', gameTwitch: 'Paris Chase' }],
 ]);
 
 oengusImportStatus.on('change', (newVal, oldVal) => {
@@ -276,6 +294,10 @@ oengusImportStatus.on('change', (newVal, oldVal) => {
         if (runData.game && gameNameMap.has(runData.game)) {
           var values = gameNameMap.get(runData.game);
           if (values) {
+            nodecg.log.debug(
+              '[Scheduling] Updating twitch game and game short for ' +
+                runData.game
+            );
             runData.gameTwitch = values.gameTwitch;
             runData.customData['gameShort'] = values.gameShort;
           }
@@ -299,7 +321,7 @@ timer.on('change', (newVal, oldVal) => {
 async function updateOengusScheduleOnRunStart(): Promise<void> {
   if (config.enable) {
     try {
-/*       await sendMessage('importOengusSchedule', {
+      /*       await sendMessage('importOengusSchedule', {
         marathonShort: config.marathonShort,
         useJapanese: false,
       }); */
@@ -324,7 +346,7 @@ async function updateOengusScheduleOnRunStart(): Promise<void> {
               );
             }
 
-/*             await sendMessage('updateOengusSchedule', {
+            /*             await sendMessage('updateOengusSchedule', {
               marathonShort: config.marathonShort,
               lines: lines,
             });
@@ -387,7 +409,7 @@ export async function updateOengusScheduleOnSwitchingRun(): Promise<void> {
                 editSetupBufferLengthToCompensateDelta(nextRun, delta)
               );
 
-/*               await sendMessage('updateOengusSchedule', {
+              /*               await sendMessage('updateOengusSchedule', {
                 marathonShort: config.marathonShort,
                 lines: lines,
               });
