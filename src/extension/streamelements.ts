@@ -57,7 +57,7 @@ if (config.enabled) {
 function handleSEEvent(data: any) {
   if (data.type == SEEvents.WindowEventType.CheerLatest) {
     nodecg.log.debug('[StreamElements] Received cheer event');
-    const event = data.event as SEEvents.CheerLatestEvent;
+    const event = data.data as SEEvents.CheerLatestEvent;
     const bitsInfo: BitsQueueItem = {
       name: event.displayName,
       amount: event.amount,
@@ -65,7 +65,7 @@ function handleSEEvent(data: any) {
     twitchBitsQueue.value!.push(bitsInfo);
   } else if (data.type == SEEvents.WindowEventType.SubscriberLatest) {
     nodecg.log.debug('[StreamElements] Received sub event');
-    const event = data.event as SEEvents.SubscriberLatestEvent;
+    const event = data.data as SEEvents.SubscriberLatestEvent;
     const subInfo: SubQueueItem = {
       name: event.displayName,
       months: event.amount,
@@ -74,7 +74,7 @@ function handleSEEvent(data: any) {
     twitchSubQueue.value!.push(subInfo);
   } else if (data.type == SEEvents.WindowEventType.MerchLatest) {
     nodecg.log.debug('[StreamElements] Received merch event');
-    const event = data.event as SEEvents.MerchLatestEvent;
+    const event = data.data as SEEvents.MerchLatestEvent;
     const merchInfo: MerchQueueItem = {
       name: event.username,
       items: event.items,
