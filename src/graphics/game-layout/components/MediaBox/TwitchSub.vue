@@ -11,12 +11,7 @@
   >
     <img :src="getRandomEmote()" />
     <span :style="{ fontWeight: 'normal' }"
-      ><template v-if="subInfo.isGift && subInfo.sender">
-        <b class="highlight">{{ subInfo.name }}</b> has received a
-        <b class="highlight">Tier {{ subInfo.tier }}</b> subscription from
-        <b class="highlight">{{ subInfo.sender }}</b
-        >!</template
-      ><template v-else
+      ><template
         ><b class="highlight">{{ subInfo.name }}</b> has subscribed with a
         <b class="highlight">Tier {{ subInfo.tier }}</b> subscription for
         <b class="highlight">{{ subInfo.months }} months</b>!</template
