@@ -11,11 +11,9 @@
   >
     <img :src="getRandomEmote()" />
     <span :style="{ fontWeight: 'normal' }"
-      ><template
-        ><b class="highlight">{{ subInfo.name }}</b> has subscribed with a
-        <b class="highlight">Tier {{ subInfo.tier }}</b> subscription for
-        <b class="highlight">{{ subInfo.months }} months</b>!</template
-      ></span
+      ><b class="highlight">{{ subInfo.name }}</b> has subscribed with a
+      <b class="highlight">Tier {{ subInfo.tier }}</b> subscription for
+      <b class="highlight">{{ subInfo.months }} months</b>!</span
     >
   </div>
 </template>
