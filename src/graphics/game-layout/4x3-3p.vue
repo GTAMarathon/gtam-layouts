@@ -5,8 +5,8 @@
     </div>
     <timer
       :style="{
-        left: '1314px',
-        top: '745px',
+        left: '1304px',
+        top: '705px',
         width: '606px',
         height: '125px',
         'font-size': '45px',
@@ -14,8 +14,8 @@
     ></timer>
     <estimate
       :style="{
-        left: '1314px',
-        top: '855px',
+        left: '1304px',
+        top: '815px',
         width: '606px',
         height: '75px',
         fontWeight: 'regular',
@@ -24,30 +24,30 @@
     ></estimate>
     <game
       :style="{
-        left: '740px',
-        top: '220px',
-        width: '440px',
+        left: '700px',
+        top: '720px',
+        width: '520px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="72"
+      :size="80"
     ></game>
     <category
       :style="{
-        left: '740px',
-        top: '280px',
-        width: '440px',
+        left: '700px',
+        top: '780px',
+        width: '520px',
         height: '100px',
         fontWeight: 'bold',
       }"
-      :size="44"
+      :size="50"
     ></category>
     <player
       :style="{
         left: '0px',
-        top: '541px',
-        width: '593px',
-        height: '91px',
+        top: '471px',
+        width: '643px',
+        height: '81px',
         fontWeight: 'bold',
       }"
       :size="50"
@@ -55,10 +55,10 @@
     ></player>
     <player
       :style="{
-        left: '720px',
-        top: '450px',
-        width: '479px',
-        height: '91px',
+        left: '643px',
+        top: '471px',
+        width: '640px',
+        height: '81px',
         fontWeight: 'bold',
       }"
       :size="50"
@@ -66,10 +66,10 @@
     ></player>
     <player
       :style="{
-        left: '1314px',
-        top: '541px',
-        width: '606px',
-        height: '91px',
+        left: '1280px',
+        top: '471px',
+        width: '640px',
+        height: '81px',
         fontWeight: 'bold',
       }"
       :size="50"
@@ -78,9 +78,9 @@
     <media-box
       :style="{
         left: '7.5px',
-        bottom: '5px',
-        width: '574px',
-        height: '440px',
+        bottom: '90px',
+        width: '620px',
+        height: '415px',
         fontSize: '34px',
       }"
     />

@@ -7,7 +7,7 @@
       :style="{
         left: '0px',
         top: '476px',
-        width: '476px',
+        width: '570px',
         height: '75px',
         'font-size': '26px',
       }"
@@ -16,7 +16,7 @@
       :style="{
         left: '0px',
         top: '542px',
-        width: '476px',
+        width: '570px',
         height: '65px',
         'font-weight': 'regular',
         'font-size': '24px',
@@ -26,27 +26,27 @@
       :style="{
         left: '12.5px',
         top: '342px',
-        width: '451px',
+        width: '550px',
         height: '75px',
         fontWeight: 'bold',
       }"
-      :size="65"
+      :size="60"
     ></game>
     <category
       :style="{
         left: '0px',
         top: '400px',
-        width: '476px',
+        width: '570px',
         height: '62px',
         fontWeight: 'bold',
       }"
-      :size="37"
+      :size="35"
     ></category>
     <player
       :style="{
         left: '12.5px',
         top: '241px',
-        width: '451px',
+        width: '550px',
         height: '91px',
         fontWeight: 'bold',
       }"
@@ -56,9 +56,9 @@
     <media-box
       :style="{
         left: '7.5px',
-        bottom: '5px',
-        width: '461px',
-        height: '454px',
+        bottom: '75px',
+        width: '551px',
+        height: '384px',
         fontSize: '30px',
       }"
     />

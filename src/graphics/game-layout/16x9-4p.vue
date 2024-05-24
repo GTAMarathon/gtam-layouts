@@ -6,7 +6,7 @@
     <timer
       :style="{
         left: '777px',
-        top: '547px',
+        top: '557px',
         width: '366px',
         height: '80px',
         'font-size': '32px',
@@ -15,7 +15,7 @@
     <estimate
       :style="{
         left: '777px',
-        top: '620px',
+        top: '630px',
         width: '366px',
         height: '55px',
         'font-weight': 'regular',
@@ -45,7 +45,7 @@
     <player
       :style="{
         left: '0px',
-        top: '432px',
+        top: '412px',
         width: '768px',
         height: '107px',
       }"
@@ -55,7 +55,7 @@
     <player
       :style="{
         left: '1152px',
-        top: '432px',
+        top: '412px',
         width: '768px',
         height: '107px',
       }"
@@ -65,7 +65,7 @@
     <player
       :style="{
         left: '0px',
-        top: '973px',
+        top: '923px',
         width: '768px',
         height: '107px',
       }"
@@ -75,7 +75,7 @@
     <player
       :style="{
         left: '1152px',
-        top: '973px',
+        top: '923px',
         width: '768px',
         height: '107px',
       }"
@@ -85,9 +85,9 @@
     <media-box
       :style="{
         left: '779.5px',
-        bottom: '5px',
+        bottom: '75px',
         width: '360px',
-        height: '319px',
+        height: '249px',
         fontSize: '30px',
       }"
     />

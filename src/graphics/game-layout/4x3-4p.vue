@@ -45,49 +45,49 @@
     <player
       :style="{
         left: '0px',
-        top: '459px',
+        top: '439px',
         width: '614px',
         height: '81px',
       }"
-      :size="50"
+      :size="40"
       :team="1"
     ></player>
     <player
       :style="{
         left: '1306px',
-        top: '459px',
+        top: '439px',
         width: '614px',
         height: '81px',
       }"
-      :size="50"
+      :size="40"
       :team="2"
     ></player>
     <player
       :style="{
         left: '0px',
-        top: '999px',
+        top: '949px',
         width: '614px',
         height: '81px',
       }"
-      :size="50"
+      :size="40"
       :team="3"
     ></player>
     <player
       :style="{
         left: '1306px',
-        top: '999px',
+        top: '949px',
         width: '614px',
         height: '81px',
       }"
-      :size="50"
+      :size="40"
       :team="4"
     ></player>
     <media-box
       :style="{
         left: '625.5px',
-        bottom: '5px',
+        bottom: '75px',
         width: '669px',
-        height: '319px',
+        height: '245px',
         fontSize: '30px',
       }"
     />

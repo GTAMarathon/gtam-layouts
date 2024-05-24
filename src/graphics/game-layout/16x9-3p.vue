@@ -5,18 +5,18 @@
     </div>
     <timer
       :style="{
-        left: '576px',
-        top: '873px',
-        width: '768px',
+        left: '1401px',
+        top: '803px',
+        width: '505px',
         height: '120px',
         fontSize: '40px',
       }"
     ></timer>
     <estimate
       :style="{
-        left: '576px',
-        top: '972px',
-        width: '768px',
+        left: '1401px',
+        top: '903px',
+        width: '505px',
         height: '100px',
         fontWeight: 'regular',
         fontSize: '30px',
@@ -24,9 +24,9 @@
     ></estimate>
     <game
       :style="{
-        left: '1361.5px',
-        top: '635px',
-        width: '545px',
+        left: '1401.5px',
+        top: '585px',
+        width: '505px',
         height: '200px',
         fontWeight: 'bold',
       }"
@@ -34,9 +34,9 @@
     ></game>
     <category
       :style="{
-        left: '1361.5px',
-        top: '694px',
-        width: '545px',
+        left: '1401.5px',
+        top: '644px',
+        width: '505px',
         height: '200px',
         fontWeight: 'bold',
       }"
@@ -45,7 +45,7 @@
     <player
       :style="{
         left: '7.5px',
-        top: '430px',
+        top: '455px',
         width: '557px',
         height: '94px',
       }"
@@ -55,7 +55,7 @@
     <player
       :style="{
         left: '1355.5px',
-        top: '430px',
+        top: '455px',
         width: '557px',
         height: '94px',
       }"
@@ -65,7 +65,7 @@
     <player
       :style="{
         left: '775.5px',
-        top: '341px',
+        top: '455px',
         width: '370px',
         height: '92px',
       }"
@@ -75,9 +75,9 @@
     <media-box
       :style="{
         left: '7.5px',
-        bottom: '5px',
-        width: '556px',
-        height: '547px',
+        bottom: '85px',
+        width: '526px',
+        height: '447px',
         fontSize: '34px',
       }"
     />

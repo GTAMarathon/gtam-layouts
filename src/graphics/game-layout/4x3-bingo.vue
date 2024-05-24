@@ -6,7 +6,7 @@
     <timer
       :style="{
         left: '745px',
-        top: '527px',
+        top: '537px',
         width: '426px',
         height: '100px',
         'font-size': '40px',
@@ -15,7 +15,7 @@
     <estimate
       :style="{
         left: '628px',
-        top: '625px',
+        top: '635px',
         width: '664px',
         height: '75px',
         'font-weight': 'regular',
@@ -45,39 +45,39 @@
     <player
       :style="{
         left: '0px',
-        top: '459px',
+        top: '440px',
         width: '614px',
         height: '81px',
       }"
-      :size="50"
+      :size="40"
       :team="1"
     ></player>
     <player
       :style="{
         left: '1306px',
-        top: '459px',
+        top: '440px',
         width: '614px',
         height: '81px',
       }"
-      :size="50"
+      :size="40"
       :team="2"
     ></player>
     <player
       :style="{
         left: '0px',
-        top: '999px',
+        top: '948px',
         width: '614px',
         height: '81px',
       }"
-      :size="50"
+      :size="40"
       :team="3"
     ></player>
     <media-box
       :style="{
         left: '625.5px',
-        bottom: '5px',
+        bottom: '75px',
         width: '669px',
-        height: '319px',
+        height: '245px',
         fontSize: '30px',
       }"
     />
