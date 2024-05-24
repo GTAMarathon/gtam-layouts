@@ -25,25 +25,25 @@
       </template>
       <img
         class="bg"
-        v-if="type == 'START OF MARATHON' || type == 'START OF DAY'"
+        v-show="type == 'START OF MARATHON' || type == 'START OF DAY'"
         src="./labels/stream_starting.png"
         rel="preload"
       />
       <img
         class="bg"
-        v-else-if="type == 'END OF DAY'"
+        v-show="type == 'END OF DAY'"
         src="./labels/stream_ending.png"
         rel="preload"
       />
       <img
         class="bg"
-        v-else-if="type == 'INTERMISSION' || type == 'FINAL RUN'"
+        v-show="type == 'INTERMISSION' || type == 'FINAL RUN'"
         src="./labels/intermission.png"
         rel="preload"
       />
       <img
         class="bg"
-        v-else-if="type == 'END OF MARATHON'"
+        v-show="type == 'END OF MARATHON'"
         src="./bgs/marathonend.png"
         rel="preload"
       />
@@ -318,14 +318,18 @@
     }
   });
 
+  let timeRefreshTimeout: NodeJS.Timeout;
+
   onMounted(() => {
     update();
     nodecg.listenFor('endOfMarathon', () => {
       type = 'END OF MARATHON';
       intermissionRunData = [];
+      clearTimeout(timeRefreshTimeout);
     });
     nodecg.listenFor('clearIntermission', () => {
       clear();
+      clearTimeout(timeRefreshTimeout);
     });
   });
 
@@ -412,7 +416,22 @@
           }
         }
       }
+      timeRefreshTimeout = setTimeout(updateRunTimes, 30 * 1000); // Update relative run timestamps every 30 seconds
     }
+  }
+
+  function updateRunTimes() {
+    for (let index = 0; index < intermissionRunData.length; index++) {
+      const run = intermissionRunData[index];
+      if (run && run.run) {
+        intermissionRunData[index] = {
+          run: run.run,
+          etaUntil: timeToRun(run.run),
+        };
+      }
+    }
+    timeRefreshTimeout = setTimeout(updateRunTimes, 30 * 1000);
+    console.log('Updating run times');
   }
 
   function timeToRun(run: RunData): string {
