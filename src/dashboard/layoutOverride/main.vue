@@ -22,7 +22,7 @@
   import { computed } from 'vue';
   import { useHead } from '@vueuse/head';
   const gameLayouts = useReplicant<GameLayouts>('gameLayouts', 'gtam-layouts');
-  useHead({ title: 'Game LayoutOverride' });
+  useHead({ title: 'Game Layout Override' });
 
   const layoutOptions = computed(() => {
     if (gameLayouts && gameLayouts.data && gameLayouts.data.available) {
