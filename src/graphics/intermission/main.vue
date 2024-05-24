@@ -102,7 +102,7 @@
             overflow: 'visible',
             whiteSpace: 'nowrap',
             marginTop: '160px',
-            color: '#4fbafe',
+            color: '#C736FF',
           }"
           :key="intermissionRunData[0].run.id"
         >
@@ -156,7 +156,7 @@
             overflow: 'visible',
             whiteSpace: 'nowrap',
             marginTop: '160px',
-            color: '#4fbafe',
+            color: '#C736FF',
           }"
           :key="intermissionRunData[1].run.id"
         >
@@ -210,7 +210,7 @@
             overflow: 'visible',
             whiteSpace: 'nowrap',
             marginTop: '160px',
-            color: '#4fbafe',
+            color: '#C736FF',
           }"
           :key="intermissionRunData[2].run.id"
         >

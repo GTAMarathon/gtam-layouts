@@ -49,10 +49,10 @@
     color: #a3a3a3;
   }
   .running {
-    color: #4fbafe;
+    color: #C736FF;
   }
   .paused {
-    color: #00b1ba;
+    color: #a304e2;
   }
   .finished {
     color: #ffd557;
