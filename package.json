@@ -42,6 +42,7 @@
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@popperjs/core": "^2.9.2",
+    "animate.css": "^4.1.1",
     "bootstrap": "^5.0.1",
     "clone": "^2.1.2",
     "fitty": "^2.3.6",
@@ -145,6 +146,11 @@
         "file": "vchundo-race.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "omnibar.html",
+        "width": 1920,
+        "height": 66
       }
     ],
     "assetCategories": [
