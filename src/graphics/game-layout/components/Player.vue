@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ position: 'fixed' }">
+  <div :style="{ position: 'fixed' }" class="playerName">
     <transition name="fade">
       <div
         v-if="name"
@@ -27,6 +27,12 @@
     </transition>
   </div>
 </template>
+
+<style scoped>
+  .playerName {
+    font-family: 'Underscore', 'Europa Grotesk SH DemBol';
+  }
+</style>
 
 <script setup lang="ts">
   import { computed, watch } from 'vue';
