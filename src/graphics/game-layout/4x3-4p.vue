@@ -25,7 +25,7 @@
     <game
       :style="{
         left: '643px',
-        top: '261px',
+        top: '331px',
         width: '634px',
         height: '75px',
         fontWeight: 'bold',
@@ -35,7 +35,7 @@
     <category
       :style="{
         left: '643px',
-        top: '320px',
+        top: '390px',
         width: '634px',
         height: '75px',
         fontWeight: 'bold',
@@ -45,21 +45,21 @@
     <player
       :style="{
         left: '0px',
-        top: '439px',
+        top: '440px',
         width: '614px',
         height: '81px',
       }"
-      :size="40"
+      :size="36"
       :team="1"
     ></player>
     <player
       :style="{
         left: '1306px',
-        top: '439px',
+        top: '440px',
         width: '614px',
         height: '81px',
       }"
-      :size="40"
+      :size="36"
       :team="2"
     ></player>
     <player
@@ -69,7 +69,7 @@
         width: '614px',
         height: '81px',
       }"
-      :size="40"
+      :size="36"
       :team="3"
     ></player>
     <player
@@ -79,7 +79,7 @@
         width: '614px',
         height: '81px',
       }"
-      :size="40"
+      :size="36"
       :team="4"
     ></player>
     <media-box

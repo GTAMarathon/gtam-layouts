@@ -45,7 +45,7 @@
     <player
       :style="{
         left: '0px',
-        top: '471px',
+        top: '473px',
         width: '643px',
         height: '81px',
         fontWeight: 'bold',
@@ -56,7 +56,7 @@
     <player
       :style="{
         left: '643px',
-        top: '471px',
+        top: '473px',
         width: '640px',
         height: '81px',
         fontWeight: 'bold',
@@ -67,7 +67,7 @@
     <player
       :style="{
         left: '1280px',
-        top: '471px',
+        top: '473px',
         width: '640px',
         height: '81px',
         fontWeight: 'bold',

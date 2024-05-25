@@ -3,9 +3,11 @@
     <div id="backgrounds">
       <img
         class="bg"
+        style="z-index: 10"
         v-if="type != 'END OF MARATHON'"
         src="./bgs/mediabox-logo.png"
       />
+      <img class="bg" v-if="type != 'END OF MARATHON'" src="./bgs/fade.png" />
       <template v-if="type != 'END OF MARATHON'">
         <transition name="fade" appear>
           <img

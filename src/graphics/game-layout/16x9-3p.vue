@@ -6,7 +6,7 @@
     <timer
       :style="{
         left: '1401px',
-        top: '803px',
+        top: '783px',
         width: '505px',
         height: '120px',
         fontSize: '40px',
@@ -15,7 +15,7 @@
     <estimate
       :style="{
         left: '1401px',
-        top: '903px',
+        top: '883px',
         width: '505px',
         height: '100px',
         fontWeight: 'regular',
@@ -25,7 +25,7 @@
     <game
       :style="{
         left: '1401.5px',
-        top: '585px',
+        top: '565px',
         width: '505px',
         height: '200px',
         fontWeight: 'bold',
@@ -35,7 +35,7 @@
     <category
       :style="{
         left: '1401.5px',
-        top: '644px',
+        top: '624px',
         width: '505px',
         height: '200px',
         fontWeight: 'bold',
