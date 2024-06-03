@@ -1708,8 +1708,7 @@ class OBSUtility extends obsWebsocketJs {
                 value:
                   config.obs.names.paths.intermissionVideo +
                   '/' +
-                  videoFile +
-                  '.mp4',
+                  videoFile,
               },
             ],
             shuffle: true,
