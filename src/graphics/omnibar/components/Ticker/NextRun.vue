@@ -45,7 +45,9 @@
     setTimeout(() => {
       const nextRun = getNextRun();
       if (nextRun) {
-        msg = `Next run in <span class="highlight">${timeToRun(nextRun)}</span> - ${nextRun.game} ${
+        msg = `Next run in <span class="highlight">${timeToRun(
+          nextRun
+        )}</span> - ${nextRun.customData['gameShort'] || nextRun.game} ${
           nextRun.category
         } by <span class="highlight">${formatPlayers(nextRun)}</span>`;
       } else {
