@@ -260,12 +260,12 @@
 </template>
 
 <script setup lang="ts">
-  import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { RunData } from 'speedcontrol/types';
   import {
     RunDataActiveRunSurrounding,
     RunDataArray,
     TwitchCommercialTimer,
-  } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+  } from 'speedcontrol/types/schemas';
   import UpcomingRun from './components/UpcomingRun.vue';
   import MediaBox from '../game-layout/components/MediaBox.vue';
   import humanizeDuration from 'humanize-duration';

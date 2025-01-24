@@ -4,8 +4,8 @@ import obsWebsocketJs from 'obs-websocket-js';
 import { Configschema } from '@gtam-layouts/types/schemas';
 import { TransformProperties } from '@gtam-layouts/types';
 import { get } from './nodecg';
-import { RunData } from '../../../../nodecg-speedcontrol/src/types';
-import { RunDataActiveRun } from '../../../../nodecg-speedcontrol/src/types/schemas';
+import { RunData } from 'speedcontrol/types';
+import { RunDataActiveRun } from 'speedcontrol/types/schemas';
 import {
   setStartHighlight,
   setEndAndCreateHighlight,

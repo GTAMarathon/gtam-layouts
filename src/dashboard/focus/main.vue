@@ -15,7 +15,7 @@
 <script lang="ts">
   import { defineComponent, computed } from 'vue';
   import { useReplicant } from 'nodecg-vue-composable';
-  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { RunDataActiveRun } from 'speedcontrol/types';
   import { useHead } from '@vueuse/head';
 
   export default defineComponent({

@@ -1,5 +1,5 @@
 import { Configschema } from '@gtam-layouts/types/schemas';
-import { ExtensionReturn } from '../../../nodecg-speedcontrol/src/types';
+import { ExtensionReturn } from 'speedcontrol/types';
 import { get } from './util/nodecg';
 import obs from './util/obs';
 import {

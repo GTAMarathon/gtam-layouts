@@ -59,7 +59,7 @@
   import {
     RunDataActiveRun,
     Timer,
-  } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+  } from 'speedcontrol/types/schemas';
   import { useHead } from '@vueuse/head';
 
   interface Player {

@@ -88,8 +88,8 @@
 <script lang="ts">
   import { defineComponent, computed, ref, Ref } from 'vue';
   import { useReplicant } from 'nodecg-vue-composable';
-  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
-  import { RunDataTeam } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { RunDataActiveRun } from 'speedcontrol/types/schemas';
+  import { RunDataTeam } from 'speedcontrol/types';
   import { useHead } from '@vueuse/head';
 
   interface Model {

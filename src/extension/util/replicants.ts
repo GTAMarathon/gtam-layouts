@@ -5,12 +5,12 @@ import {
   RunDataArray,
   RunFinishTimes,
   Timer,
-} from '../../../../nodecg-speedcontrol/src/types';
+} from 'speedcontrol/types';
 import { HundoTrackerData, GameLayouts } from '@gtam-layouts/types/schemas';
 import {
   OengusImportStatus,
   RunDataActiveRunSurrounding,
-} from '../../../../nodecg-speedcontrol/src/types/schemas';
+} from 'speedcontrol/types/schemas';
 import {
   SubQueueItem,
   BitsQueueItem,

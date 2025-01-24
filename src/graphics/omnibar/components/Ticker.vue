@@ -31,7 +31,7 @@
   import {
     RunDataActiveRun,
     RunDataArray,
-  } from '../../../../../nodecg-speedcontrol/src/types';
+  } from 'speedcontrol/types';
 
   const runs = nodecg.Replicant<RunDataArray>(
     'runDataArray',

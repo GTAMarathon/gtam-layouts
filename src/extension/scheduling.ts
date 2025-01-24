@@ -3,7 +3,7 @@ import {
   ExtensionReturn,
   OengusLine,
   RunData,
-} from '../../../nodecg-speedcontrol/src/types';
+} from 'speedcontrol/types';
 import { get } from './util/nodecg';
 import {
   timer,

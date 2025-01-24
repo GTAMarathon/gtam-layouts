@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue';
-  import { RunData } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { RunData } from 'speedcontrol/types';
   import fitty, { FittyInstance } from 'fitty';
 
   interface Props {
