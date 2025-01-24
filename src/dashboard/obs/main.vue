@@ -23,12 +23,12 @@
 <script lang="ts">
   import { defineComponent, computed } from 'vue';
   import { useReplicant } from 'nodecg-vue-composable';
-  import { RunDataActiveRunSurrounding } from 'nodecg/bundles/nodecg-speedcontrol/src/types/schemas';
+  import { RunDataActiveRunSurrounding } from 'speedcontrol/types/schemas';
   import {
     RunDataArray,
     RunData,
     Timer,
-  } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  } from 'speedcontrol/types';
   import { useHead } from '@vueuse/head';
 
   export default defineComponent({

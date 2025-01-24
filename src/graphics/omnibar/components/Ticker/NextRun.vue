@@ -9,7 +9,7 @@
     RunData,
     RunDataActiveRun,
     RunDataArray,
-  } from '../../../../../../nodecg-speedcontrol/src/types';
+  } from 'speedcontrol/types';
   import { timeToRun } from '../../../_misc/time-to-run';
   import { formatPlayers } from '../../../_misc/format-players';
   const activeRun = nodecg.Replicant<RunDataActiveRun>(

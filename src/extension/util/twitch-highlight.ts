@@ -3,7 +3,7 @@ import clone from 'clone';
 import { get } from './nodecg';
 import { Configschema } from '../../types/schemas/configschema';
 import { GraphQLClient } from 'graphql-request';
-import { RunData } from '../../../../nodecg-speedcontrol/src/types';
+import { RunData } from 'speedcontrol/types';
 import { timer } from './replicants';
 import NodeCG from '@nodecg/types';
 

@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
   import { useReplicant } from 'nodecg-vue-composable';
-  import { Timer } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { Timer } from 'speedcontrol/types';
 
   const timer = useReplicant<Timer>('timer', 'nodecg-speedcontrol');
 </script>

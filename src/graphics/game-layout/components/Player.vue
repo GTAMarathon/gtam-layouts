@@ -40,7 +40,7 @@
   import {
     RunDataActiveRun,
     Timer,
-  } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  } from 'speedcontrol/types';
   import { useReplicant } from 'nodecg-vue-composable';
   import fitty, { FittyInstance } from 'fitty';
 

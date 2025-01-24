@@ -133,3 +133,10 @@ dist
 /dashboard/
 /extension/
 /graphics/
+
+# NodeCG files
+assets/
+cfg/
+db/
+logs/
+bundles/

@@ -27,7 +27,7 @@
 <script setup lang="ts">
   import { watch } from 'vue';
   import { $ref } from 'vue/macros';
-  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { RunDataActiveRun } from 'speedcontrol/types';
   import { useReplicant } from 'nodecg-vue-composable';
   import fitty, { FittyInstance } from 'fitty';
 

@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-  import { RunDataActiveRun } from 'nodecg/bundles/nodecg-speedcontrol/src/types';
+  import { RunDataActiveRun } from 'speedcontrol/types';
   import { nextTick, watch } from 'vue';
   import { $ref } from 'vue/macros';
   import { useReplicant } from 'nodecg-vue-composable';

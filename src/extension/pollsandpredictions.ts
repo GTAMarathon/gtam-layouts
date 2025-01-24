@@ -4,7 +4,7 @@ import {
   ExtensionReturn,
   RunDataTeam,
   SendMessageArgsMap,
-} from '../../../nodecg-speedcontrol/src/types';
+} from 'speedcontrol/types';
 import { timer, runDataActiveRun } from './util/replicants';
 import { get } from './util/nodecg';
 import needle, { NeedleResponse } from 'needle';
