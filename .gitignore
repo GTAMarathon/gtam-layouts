@@ -140,3 +140,10 @@ cfg/
 db/
 logs/
 bundles/
+
+# Vite plugin
+vite-nodecg-plugin/node_modules
+vite-nodecg-plugin/dist
+
+# WebStorm
+.idea

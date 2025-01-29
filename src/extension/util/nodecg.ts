@@ -1,12 +1,12 @@
-import type NodeCG from '@nodecg/types'; // eslint-disable-line import/no-unresolved
-import { Configschema } from '@gtam-layouts/types/schemas';
+import type { Configschema } from '@gtam-layouts/types'
+import type NodeCG from 'nodecg/types'
 
-let nodecg: NodeCG.ServerAPI<Configschema>;
+let nodecg: NodeCG.ServerAPI<Configschema>
 
 export function set(ctx: NodeCG.ServerAPI<Configschema>): void {
-  nodecg = ctx;
+  nodecg = ctx
 }
 
 export function get(): NodeCG.ServerAPI<Configschema> {
-  return nodecg;
+  return nodecg
 }

@@ -7,11 +7,11 @@ export enum WindowEventType {
    * (bulk) subscription, then this event will be fired for the initial bulk
    * gift and then, subsequently, for each receiver.
    */
-  SubscriberLatest = 'subscriber',
+  SubscriberLatest = 'subscriber-latest',
   /** Fired when a cheer happens. */
-  CheerLatest = 'cheer',
+  CheerLatest = 'cheer-latest',
   /** Fired when merch is bought. */
-  MerchLatest = 'merch',
+  MerchLatest = 'merch-latest',
 }
 
 /**
@@ -44,11 +44,32 @@ export interface SubscriberLatestEvent extends Event {
    */
   amount: number
 
+  /** Unknown */
+  count: number
+
+  /**
+   * Whether the event is a test event fired from the StreamElements overlay design interface.
+   *
+   * Appears to be undefined for bulk gifts.
+   */
+  isTest?: boolean
+
+  /**
+   * Unknown
+   *
+   * Appears to be undefined for bulk gifts.
+   */
+  items?: unknown[]
+
   /** Subscriber-sent message accompanying the subscribal */
   message: string
 
-  /** The sub streak. */
-  streak: number
+  /**
+   * Unknown
+   *
+   * Appears to be undefined for bulk gifts.
+   */
+  month?: string
 
   /**
    * Username of the subscriber.
@@ -56,10 +77,17 @@ export interface SubscriberLatestEvent extends Event {
    * If the sub has been gifted, this refers to the receiver. For a bulk gift event, this value
    * will be the same as the sender.
    */
-  username: string
+  name: string
 
-  /** Display name of the subscriber */
-  displayName: string
+  /** Unknown */
+  originalEventName: string
+
+  /**
+   * Unknown
+   *
+   * Appears to be undefined for bulk gifts.
+   */
+  sessionTop?: boolean
 
   /** The tier a twitch user might subscribe on. */
   tier: SubscribeTier
@@ -67,14 +95,33 @@ export interface SubscriberLatestEvent extends Event {
   /** Unknown */
   type: string
 
+  /** If the sub has been gifted, this is defined to be true */
+  gifted?: boolean
+
+  /** If the sub has been bulk-gifted, this is defined as true. */
+  bulkGifted?: boolean
+
   /** If the sub is gifted, then this will contain the username of the gifter */
   sender?: string
 
-  /** Unknown */
-  quantity: number
+  /** Unknown. Only exists if the sub is gifted. */
+  subExtension?: boolean
 
-  /** The user's Twitch avatar */
-  avatar: string
+  /**
+   * Whether the current event is a community gift.
+   *
+   * @warn This will be set to true for events that occur on giftees. When a bulk gift occurs, the
+   *       initial bulk gift event will not contain this field, but since SE emits each gifted sub
+   *       as an event, those subsequent fields receive `isCommunityGift` as true.
+   */
+  isCommunityGift?: boolean
+
+  /**
+   * Unknown
+   *
+   * Appears to only exist for bulk-gift sub giftee events.
+   */
+  playedAsCommunityGift?: boolean
 }
 
 /**
@@ -83,32 +130,50 @@ export interface SubscriberLatestEvent extends Event {
 export interface CheerLatestEvent extends Event {
   /** The number of bits cheered */
   amount: number
-  /** Display name of the sender */
-  displayName: string
+  /** Unknown */
+  count: number
+  /** Whether the event is a test event fired from the StreamElements overlay design interface. */
+  isTest: boolean
+  /** Unknown */
+  items: unknown[]
   /** Accompanying message */
   message: string
+  /** Unknown */
+  month: string
   /** Username of the sender */
-  username: string
+  name: string
+  /** Unknown */
+  originalEventName: string
+  /** Unknown */
+  sessionTop: boolean
+  /** Unknown. */
+  tier: SubscribeTier
+  /** Whether text-to-speech is requested. */
+  tts: boolean
+  /** Unknown */
+  type: string
 }
 
 /**
  * Event fired given a merch-latest event.
  */
 export interface MerchLatestEvent extends Event {
+  /** Event type */
+  type: string
   /** Name of the sender */
-  username: string
-  /** Currency used in the transaction */
-  currency: string
-  /** Amount of items bought */
-  quantity: number
+  name: string
+  /** Unknown */
+  amount: number
+  /** Unknown */
+  count: number
   /** Array of items bought */
   items: MerchItem[]
   /** Unknown */
-  message: string
-  /** The user's StreamElements avatar */
-  avatar: string
+  tier: string
   /** Unknown */
-  amount: number
+  month: string
+  /** Whether the event is a test event fired from the StreamElements overlay design interface. */
+  isTest: boolean
 }
 
 export interface MerchItem {

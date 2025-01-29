@@ -1,25 +1,14 @@
-import { Configschema } from '@gtam-layouts/types/schemas';
+import type { Configschema } from '@gtam-layouts/types'
+import { get } from './util/nodecg'
 import {
-  ExtensionReturn,
-  OengusLine,
-  RunData,
-} from 'speedcontrol/types';
-import { get } from './util/nodecg';
-import {
-  timer,
-  runDataArray,
-  runDataActiveRunSurrounding,
-  runFinishTimes,
   oengusImportStatus,
-} from './util/replicants';
+  runDataArray,
+} from './util/replicants'
 
-const nodecg = get();
-const { sendMessage } = nodecg.extensions[
-  'nodecg-speedcontrol'
-] as unknown as ExtensionReturn;
-const config = (nodecg.bundleConfig as Configschema).schedule;
+const nodecg = get()
+const config = (nodecg.bundleConfig as Configschema).schedule
 
-const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
+const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
   ['Grand Theft Auto', { gameShort: 'GTA', gameTwitch: 'Grand Theft Auto' }],
   [
     'Grand Theft Auto 2',
@@ -173,7 +162,7 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
       gameTwitch: 'Driver: Parallel Lines',
     },
   ],
-  ["Driver '76", { gameShort: "Driver '76", gameTwitch: 'Driver 76' }],
+  ['Driver \'76', { gameShort: 'Driver \'76', gameTwitch: 'Driver 76' }],
   ['Just Cause', { gameShort: 'Just Cause', gameTwitch: 'Just Cause' }],
   [
     'Mafia: The City of Lost Heaven',
@@ -279,198 +268,30 @@ const gameNameMap = new Map<string, { gameShort: string; gameTwitch: string }>([
     },
   ],
   ['Paris Chase', { gameShort: 'Paris Chase', gameTwitch: 'Paris Chase' }],
-]);
+])
 
 oengusImportStatus.on('change', (newVal, oldVal) => {
   if (config.enable) {
     if (
-      oldVal &&
-      oldVal.importing === true &&
-      newVal &&
-      newVal.importing === false
+      oldVal
+      && oldVal.importing === true
+      && newVal
+      && newVal.importing === false
     ) {
       // FIX gameTwitch & gameShort
-      runDataArray.value.forEach((runData) => {
+      runDataArray.value!.forEach((runData) => {
         if (runData.game && gameNameMap.has(runData.game)) {
-          var values = gameNameMap.get(runData.game);
+          const values = gameNameMap.get(runData.game)
           if (values) {
             nodecg.log.debug(
-              '[Scheduling] Updating twitch game and game short for ' +
-                runData.game
-            );
-            runData.gameTwitch = values.gameTwitch;
-            runData.customData['gameShort'] = values.gameShort;
+              `[Scheduling] Updating twitch game and game short for ${
+                runData.game}`,
+            )
+            runData.gameTwitch = values.gameTwitch
+            runData.customData.gameShort = values.gameShort
           }
         }
-      });
+      })
     }
   }
-});
-
-timer.on('change', (newVal, oldVal) => {
-  if (
-    oldVal &&
-    oldVal.state === 'stopped' &&
-    newVal &&
-    newVal.state === 'running'
-  ) {
-    updateOengusScheduleOnRunStart();
-  }
-});
-
-async function updateOengusScheduleOnRunStart(): Promise<void> {
-  if (config.enable) {
-    try {
-      /*       await sendMessage('importOengusSchedule', {
-        marathonShort: config.marathonShort,
-        useJapanese: false,
-      }); */
-      var now = Math.floor(Date.now() / 1000);
-      if (runDataActiveRunSurrounding.value.current) {
-        var currentRun = runDataArray.value.find(
-          (run) => run.id === runDataActiveRunSurrounding.value.current
-        );
-        if (currentRun && currentRun.scheduledS && currentRun.externalID) {
-          var setupTimeS = now - currentRun.scheduledS;
-          if (setupTimeS > 0) {
-            var lines: Partial<OengusLine>[] = [];
-            lines.push({
-              id: parseInt(currentRun.externalID),
-              setupTime: 'PT' + setupTimeS + 'S',
-            });
-
-            if (currentRun.setupTimeS != null) {
-              var delta = currentRun.setupTimeS - setupTimeS;
-              lines = lines.concat(
-                editSetupBufferLengthToCompensateDelta(currentRun, delta)
-              );
-            }
-
-            /*             await sendMessage('updateOengusSchedule', {
-              marathonShort: config.marathonShort,
-              lines: lines,
-            });
-            await sendMessage('importOengusSchedule', {
-              marathonShort: config.marathonShort,
-              useJapanese: false,
-            }); */
-          }
-        }
-      }
-      nodecg.log.info('[Schedule] updated schedule');
-    } catch (err) {
-      nodecg.log.error('[Schedule] Cannot update schedule', err);
-    }
-  }
-}
-export async function updateOengusScheduleOnSwitchingRun(): Promise<void> {
-  if (config.enable) {
-    try {
-      var now = Math.floor(Date.now() / 1000);
-      var lines: Partial<OengusLine>[] = [];
-
-      if (runDataActiveRunSurrounding.value.next) {
-        var nextRun = runDataArray.value.find(
-          (run) => run.id === runDataActiveRunSurrounding.value.next
-        );
-        if (nextRun && nextRun.scheduledS) {
-          var delta = nextRun.scheduledS - now;
-
-          if (runDataActiveRunSurrounding.value.current) {
-            var run = runDataArray.value.find(
-              (run) => run.id === runDataActiveRunSurrounding.value.current
-            );
-            if (!run) {
-              throw new Error('no active run');
-            } else if (!run.externalID) {
-              throw new Error('no externalID');
-            } else if (!run.scheduledS) {
-              throw new Error('no scheduled start');
-            } else if (!runFinishTimes.value[run.id]) {
-              throw new Error('run not finished');
-            } else if (run.scheduledS > now) {
-              throw new Error('start>finish');
-            } else {
-              var runFinishDurationS = Math.floor(
-                runFinishTimes.value[run.id].milliseconds / 1000
-              );
-              var runSetupTimeS = now - run.scheduledS - runFinishDurationS;
-              if (runSetupTimeS < 0) {
-                throw new Error('cannot have a negative setup time');
-              }
-              lines.push({
-                id: parseInt(run.externalID),
-                estimate: 'PT' + runFinishDurationS + 'S',
-                setupTime: 'PT' + runSetupTimeS + 'S',
-              });
-
-              //Find all setup buffer
-              lines = lines.concat(
-                editSetupBufferLengthToCompensateDelta(nextRun, delta)
-              );
-
-              /*               await sendMessage('updateOengusSchedule', {
-                marathonShort: config.marathonShort,
-                lines: lines,
-              });
-              await sendMessage('importOengusSchedule', {
-                marathonShort: config.marathonShort,
-                useJapanese: false,
-              }); */
-            }
-          }
-        }
-        nodecg.log.info(
-          '[Schedule] updateOengusScheduleOnSwitchingRun success'
-        );
-      }
-    } catch (err) {
-      nodecg.log.error('[Schedule] Cannot update schedule', err);
-    }
-  }
-}
-
-function editSetupBufferLengthToCompensateDelta(
-  runData: RunData,
-  delta: number
-): Partial<OengusLine>[] {
-  var lines: Partial<OengusLine>[] = [];
-  var bufferRunArray = runDataArray.value
-    .filter(
-      (run) =>
-        run.gameTwitch === 'Just Chatting' &&
-        run.externalID &&
-        run.scheduledS &&
-        runData &&
-        runData.scheduledS &&
-        run.scheduledS >= runData.scheduledS
-    )
-    .sort((a, b) => (a.scheduledS as number) - (b.scheduledS as number));
-
-  if (delta > 0 && bufferRunArray.length > 0) {
-    var buffer = bufferRunArray[0];
-    var butterLength = buffer.estimateS || 0 + (buffer.setupTimeS || 0);
-    var newSetupTimeS = butterLength + delta;
-    lines.push({
-      id: parseInt(bufferRunArray[0].externalID as string),
-      estimate: 'PT0S',
-      setupTime: 'PT' + newSetupTimeS + 'S',
-    });
-  } else {
-    for (var i = 0; i < bufferRunArray.length && delta <= 0; i++) {
-      var buffer = bufferRunArray[i];
-      var butterLength = buffer.estimateS || 0 + (buffer.setupTimeS || 0);
-      var newSetupTimeS = butterLength + delta;
-      if (newSetupTimeS < 0) {
-        newSetupTimeS = 0;
-      }
-      lines.push({
-        id: parseInt(buffer.externalID as string),
-        estimate: 'PT0S',
-        setupTime: 'PT' + newSetupTimeS + 'S',
-      });
-      delta = newSetupTimeS;
-    }
-  }
-  return lines;
-}
+})
