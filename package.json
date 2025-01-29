@@ -99,9 +99,9 @@
     },
     "dashboardPanels": [
       {
-        "name": "obs",
-        "title": "OBS Panel",
-        "file": "obs.html",
+        "name": "next-run",
+        "title": "Switch to next run",
+        "file": "next-run.html",
         "workspace": "GTAM",
         "width": 3
       },
@@ -127,9 +127,9 @@
         "width": 4
       },
       {
-        "name": "layoutOverride",
+        "name": "layout-override",
         "title": "Game Layout Override",
-        "file": "layoutOverride.html",
+        "file": "layout-override.html",
         "workspace": "GTAM",
         "width": 3
       }
