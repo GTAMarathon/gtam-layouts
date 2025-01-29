@@ -14,4 +14,9 @@ export default antfu({
       'no-console': ['off'],
     },
   },
+  javascript: {
+    overrides: {
+      'no-console': ['off'],
+    },
+  },
 })

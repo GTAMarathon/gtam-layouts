@@ -1,9 +1,10 @@
 {
-  "name": "@gtam/vite-nodecg-plugin",
+  "name": "vite-nodecg-plugin",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "prepare": "tsc"
   },
