@@ -4,7 +4,7 @@
  */
 
 import type { NodeCGAPIClient } from 'nodecg/types/client/api/api.client'
-import type { Configschema } from './schemas'
+import type { Configschema } from './'
 
 declare global {
   let NodeCG: typeof NodeCGAPIClient

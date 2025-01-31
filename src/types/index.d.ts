@@ -6,7 +6,6 @@ export * from './custom/MerchQueueItem'
 export * from './custom/SEEvents'
 export * from './custom/SubQueueItem'
 export * from './custom/TransformProperties'
-
 export * from './generated/configschema'
 export * from './generated/gameLayouts'
 export * from './generated/hundoTrackerData'

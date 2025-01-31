@@ -9,7 +9,7 @@ import { DashboardThemeProvider } from './components/DashboardThemeProvider'
 
 const intermissionSceneName = nodecg.bundleConfig.obs.names.scenes.intermission
 
-export function App() {
+export function NextRun() {
   const currentObsScene = useCurrentObsScene()
   const [timer] = useReplicant<Timer | undefined>('timer', {
     bundle: 'nodecg-speedcontrol',
@@ -54,4 +54,4 @@ export function App() {
   )
 }
 
-render(<App />)
+render(<NextRun />)

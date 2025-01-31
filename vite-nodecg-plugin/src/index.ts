@@ -7,11 +7,8 @@ import { deleteSync } from 'del'
 import getPort from 'get-port'
 import { globbySync } from 'globby'
 import {
-
   rollup,
-
   watch as rollupWatch,
-
 } from 'rollup'
 
 async function setupExtensionBuild(options: RollupOptions) {

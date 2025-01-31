@@ -2,6 +2,25 @@
   "name": "gtam-layouts",
   "version": "3.0.0",
   "description": "The on-screen graphics used during GTAMarathon.",
+  "author": "GTAMarathon",
+  "contributors": [
+    "hoxi",
+    "EnglishBen",
+    "gaeldemarseille",
+    "bbrosef",
+    "hossel",
+    "zoton2",
+    "Stormra1d"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/GTAMarathon/gtam-layouts#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GTAMarathon/gtam-layouts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GTAMarathon/gtam-layouts/issues"
+  },
   "main": "index.js",
   "scripts": {
     "autofix": "run-s autofix:*",
@@ -12,6 +31,7 @@
     "build:browser": "vite build",
     "build:extension": "tsc -b tsconfig.extension.json",
     "clean": "trash node_modules/.cache && trash shared/dist && trash dashboard && trash graphics && trash extension",
+    "default-config": "nodecg defaultconfig",
     "lint": "run-s lint:*",
     "lint:browser": "eslint --ext .ts,.tsx src/browser",
     "lint:extension": "eslint --ext .ts src/extension && eslint --ext .d.ts src/types",
@@ -23,28 +43,9 @@
     "watch:browser": "vite",
     "watch:extension": "tsc -b tsconfig.extension.json -w"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GTAMarathon/gtam-layouts.git"
-  },
-  "author": "GTAMarathon",
-  "contributors": [
-    "hoxi",
-    "EnglishBen",
-    "gaeldemarseille",
-    "bbrosef",
-    "hossel",
-    "zoton2",
-    "Stormra1d"
-  ],
   "workspaces": [
     "vite-nodecg-plugin"
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/GTAMarathon/gtam-layouts/issues"
-  },
-  "homepage": "https://github.com/GTAMarathon/gtam-layouts#readme",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -113,16 +114,16 @@
         "width": 4
       },
       {
-        "name": "streamAssign",
+        "name": "stream-assign",
         "title": "Assign stream to player",
-        "file": "streamAssign.html",
+        "file": "stream-assign.html",
         "workspace": "GTAM",
         "width": 4
       },
       {
-        "name": "vchundoselector",
+        "name": "vchundo-selector",
         "title": "Select player to focus on for VC Hundo",
-        "file": "vchundoselector.html",
+        "file": "vchundo-selector.html",
         "workspace": "GTAM",
         "width": 4
       },
