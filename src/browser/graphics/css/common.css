@@ -1,0 +1,56 @@
+@import url('./fonts/alte_bebas.css');
+@import url('./fonts/slope_myriad_impact.css');
+@import url('./fonts/cabin.css');
+@import url('./fonts/europa.css');
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: white;
+  font-weight: bold;
+  font-family: 'Europa Grotesk SH DemBol';
+}
+
+#backgrounds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+#backgrounds .bg {
+  position: absolute;
+}
+
+.stroke {
+  text-shadow: -2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c,
+    2px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c,
+    -2px 0 0 #12222c;
+}
+
+.stroke-white {
+  text-shadow: -2px -2px 0 white, 0 -2px 0 white, 2px -2px 0 white,
+    2px 0 0 white, 2px 2px 0 white, 0 2px 0 white, -2px 2px 0 white,
+    -2px 0 0 white;
+}
+
+.highlight {
+  color: #c736ff;
+}
+
+#Timer > span,
+#Estimate > span {
+  display: inline-block;
+  width: 0.52em;
+  text-align: center;
+}
+#Timer > .Colon,
+#Estimate > .Colon {
+  width: 0.3em;
+}
+
+.playerName {
+    font-family: 'Underscore', 'Europa Grotesk SH DemBol';
+}

@@ -53,6 +53,7 @@
     "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.4.1",
     "@nodecg/react-hooks": "^1.0.3",
+    "animate.css": "^4.1.1",
     "auto-text-size": "^0.2.3",
     "bootstrap": "^5.3.3",
     "chalk": "^5.4.1",
@@ -142,6 +143,11 @@
     "graphics": [
       {
         "file": "vchundo-race.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "game-layout.html",
         "width": 1920,
         "height": 1080
       }

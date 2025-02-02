@@ -12,6 +12,8 @@ export default antfu({
       'ts/no-require-imports': ['off', 'always'],
       'no-restricted-syntax': ['off', 'TSExportAssignment'],
       'no-console': ['off'],
+      'dot-notation': ['off'],
+      'react-hooks/exhaustive-deps': ['off'],
     },
   },
   javascript: {

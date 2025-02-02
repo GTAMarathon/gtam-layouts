@@ -4,7 +4,7 @@ import { useReplicant } from '@nodecg/react-hooks'
 import { AutoTextSize } from 'auto-text-size'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
-import useCurrentRun from '../../../hooks/useCurrentRun'
+import useCurrentRun from '../../../../hooks/useCurrentRun'
 
 interface Props {
   size: number
@@ -80,15 +80,24 @@ export function Player({ size = 64, team = 1, style }: Props) {
   }, [timer, currentRun])
 
   return (
-    <div style={{ position: 'fixed', ...style }}>
+    <div style={{ position: 'fixed', ...style }} className="playerName">
       <SwitchTransition mode="out-in">
         <CSSTransition key={name} nodeRef={nameRef} in appear timeout={1000} classNames="fade">
           {name && (
-            <div className="Flex" ref={nameRef} style={{ position: 'absolute', fontSize: '1.5em' }}>
-              <AutoTextSize maxFontSizePx={size} as="div" style={{ marginLeft: '5px', fontSize: '1.3em' }}>
+            <div
+              className="Flex"
+              ref={nameRef}
+              style={{
+                position: 'absolute',
+                color: 'white',
+                textShadow:
+                '-2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c, 6px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c, -2px 0 0 #12222c',
+              }}
+            >
+              <AutoTextSize maxFontSizePx={size} as="div" style={{ marginLeft: '5px' }}>
                 {name}
                 {finishTime && (
-                  <span style={{ fontSize: '0.75em' }}>
+                  <span style={{ fontSize: '0.7em' }}>
                     [
                     {finishTime}
                     ]

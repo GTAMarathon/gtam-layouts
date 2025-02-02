@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Alte Haas Grotesk';
+  src: url('AlteHaasGrotesk.woff2') format('woff2'),
+    url('AlteHaasGrotesk.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alte Haas Grotesk';
+  src: url('AlteHaasGrotesk_Bold.woff2') format('woff2'),
+    url('AlteHaasGrotesk_Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bebas Neue';
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  src: url('BebasNeue-Regular.woff2') format('woff2'),
+    url('BebasNeue-Regular.woff') format('woff');
+}

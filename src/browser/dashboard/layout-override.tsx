@@ -26,7 +26,7 @@ export function LayoutOverride() {
   const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = (event.target as HTMLInputElement).value
     if (gameLayouts) {
-      setGameLayouts({ ...gameLayouts, selected: newValue })
+      setGameLayouts(prevState => ({ ...prevState, selected: newValue }))
     }
   }
 
