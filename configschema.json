@@ -73,7 +73,7 @@
         },
         "address": {
           "type": "string",
-          "default": "localhost:4444"
+          "default": "ws://localhost:4444"
         },
         "password": {
           "type": "string",

@@ -9,5 +9,4 @@
 export type HundoTrackerData = {
 	name: string;
 	score: number;
-	[k: string]: unknown;
 }[];

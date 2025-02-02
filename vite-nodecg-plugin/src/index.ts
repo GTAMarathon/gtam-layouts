@@ -97,19 +97,11 @@ export default async ({
   console.log('vite-nodecg: Found the following inputs: ', inputs)
 
   const generateHtmlFiles = async () => {
-    const graphicsTemplate
-      = typeof template === 'string' ? template : template.graphics
-    const dashboardTemplate
-      = typeof template === 'string' ? template : template.dashboard
+    const graphicsTemplate = typeof template === 'string' ? template : template.graphics
+    const dashboardTemplate = typeof template === 'string' ? template : template.dashboard
 
-    const graphicsTemplateHtml = fs.readFileSync(
-      path.join(config.root, graphicsTemplate),
-      'utf-8',
-    )
-    const dashboardTemplateHtml = fs.readFileSync(
-      path.join(config.root, dashboardTemplate),
-      'utf-8',
-    )
+    const graphicsTemplateHtml = fs.readFileSync(path.join(config.root, graphicsTemplate), 'utf-8')
+    const dashboardTemplateHtml = fs.readFileSync(path.join(config.root, dashboardTemplate), 'utf-8')
 
     const graphicsOutdir = path.join(config.root, 'graphics')
     const dashboardOutdir = path.join(config.root, 'dashboard')
@@ -118,10 +110,37 @@ export default async ({
     fs.mkdirSync(graphicsOutdir, { recursive: true })
     fs.mkdirSync(dashboardOutdir, { recursive: true })
 
+    const manifestPath = path.join(config.build.outDir, 'manifest.json')
+    if (!fs.existsSync(manifestPath)) {
+      console.warn(`⚠️ Manifest file not found at ${manifestPath}`)
+      return
+    }
+    const manifest: Manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
+
+    const graphicsCssFiles = new Set<string>()
+    const dashboardCssFiles = new Set<string>()
+
+    Object.entries(manifest).forEach(([inputFile, chunk]) => {
+      if (chunk.css) {
+        if (inputFile.includes('/graphics/')) {
+          chunk.css.forEach(css => graphicsCssFiles.add(css))
+        }
+        else if (inputFile.includes('/dashboard/')) {
+          chunk.css.forEach(css => dashboardCssFiles.add(css))
+        }
+      }
+    })
+
+    const allCssFiles = new Set<string>()
+    Object.values(manifest).forEach((chunk) => {
+      if (chunk.css) {
+        chunk.css.forEach(cssFile => allCssFiles.add(cssFile))
+      }
+    })
+
     for (const input of inputs) {
-      const templateHtml = graphicsInputs.includes(input)
-        ? graphicsTemplateHtml
-        : dashboardTemplateHtml
+      const isGraphics = input.includes('/graphics/')
+      const templateHtml = isGraphics ? graphicsTemplateHtml : dashboardTemplateHtml
       const $ = cheerio.load(templateHtml)
       const head = $('head')
 
@@ -139,52 +158,27 @@ export default async ({
 						window.__vite_plugin_react_preamble_installed__ = true
 					</script>
 				`)
-        head.append(
-          `<script type="module" src="${new URL(
-            path.join(config.base, '@vite/client'),
-            address,
-          )}"></script>`,
-        )
-        head.append(
-          `<script type="module" src="${new URL(
-            path.join(config.base, input),
-            address,
-          )}"></script>`,
-        )
+        head.append(`<script type="module" src="${new URL(path.join(config.base, '@vite/client'), address)}"></script>`)
+        head.append(`<script type="module" src="${new URL(path.join(config.base, input), address)}"></script>`)
       }
 
       if (config.command === 'build') {
         const inputName = input.replace(/^\.\//, '')
-        const manifest: Manifest = JSON.parse(
-          fs.readFileSync(
-            path.join(config.build.outDir, 'manifest.json'),
-            'utf-8',
-          ),
-        )
         const entryChunk = manifest[inputName]
 
-        if (entryChunk?.css) {
-          for (const css of entryChunk.css) {
-            head.append(
-              `<link rel="stylesheet" href="${path.join(config.base, css)}">`,
-            )
-          }
-        }
+        const relevantCssFiles = isGraphics ? graphicsCssFiles : dashboardCssFiles
+
+        relevantCssFiles.forEach((cssFile) => {
+          head.append(`<link rel="stylesheet" href="${path.join(config.base, cssFile)}">`)
+        })
 
         if (entryChunk?.file) {
-          head.append(
-            `<script type="module" src="${path.join(
-              config.base,
-              entryChunk.file,
-            )}"></script>`,
-          )
+          head.append(`<script type="module" src="${path.join(config.base, entryChunk.file)}"></script>`)
         }
       }
 
       const newHtml = $.html()
-      const dir = graphicsInputs.includes(input)
-        ? graphicsOutdir
-        : dashboardOutdir
+      const dir = isGraphics ? graphicsOutdir : dashboardOutdir
       const name = path.basename(input, path.extname(input))
       fs.writeFileSync(path.join(dir, `${name}.html`), newHtml)
     }

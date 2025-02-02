@@ -4,9 +4,11 @@ import {
   oengusImportStatus,
   runDataArray,
 } from './util/replicants'
+import { TaggedLogger } from './util/tagged-logger'
 
 const nodecg = get()
 const config = (nodecg.bundleConfig as Configschema).schedule
+const logger = new TaggedLogger('Scheduling')
 
 const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
   ['Grand Theft Auto', { gameShort: 'GTA', gameTwitch: 'Grand Theft Auto' }],
@@ -283,7 +285,7 @@ oengusImportStatus.on('change', (newVal, oldVal) => {
         if (runData.game && gameNameMap.has(runData.game)) {
           const values = gameNameMap.get(runData.game)
           if (values) {
-            nodecg.log.debug(
+            logger.debug(
               `[Scheduling] Updating twitch game and game short for ${
                 runData.game}`,
             )

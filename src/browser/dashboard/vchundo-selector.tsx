@@ -103,6 +103,7 @@ export function VCHundoSelector() {
                   disabled={model[`feed${num}` as keyof Model] !== undefined}
                   onClick={() => selectFeed(num)}
                   style={{ marginRight: '5px' }}
+                  variant="contained"
                 >
                   Feed
                   {' '}
@@ -125,6 +126,7 @@ export function VCHundoSelector() {
                 key={runner.id}
                 onClick={() => assignRunner(runner)}
                 style={{ marginTop: '5px', marginRight: '5px' }}
+                variant="contained"
               >
                 {runner.players[0]?.name}
               </Button>
@@ -138,6 +140,7 @@ export function VCHundoSelector() {
           disabled={disableSend}
           onClick={send}
           style={{ marginTop: '5px', marginRight: '5px' }}
+          variant="contained"
         >
           SEND
         </Button>
@@ -145,6 +148,7 @@ export function VCHundoSelector() {
           disabled={model.feedNumber !== undefined}
           onClick={cancel}
           style={{ marginTop: '5px', marginRight: '5px' }}
+          variant="contained"
         >
           CANCEL
         </Button>

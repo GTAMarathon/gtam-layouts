@@ -3,8 +3,8 @@ import { Alert, Button, Container } from '@mui/material'
 import { useReplicant } from '@nodecg/react-hooks'
 import { useEffect, useMemo, useState } from 'react'
 import useCurrentRun from '../hooks/useCurrentRun'
-import { DashboardThemeProvider } from './components/DashboardThemeProvider'
 import { render } from '../render'
+import { DashboardThemeProvider } from './components/DashboardThemeProvider'
 
 interface Player {
   name: string
@@ -26,10 +26,10 @@ export function StreamAssign() {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null)
   const [streams, setStreams] = useState<Stream[]>([])
   const currentRun = useCurrentRun()
-  const [timer] = useReplicant<Timer>('timer', { bundle: 'nodecg-speedcontrol' })     
+  const [timer] = useReplicant<Timer>('timer', { bundle: 'nodecg-speedcontrol' })
 
   useEffect(() => {
-    const configStreams = nodecg.bundleConfig.feeds.streams
+    const configStreams = nodecg.bundleConfig.feeds.streams as Stream[]
     setStreams(configStreams)
   }, [])
 
@@ -50,7 +50,7 @@ export function StreamAssign() {
   const assign = (stream: Stream) => {
     nodecg.sendMessage('assignStreamToRunner', {
       runner: selectedPlayer?.name,
-      stream
+      stream,
     })
 
     setSelectedPlayer(null)
@@ -76,12 +76,12 @@ export function StreamAssign() {
                         {stream.twitchAccount}
                       </Button>
                     ))}
-                    <Button variant='contained' onClick={() => setSelectedPlayer(null)}>CANCEL</Button>
+                    <Button variant="contained" onClick={() => setSelectedPlayer(null)}>CANCEL</Button>
                   </Container>
                 )}
               </Container>
             )
-          : <Alert severity='info'>Cannot change runners' feeds while the timer is running</Alert>}
+          : <Alert severity="info">Cannot change runners' feeds while the timer is running</Alert>}
       </Container>
     </DashboardThemeProvider>
   )
