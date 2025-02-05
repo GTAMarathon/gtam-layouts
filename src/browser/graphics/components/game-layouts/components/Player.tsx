@@ -3,7 +3,6 @@ import type { Timer } from 'speedcontrol/types'
 import { useReplicant } from '@nodecg/react-hooks'
 import { AutoTextSize } from 'auto-text-size'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import useCurrentRun from '../../../../hooks/useCurrentRun'
 
 interface Props {
@@ -16,7 +15,7 @@ export function Player({ size = 64, team = 1, style }: Props) {
   const currentRun = useCurrentRun()
   const [timer] = useReplicant<Timer>('timer', { bundle: 'nodecg-speedcontrol' })
 
-  let timeout = 0
+  const timeout = useRef(0)
   const teamI = useRef(0)
   const index = useRef(0)
   const [name, setName] = useState<string | null>(null)
@@ -27,18 +26,18 @@ export function Player({ size = 64, team = 1, style }: Props) {
       const team = currentRun.teams[teamI.current]
 
       setName(team?.players[index.current]?.name ?? '')
-      timeout = window.setTimeout(() => showNextName(), 30 * 1000)
+      timeout.current = window.setTimeout(() => showNextName(), 30 * 1000)
       index.current = (team?.players ?? []).length <= index.current + 1 ? 0 : index.current + 1
     }
   }
 
   useEffect(() => {
-    window.clearTimeout(timeout)
+    window.clearTimeout(timeout.current)
     teamI.current = team - 1
     index.current = 0
     setName(null)
     const coop = !!(currentRun && currentRun.teams.length === 1 && currentRun.teams[0] && currentRun.teams[0].players.length >= 2)
-
+    console.log(coop)
     if (coop && currentRun.teams[0] && currentRun.teams[0].players[teamI.current]) {
       setName(currentRun.teams[0].players[teamI.current]!.name)
     }
@@ -81,33 +80,29 @@ export function Player({ size = 64, team = 1, style }: Props) {
 
   return (
     <div style={{ position: 'fixed', ...style }} className="playerName">
-      <SwitchTransition mode="out-in">
-        <CSSTransition key={name} nodeRef={nameRef} in appear timeout={1000} classNames="fade">
-          {name && (
-            <div
-              className="Flex"
-              ref={nameRef}
-              style={{
-                position: 'absolute',
-                color: 'white',
-                textShadow:
+      {name && (
+        <div
+          className="Flex"
+          ref={nameRef}
+          style={{
+            position: 'absolute',
+            color: 'white',
+            textShadow:
                 '-2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c, 6px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c, -2px 0 0 #12222c',
-              }}
-            >
-              <AutoTextSize maxFontSizePx={size} as="div" style={{ marginLeft: '5px' }}>
-                {name}
-                {finishTime && (
-                  <span style={{ fontSize: '0.7em' }}>
-                    [
-                    {finishTime}
-                    ]
-                  </span>
-                )}
-              </AutoTextSize>
-            </div>
-          )}
-        </CSSTransition>
-      </SwitchTransition>
+          }}
+        >
+          <AutoTextSize maxFontSizePx={size} as="div" style={{ marginLeft: '5px' }}>
+            {name}
+            {finishTime && (
+              <span style={{ fontSize: '0.7em' }}>
+                [
+                {finishTime}
+                ]
+              </span>
+            )}
+          </AutoTextSize>
+        </div>
+      )}
     </div>
   )
 }
