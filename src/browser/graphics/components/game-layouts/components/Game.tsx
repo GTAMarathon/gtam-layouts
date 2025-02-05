@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react'
 import { AutoTextSize } from 'auto-text-size'
+import { useRef } from 'react'
+import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import useCurrentRun from '../../../../hooks/useCurrentRun'
 
 interface Props {
@@ -9,21 +11,32 @@ interface Props {
 
 export function Game({ style, size = 64 }: Props) {
   const currentRun = useCurrentRun()
+  const gameRef = useRef(null)
 
   return (
     <div style={{ position: 'fixed', ...style }}>
       {currentRun && (
-        <div className="Flex" style={{ position: 'absolute', flexDirection: 'column', fontSize: '1em' }}>
-          <AutoTextSize
-            as="div"
-            style={{ fontSize: '1.3em', width: '100%' }}
-            maxFontSizePx={size}
-            mode="boxoneline"
+        <SwitchTransition mode="out-in">
+          <CSSTransition
+            key={currentRun.customData['gameShort'] ?? currentRun.game}
+            nodeRef={gameRef}
+            in
+            appear
+            timeout={1000}
+            classNames="fade"
           >
-            {currentRun.customData['gameShort'] ?? currentRun.game}
-          </AutoTextSize>
-        </div>
-
+            <div className="Flex" style={{ position: 'absolute', flexDirection: 'column', fontSize: '1em' }} ref={gameRef}>
+              <AutoTextSize
+                as="div"
+                style={{ fontSize: '1.3em', width: '100%' }}
+                maxFontSizePx={size}
+                mode="boxoneline"
+              >
+                {currentRun.customData['gameShort'] ?? currentRun.game}
+              </AutoTextSize>
+            </div>
+          </CSSTransition>
+        </SwitchTransition>
       )}
     </div>
   )
