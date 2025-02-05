@@ -10,28 +10,28 @@ interface CurrentLayout {
 }
 
 export function GameLayout() {
-  const [gameLayouts, setGameLayouts] = useReplicant<GameLayouts>('gameLayouts')
+  const [availableGameLayouts, setAvailableGameLayouts] = useReplicant<GameLayouts>('gameLayouts')
+  const [currentGameLayout] = useReplicant<string>('currentGameLayout')
   const [currentLayout, setCurrentLayout] = useState<CurrentLayout | null>(null)
 
   const setUpReplicant = useRef(false)
 
   useEffect(() => {
-    if (!gameLayouts)
+    if (!availableGameLayouts)
       return
 
     // Set up available game layouts list replicant when first loading the page
     if (!setUpReplicant.current) {
-      const layouts = Object.values(layoutsList)
-      setGameLayouts(prevState => ({
-        ...prevState,
-        available: layouts.map(({ name, code }) => ({ name, code })),
-      }))
+      const layouts = Object.values(layoutsList).map(({ name, code }) => ({ name, code }))
+      setAvailableGameLayouts(layouts)
       setUpReplicant.current = true
     }
+  }, [availableGameLayouts, setAvailableGameLayouts])
 
-    const currentSelectedLayout = layoutsList[(gameLayouts.selected || defaultCode) as keyof typeof layoutsList]
+  useEffect(() => {
+    const currentSelectedLayout = layoutsList[(currentGameLayout || defaultCode) as keyof typeof layoutsList]
     setCurrentLayout({ code: currentSelectedLayout.code, component: currentSelectedLayout.component() })
-  }, [gameLayouts])
+  }, [currentGameLayout])
 
   return <div id="GameLayout">{currentLayout && <>{currentLayout.component}</>}</div>
 }

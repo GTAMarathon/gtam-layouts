@@ -6,10 +6,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface GameLayouts {
-	available: {
-		name: string;
-		code: string;
-	}[];
-	selected?: string;
-}
+export type GameLayouts = {
+	name: string;
+	code: string;
+}[];
