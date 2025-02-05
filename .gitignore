@@ -147,3 +147,6 @@ vite-nodecg-plugin/dist
 
 # WebStorm
 .idea
+
+# "Mac user has been here..."
+.DS_Store
