@@ -34,12 +34,16 @@ export function LayoutOverride() {
             onChange={event => setCurrentGameLayout(event.target.value)}
           >
             {layoutOptions.map(option => (
-              <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
+              <FormControlLabel
+                key={option.value}
+                value={option.value}
+                control={<Radio />}
+                label={option.label}
+              />
             ))}
           </RadioGroup>
         </FormControl>
       </Container>
-
     </DashboardThemeProvider>
   )
 }

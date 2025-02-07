@@ -25,10 +25,21 @@ export function Game({ style, size = 64 }: Props) {
             timeout={1000}
             classNames="fade"
           >
-            <div className="Flex" style={{ position: 'absolute', flexDirection: 'column', fontSize: '1em' }} ref={gameRef}>
+            <div
+              className="Flex"
+              style={{
+                position: 'absolute',
+                flexDirection: 'column',
+                fontSize: '1em',
+              }}
+              ref={gameRef}
+            >
               <AutoTextSize
                 as="div"
-                style={{ fontSize: '1.3em', width: '100%' }}
+                style={{
+                  fontSize: '1.3em',
+                  width: '100%',
+                }}
                 maxFontSizePx={size}
                 mode="boxoneline"
               >

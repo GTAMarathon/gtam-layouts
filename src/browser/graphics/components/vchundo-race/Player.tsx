@@ -82,10 +82,31 @@ export function Player({ size = 64, team = 1, style }: Props) {
   return (
     <div style={{ position: 'fixed', ...style }}>
       <SwitchTransition mode="out-in">
-        <CSSTransition key={name} nodeRef={nameRef} in appear timeout={1000} classNames="fade">
+        <CSSTransition
+          key={name}
+          nodeRef={nameRef}
+          in
+          appear
+          timeout={1000}
+          classNames="fade"
+        >
           {name && (
-            <div className="Flex" ref={nameRef} style={{ position: 'absolute', fontSize: '1.5em' }}>
-              <AutoTextSize maxFontSizePx={size} as="div" style={{ marginLeft: '5px', fontSize: '1.3em' }}>
+            <div
+              className="Flex"
+              ref={nameRef}
+              style={{
+                position: 'absolute',
+                fontSize: '1.5em',
+              }}
+            >
+              <AutoTextSize
+                maxFontSizePx={size}
+                as="div"
+                style={{
+                  marginLeft: '5px',
+                  fontSize: '1.3em',
+                }}
+              >
                 {name}
                 {finishTime && (
                   <span style={{ fontSize: '0.75em' }}>

@@ -102,7 +102,11 @@ export function Player({ size = 64, team = 1, style }: Props) {
                 justifyItems: 'center',
               }}
             >
-              <AutoTextSize maxFontSizePx={size} as="div" style={{ marginLeft: '5px', marginTop: '10px' }}>
+              <AutoTextSize
+                maxFontSizePx={size}
+                as="div"
+                style={{ marginLeft: '5px', marginTop: '10px' }}
+              >
                 {name}
                 {finishTime && (
                   <span style={{ fontSize: '0.7em' }}>

@@ -106,7 +106,6 @@ export function VCHundoSelector() {
                   variant="contained"
                 >
                   Feed
-                  {' '}
                   {num}
                 </Button>
               ))

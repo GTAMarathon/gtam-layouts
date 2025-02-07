@@ -10,7 +10,14 @@ export function Timer({ style }: Props) {
   const [timer] = useReplicant<TimerType>('timer', { bundle: 'nodecg-speedcontrol' })
 
   return (
-    <div className="Flex" style={{ flexDirection: 'column', position: 'fixed', ...style }}>
+    <div
+      className="Flex"
+      style={{
+        flexDirection: 'column',
+        position: 'fixed',
+        ...style,
+      }}
+    >
       <div
         id="Time"
         style={{
@@ -20,7 +27,17 @@ export function Timer({ style }: Props) {
         }}
       >
         {timer
-        && <span style={{ display: 'inline-block', textAlign: 'center', color: '#a1ebff' }}>{timer.time}</span>}
+        && (
+          <span
+            style={{
+              display: 'inline-block',
+              textAlign: 'center',
+              color: '#a1ebff',
+            }}
+          >
+            {timer.time}
+          </span>
+        )}
       </div>
     </div>
   )

@@ -17,8 +17,19 @@ export function Category({ style, size = 64 }: Props) {
     <div style={{ position: 'fixed', ...style }}>
       {currentRun && (
         <SwitchTransition mode="out-in">
-          <CSSTransition key={currentRun.category} nodeRef={categoryNameRef} in appear timeout={1000} classNames="fade">
-            <div className="Flex" style={{ position: 'absolute', flexDirection: 'column', fontSize: '1em' }} ref={categoryNameRef}>
+          <CSSTransition
+            key={currentRun.category}
+            nodeRef={categoryNameRef}
+            in
+            appear
+            timeout={1000}
+            classNames="fade"
+          >
+            <div
+              className="Flex"
+              style={{ position: 'absolute', flexDirection: 'column', fontSize: '1em' }}
+              ref={categoryNameRef}
+            >
               <AutoTextSize
                 as="div"
                 style={{ fontSize: '1.3em', width: '100%' }}

@@ -15,7 +15,13 @@ export function CompletionTable({ style }: Props) {
       <table className="table table-bordered">
         {hundoTrackerData && (
           <>
-            {hundoTrackerData.map((player, i) => (<PlayerCompletion key={player.name} player={player} position={i + 1} />))}
+            {hundoTrackerData.map((player, i) => (
+              <PlayerCompletion
+                key={player.name}
+                player={player}
+                position={i + 1}
+              />
+            ))}
           </>
         )}
       </table>

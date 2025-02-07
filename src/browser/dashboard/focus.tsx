@@ -38,16 +38,28 @@ export function Focus() {
       <Container>
         {hasFourPlayers && (
           <>
-            <Button variant="contained" onClick={() => focusOnRunner(1)}>
+            <Button
+              variant="contained"
+              onClick={() => focusOnRunner(1)}
+            >
               {runner(0)}
             </Button>
-            <Button variant="contained" onClick={() => focusOnRunner(2)}>
+            <Button
+              variant="contained"
+              onClick={() => focusOnRunner(2)}
+            >
               {runner(1)}
             </Button>
-            <Button variant="contained" onClick={() => focusOnRunner(3)}>
+            <Button
+              variant="contained"
+              onClick={() => focusOnRunner(3)}
+            >
               {runner(2)}
             </Button>
-            <Button variant="contained" onClick={() => focusOnRunner(4)}>
+            <Button
+              variant="contained"
+              onClick={() => focusOnRunner(4)}
+            >
               {runner(3)}
             </Button>
           </>

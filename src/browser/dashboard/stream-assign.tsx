@@ -64,24 +64,52 @@ export function StreamAssign() {
               <Container>
                 {!selectedPlayer
                   ? (runners.map(runner => (
-                      <Button variant="contained" key={runner.id} onClick={() => setSelectedPlayer(runner)}>{runner.name}</Button>
+                      <Button
+                        variant="contained"
+                        key={runner.id}
+                        onClick={() => setSelectedPlayer(runner)}
+                      >
+                        {runner.name}
+                      </Button>
                     )))
-                  : (<Button variant="contained" disabled>{selectedPlayer.name}</Button>)}
+                  : (
+                      <Button
+                        variant="contained"
+                        disabled
+                      >
+                        {selectedPlayer.name}
+                      </Button>
+                    )}
                 {selectedPlayer && (
                   <Container>
                     {streams.map(stream => (
-                      <Button key={stream.name} variant="contained" onClick={() => assign(stream)}>
+                      <Button
+                        key={stream.name}
+                        variant="contained"
+                        onClick={() => assign(stream)}
+                      >
                         {stream.name}
                         <br />
                         {stream.twitchAccount}
                       </Button>
                     ))}
-                    <Button variant="contained" onClick={() => setSelectedPlayer(null)}>CANCEL</Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => setSelectedPlayer(null)}
+                    >
+                      CANCEL
+                    </Button>
                   </Container>
                 )}
               </Container>
             )
-          : <Alert severity="info">Cannot change runners' feeds while the timer is running</Alert>}
+          : (
+              <Alert
+                severity="info"
+              >
+                Cannot change runners' feeds while the timer is running
+              </Alert>
+            )}
       </Container>
     </DashboardThemeProvider>
   )
