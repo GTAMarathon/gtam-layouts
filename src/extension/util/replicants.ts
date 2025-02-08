@@ -83,3 +83,6 @@ export const merchImagesWidescreen = nodecg.Replicant<Asset[]>(
 export const currentMediaBoxItem = nodecg.Replicant<MediaBoxItem>(
   'currentMediaBoxItem',
 )
+export const currentGameLayout = nodecg.Replicant<string>(
+  'currentGameLayout',
+)

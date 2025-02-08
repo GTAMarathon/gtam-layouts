@@ -5,7 +5,7 @@ import obs from '@gtam-layouts/util/obs'
 import { TaggedLogger } from '@gtam-layouts/util/tagged-logger'
 import {
   runDataActiveRun as activeRun,
-  gameLayouts,
+  currentGameLayout,
   timer as timerRep,
 } from './util/replicants'
 
@@ -27,10 +27,10 @@ activeRun.on('change', (newVal) => {
   if (newVal) {
     // Set game layout
     if (newVal.customData.gameLayout) {
-      gameLayouts.value!.selected = newVal.customData.gameLayout
+      currentGameLayout.value = newVal.customData.gameLayout
     }
     else {
-      gameLayouts.value!.selected = defaultCode
+      currentGameLayout.value = defaultCode
     }
 
     // Set bingo board URL if needed
@@ -40,20 +40,18 @@ activeRun.on('change', (newVal) => {
   }
 })
 
-gameLayouts.on('change', (newVal, oldVal) => {
+currentGameLayout.on('change', (newVal, oldVal) => {
   // Don't do anything if OBS integration is disabled or not connected
   if (!config.obs.enable || !obs.connected || !newVal)
     return
 
-  if (newVal.selected && oldVal?.selected) {
-    // if the selected layout didn't change, don't update
-    if (newVal.selected !== oldVal?.selected) {
-      obs.setGameLayout(newVal.selected || defaultCode)
+  if (newVal && oldVal) {
+    if (newVal !== oldVal) {
+      obs.setGameLayout(newVal || defaultCode)
     }
   }
   else {
-    // if no previous value, change it to new one or use the default one
-    obs.setGameLayout(newVal.selected || defaultCode)
+    obs.setGameLayout(newVal || defaultCode)
   }
 })
 

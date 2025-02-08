@@ -14,6 +14,7 @@ export default antfu({
       'no-console': ['off'],
       'dot-notation': ['off'],
       'react-hooks/exhaustive-deps': ['off'],
+      'react-dom/no-dangerously-set-innerhtml': ['off'],
     },
   },
   javascript: {
