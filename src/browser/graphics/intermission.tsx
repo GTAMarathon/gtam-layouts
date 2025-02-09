@@ -271,6 +271,7 @@ export function Intermission() {
               height: '102px',
               width: '887px',
               lineHeight: '40px',
+              overflow: 'hidden',
             }}
           />
           <SwitchTransition mode="out-in">
@@ -335,6 +336,7 @@ export function Intermission() {
               height: '102px',
               width: '887px',
               lineHeight: '40px',
+              overflow: 'hidden',
             }}
           />
           <SwitchTransition mode="out-in">
@@ -399,6 +401,7 @@ export function Intermission() {
               height: '102px',
               width: '887px',
               lineHeight: '40px',
+              overflow: 'hidden',
             }}
           />
           <SwitchTransition mode="out-in">
@@ -434,6 +437,7 @@ export function Intermission() {
       <CSSTransition
         nodeRef={adTimerRef}
         in={adsAreRunning && intermissionType !== 'END OF MARATHON'}
+        appear
         timeout={1000}
         classNames="fade"
         key={adTimer}

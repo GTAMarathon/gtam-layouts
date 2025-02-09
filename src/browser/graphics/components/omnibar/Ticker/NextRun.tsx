@@ -1,5 +1,6 @@
 import type { RunData } from 'speedcontrol/types'
 import type { RunDataActiveRunSurrounding } from 'speedcontrol/types/schemas'
+import { AutoTextSize } from 'auto-text-size'
 import { useLayoutEffect, useState } from 'react'
 import { Helpers } from '../../../../helpers'
 
@@ -59,10 +60,17 @@ export function NextRun({ time, onEnd }: Props) {
   }, [])
 
   return (
-    <div
-      id="NextRun"
-      style={{ fontSize: '40px' }}
-      dangerouslySetInnerHTML={{ __html: msg }}
-    />
+    <div style={{ width: '100%' }}>
+      <AutoTextSize
+        maxFontSizePx={92}
+        mode="boxoneline"
+        as="div"
+        id="NextRun"
+
+      >
+        <div dangerouslySetInnerHTML={{ __html: msg }} />
+      </AutoTextSize>
+    </div>
+
   )
 }

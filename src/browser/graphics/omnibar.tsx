@@ -29,7 +29,7 @@ export function Omnibar() {
           zIndex: 2,
         }}
       />
-      <Ticker style={{ zIndex: 1 }} />
+      <Ticker style={{ zIndex: 1, width: '100%' }} />
     </div>
   )
 }
