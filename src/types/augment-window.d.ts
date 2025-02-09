@@ -7,9 +7,7 @@ import type { NodeCGAPIClient } from 'node_modules/nodecg/out/client/api/api.cli
 import type NodeCG from 'nodecg/types'
 import type { Configschema } from './'
 
-type ncgClientAPI = NodeCG.ClientAPI<Configschema>
-
 declare global {
   let NodeCG: typeof NodeCGAPIClient
-  let nodecg: ncgClientAPI
+  let nodecg: NodeCG.ClientAPI<Configschema>
 }

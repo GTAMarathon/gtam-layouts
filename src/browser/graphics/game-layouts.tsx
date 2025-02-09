@@ -3,6 +3,9 @@ import { useReplicant } from '@nodecg/react-hooks'
 import { useEffect, useRef, useState } from 'react'
 import { render } from '../render'
 import { defaultCode, layoutsList } from './components/game-layouts/layouts'
+import './css/common.css'
+import './css/Flex.css'
+import './css/Fade.css'
 
 interface CurrentLayout {
   code: string
