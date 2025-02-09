@@ -91,7 +91,6 @@ export function Intermission() {
   }, [])
 
   useEffect(() => {
-    console.log(currentRun)
     if (!currentRun)
       clear()
 
@@ -163,7 +162,7 @@ export function Intermission() {
       if (lastRun && currentRun.id === lastRun.id) {
         type = 'FINAL RUN'
       }
-      console.log(type)
+
       setIntermissionType(type)
     }
 
@@ -437,6 +436,8 @@ export function Intermission() {
         in={adsAreRunning && intermissionType !== 'END OF MARATHON'}
         timeout={1000}
         classNames="fade"
+        key={adTimer}
+        unmountOnExit
       >
         <div
           style={{
@@ -457,6 +458,7 @@ export function Intermission() {
           </span>
         </div>
       </CSSTransition>
+
     </div>
   )
 }
