@@ -1,30 +1,27 @@
-import needle from 'needle';
-import { get } from './util/nodecg';
-import { Configschema } from '@gtam-layouts/types/schemas';
-import { hundoTrackerData } from './util/replicants';
+import type { Configschema } from '@gtam-layouts/types'
+import { get } from '@gtam-layouts/util/nodecg'
+import { hundoTrackerData } from '@gtam-layouts/util/replicants'
+import { TaggedLogger } from '@gtam-layouts/util/tagged-logger'
+import needle from 'needle'
 
-const nodecg = get();
-const config = (nodecg.bundleConfig as Configschema).hundo;
+const nodecg = get()
+const config = (nodecg.bundleConfig as Configschema).hundo
+const logger = new TaggedLogger('Hundo Tracker')
 
 async function updateData(): Promise<void> {
   try {
-    const resp = await needle(
-      'get',
-      `http://localhost:${config.port}/playerdata`
-    );
-    hundoTrackerData.value = resp.body;
-  } catch (err) {
-    nodecg.log.warn('[Hundo Tracker] Error updating data');
-    nodecg.log.debug('[Hundo Tracker] Error updating data', err);
+    const resp = await needle('get', `http://localhost:${config.port}/playerdata`)
+    hundoTrackerData.value = resp.body
+  }
+  catch (error) {
+    logger.warn(`Error updating data: ${error}`)
   }
 }
 
 if (config.enabled) {
-  updateData();
-}
+  updateData()
 
-if (config.enabled) {
   setInterval(() => {
-    updateData();
-  }, 3000);
+    updateData()
+  }, 3000)
 }

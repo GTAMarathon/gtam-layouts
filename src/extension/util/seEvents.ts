@@ -42,38 +42,39 @@ export interface SubscriberLatestEvent extends Event {
    *
    * If this is a gift this will be one, or 2+ if this is a bulk gift.
    */
-  amount: number;
+  amount: number
 
   /** Subscriber-sent message accompanying the subscribal */
-  message: string;
+  message: string
 
   /** The sub streak. */
-  streak: number;
+  streak: number
 
-  /** Username of the subscriber.
+  /**
+   * Username of the subscriber.
    *
    * If the sub has been gifted, this refers to the receiver. For a bulk gift event, this value
    * will be the same as the sender.
    */
-  username: string;
+  username: string
 
   /** Display name of the subscriber */
-  displayName: string;
+  displayName: string
 
   /** The tier a twitch user might subscribe on. */
-  tier: SubscribeTier;
+  tier: SubscribeTier
 
   /** Unknown */
-  type: string;
+  type: string
 
   /** If the sub is gifted, then this will contain the username of the gifter */
-  sender?: string;
+  sender?: string
 
   /** Unknown */
-  quantity: number;
+  quantity: number
 
   /** The user's Twitch avatar */
-  avatar: string;
+  avatar: string
 }
 
 /**
@@ -81,13 +82,13 @@ export interface SubscriberLatestEvent extends Event {
  */
 export interface CheerLatestEvent extends Event {
   /** The number of bits cheered */
-  amount: number;
+  amount: number
   /** Display name of the sender */
-  displayName: string;
+  displayName: string
   /** Accompanying message */
-  message: string;
+  message: string
   /** Username of the sender */
-  username: string;
+  username: string
 }
 
 /**
@@ -95,28 +96,28 @@ export interface CheerLatestEvent extends Event {
  */
 export interface MerchLatestEvent extends Event {
   /** Name of the sender */
-  username: string;
+  username: string
   /** Currency used in the transaction */
-  currency: string;
+  currency: string
   /** Amount of items bought */
-  quantity: number;
+  quantity: number
   /** Array of items bought */
-  items: MerchItem[];
+  items: MerchItem[]
   /** Unknown */
-  message: string;
+  message: string
   /** The user's StreamElements avatar */
-  avatar: string;
+  avatar: string
   /** Unknown */
-  amount: number;
+  amount: number
 }
 
-export type MerchItem = {
+export interface MerchItem {
   /**
    * Name of the item.
    */
-  name: string;
+  name: string
   /** Price of the item. */
-  price: number;
+  price: number
   /** Amount of the item bought. */
-  quantity: number;
-};
+  quantity: number
+}

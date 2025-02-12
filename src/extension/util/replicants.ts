@@ -1,84 +1,88 @@
-import type NodeCG from '@nodecg/types';
-import { get } from './nodecg';
-import {
+import type {
+  Asset,
+  BitsQueueItem,
+  GameLayouts,
+  HundoTrackerData,
+  MediaBoxItem,
+  MerchQueueItem,
+  SubQueueItem,
+} from '@gtam-layouts/types'
+import type {
   RunData,
   RunDataArray,
   RunFinishTimes,
   Timer,
-} from 'speedcontrol/types';
-import { HundoTrackerData, GameLayouts } from '@gtam-layouts/types/schemas';
-import {
+} from 'speedcontrol/types'
+import type {
   OengusImportStatus,
   RunDataActiveRunSurrounding,
-} from 'speedcontrol/types/schemas';
-import {
-  SubQueueItem,
-  BitsQueueItem,
-  MerchQueueItem,
-  Asset,
-  MediaBoxItem,
-} from '@gtam-layouts/types';
-const nodecg = get();
+} from 'speedcontrol/types/schemas'
+import { get } from './nodecg'
+
+const nodecg = get()
 
 export const timer = nodecg.Replicant<Timer>(
   'timer',
-  'nodecg-speedcontrol'
-) as unknown as NodeCG.ServerReplicantWithSchemaDefault<Timer>;
+  'nodecg-speedcontrol',
+)
 export const runDataActiveRun = nodecg.Replicant<RunData>(
   'runDataActiveRun',
-  'nodecg-speedcontrol'
-) as unknown as NodeCG.ServerReplicantWithSchemaDefault<RunData>;
+  'nodecg-speedcontrol',
+)
 export const hundoTrackerData = nodecg.Replicant<HundoTrackerData>(
   'hundoTrackerData',
-  { defaultValue: [] }
-) as unknown as NodeCG.ServerReplicant<HundoTrackerData>;
-export const runDataActiveRunSurrounding =
-  nodecg.Replicant<RunDataActiveRunSurrounding>(
+  { defaultValue: [] },
+)
+export const runDataActiveRunSurrounding
+  = nodecg.Replicant<RunDataActiveRunSurrounding>(
     'runDataActiveRunSurrounding',
-    'nodecg-speedcontrol'
-  ) as unknown as NodeCG.ServerReplicantWithSchemaDefault<RunDataActiveRunSurrounding>;
+    'nodecg-speedcontrol',
+  )
 export const runFinishTimes = nodecg.Replicant<RunFinishTimes>(
   'runFinishTimes',
-  'nodecg-speedcontrol'
-) as unknown as NodeCG.ServerReplicantWithSchemaDefault<RunFinishTimes>;
+  'nodecg-speedcontrol',
+)
 export const oengusImportStatus = nodecg.Replicant<OengusImportStatus>(
   'oengusImportStatus',
-  'nodecg-speedcontrol'
-) as unknown as NodeCG.ServerReplicantWithSchemaDefault<OengusImportStatus>;
+  'nodecg-speedcontrol',
+)
 export const runDataArray = nodecg.Replicant<RunDataArray>(
   'runDataArray',
-  'nodecg-speedcontrol'
-) as unknown as NodeCG.ServerReplicantWithSchemaDefault<RunDataArray>;
+  'nodecg-speedcontrol',
+)
 export const gameLayouts = nodecg.Replicant<GameLayouts>(
-  'gameLayouts'
-) as unknown as NodeCG.ServerReplicantWithSchemaDefault<GameLayouts>;
+  'gameLayouts',
+)
 export const twitchSubQueue = nodecg.Replicant<SubQueueItem[]>(
   'twitchSubQueue',
-  { defaultValue: [] }
-) as unknown as NodeCG.ServerReplicant<SubQueueItem[]>;
+  { defaultValue: [] },
+)
 export const twitchBitsQueue = nodecg.Replicant<BitsQueueItem[]>(
   'twitchBitsQueue',
-  { defaultValue: [] }
-) as unknown as NodeCG.ServerReplicant<BitsQueueItem[]>;
+  { defaultValue: [] },
+)
 export const merchPurchaseQueue = nodecg.Replicant<MerchQueueItem[]>(
   'merchPurchaseQueue',
-  { defaultValue: [] }
-) as unknown as NodeCG.ServerReplicant<MerchQueueItem[]>;
+  { defaultValue: [] },
+)
 export const currentOBSScene = nodecg.Replicant<string>('currentOBSScene', {
   defaultValue: '',
-}) as unknown as NodeCG.ServerReplicant<string>;
+})
 export const sponsorImages = nodecg.Replicant<Asset[]>(
-  'assets:sponsor-logos'
-) as unknown as NodeCG.ServerReplicant<Asset[]>;
+  'assets:sponsor-logos',
+)
 export const sponsorImagesWidescreen = nodecg.Replicant<Asset[]>(
-  'assets:sponsor-logos-widescreen'
-) as unknown as NodeCG.ServerReplicant<Asset[]>;
+  'assets:sponsor-logos-widescreen',
+)
 export const merchImages = nodecg.Replicant<Asset[]>(
-  'assets:merch-images'
-) as unknown as NodeCG.ServerReplicant<Asset[]>;
+  'assets:merch-images',
+)
 export const merchImagesWidescreen = nodecg.Replicant<Asset[]>(
-  'assets:merch-images-widescreen'
-) as unknown as NodeCG.ServerReplicant<Asset[]>;
+  'assets:merch-images-widescreen',
+)
 export const currentMediaBoxItem = nodecg.Replicant<MediaBoxItem>(
-  'currentMediaBoxItem'
-) as unknown as NodeCG.ServerReplicant<MediaBoxItem>;
+  'currentMediaBoxItem',
+)
+export const currentGameLayout = nodecg.Replicant<string>(
+  'currentGameLayout',
+)

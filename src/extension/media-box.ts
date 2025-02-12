@@ -1,85 +1,63 @@
 import {
-  merchPurchaseQueue,
-  twitchBitsQueue,
-  twitchSubQueue,
-  sponsorImages,
-  sponsorImagesWidescreen,
+  currentMediaBoxItem,
   merchImages,
   merchImagesWidescreen,
-  currentMediaBoxItem,
-} from './util/replicants';
-import { get } from './util/nodecg';
-import clone from 'clone';
+  merchPurchaseQueue,
+  sponsorImages,
+  sponsorImagesWidescreen,
+  twitchBitsQueue,
+  twitchSubQueue,
+} from '@gtam-layouts/util/replicants'
+import { klona as clone } from 'klona/json'
 
-const nodecg = get();
-let sponsorIndex = 0;
-let merchIndex = 0;
-let lastStage: MediaBoxStages = 'MerchImage';
-let timeout: NodeJS.Timeout;
+type MediaBoxStages = 'MerchImage' | 'SponsorImage'
 
-type MediaBoxStages = 'MerchImage' | 'SponsorImage';
+let sponsorIndex = 0
+let merchIndex = 0
+let lastStage: MediaBoxStages = 'MerchImage'
+let timeout: NodeJS.Timeout
 
-const isTwitchSubQueued = () => {
-  if (twitchSubQueue.value) {
-    return twitchSubQueue.value.length > 0;
-  } else {
-    return false;
-  }
-};
-
-const isTwitchBitsQueued = () => {
-  if (twitchBitsQueue.value) {
-    return twitchBitsQueue.value.length > 0;
-  } else {
-    return false;
-  }
-};
-
-const isMerchQueued = () => {
-  if (merchPurchaseQueue.value) {
-    return merchPurchaseQueue.value.length > 0;
-  } else {
-    return false;
-  }
-};
+const isTwitchSubQueued = twitchSubQueue.value && twitchSubQueue.value.length > 0
+const isTwitchBitsQueued = twitchBitsQueue.value && twitchBitsQueue.value.length > 0
+const isMerchQueued = merchPurchaseQueue.value && merchPurchaseQueue.value.length > 0
 
 function setNextMediaBoxItem(): void {
-  clearTimeout(timeout);
-  timeout = setTimeout(setNextMediaBoxItem, 20000);
-  if (isTwitchSubQueued()) {
-    const sub = twitchSubQueue.value!.shift();
+  clearTimeout(timeout)
+  timeout = setTimeout(setNextMediaBoxItem, 20000)
+  if (isTwitchSubQueued) {
+    const sub = twitchSubQueue.value!.shift()
     if (sub) {
       currentMediaBoxItem.value = {
         type: 'sub',
         data: clone(sub),
-      };
+      }
     }
-    return;
-  } else if (isTwitchBitsQueued()) {
-    const bits = twitchBitsQueue.value!.shift();
+  }
+  else if (isTwitchBitsQueued) {
+    const bits = twitchBitsQueue.value!.shift()
     if (bits) {
       currentMediaBoxItem.value = {
         type: 'cheer',
         data: clone(bits),
-      };
+      }
     }
-    return;
-  } else if (isMerchQueued()) {
-    const merch = merchPurchaseQueue.value!.shift();
+  }
+  else if (isMerchQueued) {
+    const merch = merchPurchaseQueue.value!.shift()
     if (merch) {
       currentMediaBoxItem.value = {
         type: 'merch',
         data: clone(merch),
-      };
+      }
     }
-    return;
-  } else if (lastStage === 'MerchImage') {
-    lastStage = 'SponsorImage';
-    sponsorIndex++;
+  }
+  else if (lastStage === 'MerchImage') {
+    lastStage = 'SponsorImage'
+    sponsorIndex++
     if (sponsorIndex >= sponsorImages.value!.length) {
-      sponsorIndex = 0;
+      sponsorIndex = 0
     }
-    let images = {
+    const images = {
       standard: {
         name: sponsorImages.value![sponsorIndex]
           ? sponsorImages.value![sponsorIndex].name
@@ -96,20 +74,20 @@ function setNextMediaBoxItem(): void {
           ? sponsorImagesWidescreen.value![sponsorIndex].url
           : undefined,
       },
-    };
+    }
     currentMediaBoxItem.value = {
       type: 'image',
       data: images,
-    };
-    return;
-  } else if (lastStage === 'SponsorImage') {
-    lastStage = 'MerchImage';
-    merchIndex++;
+    }
+  }
+  else if (lastStage === 'SponsorImage') {
+    lastStage = 'MerchImage'
+    merchIndex++
 
     if (merchIndex >= merchImages.value!.length) {
-      merchIndex = 0;
+      merchIndex = 0
     }
-    let images = {
+    const images = {
       standard: {
         name: merchImages.value![merchIndex]
           ? merchImages.value![merchIndex].name
@@ -126,13 +104,12 @@ function setNextMediaBoxItem(): void {
           ? merchImagesWidescreen.value![merchIndex].url
           : undefined,
       },
-    };
+    }
     currentMediaBoxItem.value = {
       type: 'image',
       data: images,
-    };
-    return;
+    }
   }
 }
 
-setNextMediaBoxItem();
+setNextMediaBoxItem()
