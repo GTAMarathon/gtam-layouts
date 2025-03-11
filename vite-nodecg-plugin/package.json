@@ -1,27 +1,30 @@
 {
   "name": "vite-nodecg-plugin",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "type": "module",
-  "scripts": {
-    "prepare": "tsc"
-  },
-  "files": ["dist"],
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/GTAMarathon/gtam-layouts.git"
   },
-  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "tsc"
+  },
   "dependencies": {
-    "del": "^8.0.0",
-    "get-port": "^7.1.0",
-    "rollup": "^4.32.1",
-    "vite": "^5.4.14"
+    "globby": "^14.0.1",
+    "minimatch": "^9.0.3"
   },
   "devDependencies": {
-    "@types/node": "^20.17.16",
-    "typescript": "^5.7.3"
+    "@types/node": "^20.11.25",
+    "prettier": "^3.4.2",
+    "rollup": "^4.12.1",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5"
   }
 }

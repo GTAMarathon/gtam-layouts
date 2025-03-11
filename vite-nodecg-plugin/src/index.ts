@@ -1,247 +1,360 @@
-import type { InputOptions, OutputOptions, RollupOptions, RollupWatcher, RollupWatcherEvent, RollupWatchOptions } from 'rollup'
-import type { Manifest, Plugin, ResolvedConfig } from 'vite'
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable node/prefer-global/process */
+import type { InputOptions } from 'rollup'
+import type {
+  Manifest,
+  ManifestChunk,
+  Plugin,
+  ResolvedConfig,
+  UserConfig,
+} from 'vite'
+
 import fs from 'node:fs'
 import path from 'node:path'
-import * as cheerio from 'cheerio'
-import { deleteSync } from 'del'
-import getPort from 'get-port'
+
 import { globbySync } from 'globby'
-import {
-  rollup,
-  watch as rollupWatch,
-} from 'rollup'
+import { minimatch } from 'minimatch'
 
-async function setupExtensionBuild(options: RollupOptions) {
-  const inputOptions: InputOptions = {
-    ...options,
-  }
-
-  const outputOptions: OutputOptions = {
-    dir: './extension',
-    format: 'cjs',
-    sourcemap: true,
-    interop: 'auto',
-    ...options.output,
-  }
-
-  const watchOptions: RollupWatchOptions = {
-    ...options,
-    watch: {
-      clearScreen: false,
-      ...options.watch,
-    },
-    output: {
-      dir: './extension',
-      format: 'cjs',
-      sourcemap: true,
-      interop: 'auto',
-      ...options.output,
-    },
-  }
-
-  let watcher: RollupWatcher
-  const watchEventHandler = (event: RollupWatcherEvent) => {
-    if (event.code === 'BUNDLE_END' || event.code === 'ERROR') {
-      event.result?.close()
+export interface PluginConfig {
+  /**
+   * Use to map input files to template paths
+   *
+   * @default {
+        'graphics/*.{js,ts}': './src/graphics/template.html',
+        'dashboard/*.{js,ts}': './src/dashboard/template.html',
     }
-  }
+   */
+  inputs?: { [key: string]: string } | undefined
 
-  return {
-    watch: () => {
-      watcher = rollupWatch(watchOptions)
-      watcher.on('event', watchEventHandler)
-    },
-    unwatch: () => {
-      watcher.off('event', watchEventHandler)
-      watcher.close()
-    },
-    build: async () => {
-      const bundle = await rollup(inputOptions)
-      await bundle.write(outputOptions)
-      await bundle.close()
-    },
-  }
+  /**
+   * Base directory for input-file paths
+   * @default './src'
+   */
+  srcDir?: string | undefined
 }
 
-interface PluginConfig {
-  bundleName: string
-  graphics?: string | string[]
-  dashboard?: string | string[]
-  extension?: string | RollupOptions
-  template?: string | { graphics: string, dashboard: string }
-}
+export default function viteNodeCGPlugin(pluginConfig: PluginConfig): Plugin {
+  const bundleName = path.basename(process.cwd())
 
-export default async ({
-  bundleName,
-  graphics = [],
-  dashboard = [],
-  extension,
-  template = './src/template.html',
-}: PluginConfig): Promise<Plugin> => {
+  const inputConfig = pluginConfig?.inputs ?? {
+    'graphics/*.{js,ts}': './src/graphics/template.html',
+    'dashboard/*.{js,ts}': './src/dashboard/template.html',
+  }
+
+  const srcDir = pluginConfig?.srcDir ?? './src'
+
+  const inputPatterns = [
+    ...Object.keys(inputConfig).map(matchPath =>
+      path.posix.join(srcDir, matchPath),
+    ),
+    '!**.d.ts',
+  ]
+
+  // string array of paths to all input files (always ignore ts declaration files)
+  const inputs = globbySync(inputPatterns)
+
+  if (!inputs || !inputs.length) {
+    console.error('vite-plugin-nodecg: No inputs were found! Exiting')
+    process.exit(1)
+  }
+  else {
+    console.log('vite-plugin-nodecg: Found the following inputs: ', inputs)
+  }
+
+  // now we know which inputs actually exist, lets clean up unused inputConfig entries so we don't load templates we don't need
+  // useful in the case the default inputsConfig is used, but the nodecg bundle has only dashboards or only graphics (or no inputs at all)
+  Object.keys(inputConfig).forEach((matchPath) => {
+    if (
+      !inputs.some(input =>
+        minimatch(input, path.posix.join(srcDir, matchPath)),
+      )
+    ) {
+      delete inputConfig[matchPath]
+    }
+  })
+
+  // map from template paths to file buffers
+  const templates = {} as { [key: string]: string }
+  Object.values(inputConfig).forEach((templatePath) => {
+    if (templates[templatePath])
+      return // skip if already read
+    const fullPath = path.posix.join(process.cwd(), templatePath)
+    templates[templatePath] = fs.readFileSync(fullPath, 'utf-8')
+  })
+
   let config: ResolvedConfig
-  let protocol: string
-  let host: string
-  let port: number
+  let reactPreamble: string
+  let dSrvProtocol: string
+  let dSrvHost: string
+  let assetManifest: Manifest
 
-  const extensionRollup
-    = typeof extension === 'string'
-      ? await setupExtensionBuild({ input: extension })
-      : typeof extension === 'object'
-        ? await setupExtensionBuild(extension)
-        : extension
+  let resolvedInputOptions: InputOptions
 
-  const graphicsInputs = globbySync(graphics)
-  const dashboardInputs = globbySync(dashboard)
-  const inputs = [...graphicsInputs, ...dashboardInputs]
+  // take the template html and inject script and css assets into <head>
+  function injectAssetsTags(html: string, entry: string) {
+    const tags = []
 
-  console.log('vite-nodecg: Found the following inputs: ', inputs)
+    if (config.mode === 'development') {
+      // Add React fast refresh script for development
+      if (reactPreamble) {
+        tags.push(
+          `<script type="module">${reactPreamble.replace(/__BASE__/g, `${dSrvProtocol}://${path.posix.join(
+            dSrvHost,
+            'bundles',
+            bundleName,
+          )}/`)}</script>`,
+        )
+      }
 
-  const generateHtmlFiles = async () => {
-    const graphicsTemplate = typeof template === 'string' ? template : template.graphics
-    const dashboardTemplate = typeof template === 'string' ? template : template.dashboard
-
-    const graphicsTemplateHtml = fs.readFileSync(path.join(config.root, graphicsTemplate), 'utf-8')
-    const dashboardTemplateHtml = fs.readFileSync(path.join(config.root, dashboardTemplate), 'utf-8')
-
-    const graphicsOutdir = path.join(config.root, 'graphics')
-    const dashboardOutdir = path.join(config.root, 'dashboard')
-
-    deleteSync([`${graphicsOutdir}/**`, `${dashboardOutdir}/**`])
-    fs.mkdirSync(graphicsOutdir, { recursive: true })
-    fs.mkdirSync(dashboardOutdir, { recursive: true })
-
-    const manifestPath = path.join(config.build.outDir, 'manifest.json')
-    if (!fs.existsSync(manifestPath)) {
-      console.warn(`⚠️ Manifest file not found at ${manifestPath}`)
-      return
+      tags.push(
+        `<script type="module" src="${dSrvProtocol}://${path.posix.join(
+          dSrvHost,
+          'bundles',
+          bundleName,
+          '@vite/client',
+        )}"></script>`,
+      )
+      tags.push(
+        `<script type="module" src="${dSrvProtocol}://${path.posix.join(
+          dSrvHost,
+          'bundles',
+          bundleName,
+          entry,
+        )}"></script>`,
+      )
     }
-    const manifest: Manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
+    else if (config.mode === 'production' && assetManifest) {
+      const entryChunk = assetManifest[entry]
 
-    const graphicsCssFiles = new Set<string>()
-    const dashboardCssFiles = new Set<string>()
+      function generateCssTags(
+        chunk: ManifestChunk,
+        alreadyProcessed: string[] = [],
+      ) {
+        chunk.css?.forEach((cssPath) => {
+          if (alreadyProcessed.includes(cssPath))
+            return // de-dupe assets
 
-    Object.entries(manifest).forEach(([inputFile, chunk]) => {
-      if (chunk.css) {
-        if (inputFile.includes('/graphics/')) {
-          chunk.css.forEach(css => graphicsCssFiles.add(css))
-        }
-        else if (inputFile.includes('/dashboard/')) {
-          chunk.css.forEach(css => dashboardCssFiles.add(css))
-        }
-      }
-    })
+          tags.push(
+            `<link rel="stylesheet" href="${path.posix.join(
+              config.base,
+              cssPath,
+            )}" />`,
+          )
 
-    const allCssFiles = new Set<string>()
-    Object.values(manifest).forEach((chunk) => {
-      if (chunk.css) {
-        chunk.css.forEach(cssFile => allCssFiles.add(cssFile))
-      }
-    })
-
-    for (const input of inputs) {
-      const isGraphics = input.includes('/graphics/')
-      const templateHtml = isGraphics ? graphicsTemplateHtml : dashboardTemplateHtml
-      const $ = cheerio.load(templateHtml)
-      const head = $('head')
-
-      if (config.command === 'serve') {
-        const address = `${protocol}://${host}:${port}`
-        head.append(`
-					<script type="module">
-						import RefreshRuntime from '${new URL(
-              path.join(config.base, '@react-refresh'),
-              address,
-            )}'
-						RefreshRuntime.injectIntoGlobalHook(window)
-						window.$RefreshReg$ = () => {}
-						window.$RefreshSig$ = () => (type) => type
-						window.__vite_plugin_react_preamble_installed__ = true
-					</script>
-				`)
-        head.append(`<script type="module" src="${new URL(path.join(config.base, '@vite/client'), address)}"></script>`)
-        head.append(`<script type="module" src="${new URL(path.join(config.base, input), address)}"></script>`)
-      }
-
-      if (config.command === 'build') {
-        const inputName = input.replace(/^\.\//, '')
-        const entryChunk = manifest[inputName]
-
-        const relevantCssFiles = isGraphics ? graphicsCssFiles : dashboardCssFiles
-
-        relevantCssFiles.forEach((cssFile) => {
-          head.append(`<link rel="stylesheet" href="${path.join(config.base, cssFile)}">`)
+          alreadyProcessed.push(cssPath)
         })
 
-        if (entryChunk?.file) {
-          head.append(`<script type="module" src="${path.join(config.base, entryChunk.file)}"></script>`)
-        }
+        // recurse
+        chunk.imports?.forEach((importPath) => {
+          generateCssTags(assetManifest[importPath], alreadyProcessed)
+        })
       }
 
-      const newHtml = $.html()
-      const dir = isGraphics ? graphicsOutdir : dashboardOutdir
-      const name = path.basename(input, path.extname(input))
-      fs.writeFileSync(path.join(dir, `${name}.html`), newHtml)
+      generateCssTags(entryChunk)
+
+      tags.push(
+        `<script type="module" src="${path.posix.join(
+          config.base,
+          entryChunk.file,
+        )}"></script>`,
+      )
+    }
+
+    const newHtml = html.includes('</head>')
+      ? html.replace('</head>', `${tags.join('\n')}\n</head>`)
+      : `${tags.join('\n')}\n${html}`
+
+    return newHtml
+  }
+
+  // Determine the output directory based on the input path pattern matching
+  function determineOutputDir(inputPath: string): string {
+    // Check if it's a graphics file based on the input config patterns
+    const isGraphics = Object.keys(inputConfig).some((matchPath) => {
+      return matchPath.includes('graphics')
+        && minimatch(inputPath, path.posix.join(srcDir, matchPath))
+    })
+
+    // Check if it's a dashboard file based on the input config patterns
+    const isDashboard = Object.keys(inputConfig).some((matchPath) => {
+      return matchPath.includes('dashboard')
+        && minimatch(inputPath, path.posix.join(srcDir, matchPath))
+    })
+
+    if (isGraphics) {
+      return 'graphics'
+    }
+    else if (isDashboard) {
+      return 'dashboard'
+    }
+    else {
+      // Use the original directory if not matched
+      return path.dirname(path.relative(srcDir, inputPath))
+    }
+  }
+
+  // for each input (graphics & dashboard panels) create an html doc and emit to disk
+  function generateHTMLFiles() {
+    let resolvedInputs: string[]
+    const input = resolvedInputOptions.input
+
+    if (!input)
+      return
+
+    // populate inputs, taking into account "input" can come in 3 forms
+    if (typeof input === 'string') {
+      resolvedInputs = [input]
+    }
+    else if (Array.isArray(input)) {
+      resolvedInputs = input
+    }
+    else {
+      resolvedInputs = Object.values(input)
+    }
+
+    const htmlDocs = {} as { [key: string]: string }
+
+    // generate string html for each input
+    resolvedInputs.forEach((inputPath) => {
+      // find first template that has a match path that this input satisfies
+      const matchPath = Object.keys(inputConfig).find((matchPath) => {
+        return minimatch(inputPath, path.posix.join(srcDir, matchPath))
+      })
+
+      if (!matchPath)
+        return
+
+      const templatePath = inputConfig[matchPath]
+      const template = templates[templatePath]
+
+      // check template was found in the inputConfig and we loaded it from disk, otherwise skip this input
+      if (!template) {
+        console.error(
+          `vite-plugin-nodecg: No template found to match input "${inputPath}". This probably means the input file was manually specified in the vite rollup config, and the graphic/dashboard will not be built.`,
+        )
+        return
+      }
+
+      // add asset tags to template
+      const html = injectAssetsTags(
+        templates[templatePath],
+        inputPath.replace(/^(\.\/)/, ''),
+      )
+
+      // Get the appropriate output directory
+      const outputDir = determineOutputDir(inputPath)
+      const name = path.basename(inputPath, path.extname(inputPath))
+      const filePath = path.join(outputDir, `${name}.html`)
+
+      htmlDocs[filePath] = html
+    })
+
+    // write each html doc to disk
+    for (const [filePath, htmlDoc] of Object.entries(htmlDocs)) {
+      const fullFilePath = path.join(process.cwd(), filePath)
+      const dir = path.dirname(fullFilePath)
+
+      try {
+        fs.mkdirSync(dir, { recursive: true })
+      }
+      catch (e) {
+        console.error(
+          `vite-plugin-nodecg: Could not create directory ${dir} for input ${filePath}. Skipping...`,
+        )
+        continue
+      }
+
+      fs.writeFile(fullFilePath, htmlDoc, () => {
+        console.log(
+          `vite-plugin-nodecg: Wrote input ${filePath} to disk`,
+        )
+      })
     }
   }
 
   return {
     name: 'nodecg',
 
-    config: async (baseConfig, { command }) => {
-      protocol = baseConfig.server?.https ? 'https' : 'http'
-      host
-        = typeof baseConfig.server?.host === 'string'
-          ? baseConfig.server.host
-          : 'localhost'
-      port = baseConfig.server?.port ?? (await getPort())
-
+    // validate and setup defaults in user's vite config
+    config: (_config, { mode }): UserConfig => {
       return {
-        appType: 'mpa',
-        base:
-          command === 'serve'
-            ? `/bundles/${bundleName}`
-            : `/bundles/${bundleName}/shared/dist`,
-        server: {
-          host,
-          port,
-          origin: `${protocol}://${host}:${port}`,
-        },
         build: {
+          manifest: 'manifest.json',
+          outDir: 'shared/dist',
           rollupOptions: {
             input: inputs,
           },
-          manifest: 'manifest.json',
-          outDir: './shared/dist',
-          assetsDir: '.',
         },
-        clearScreen: baseConfig.clearScreen ?? false,
+        base: `/bundles/${bundleName}/${
+          mode === 'development' ? '' : 'shared/dist/'
+        }`,
       }
     },
 
-    configResolved: (resolvedConfig) => {
+    async configResolved(resolvedConfig: ResolvedConfig) {
+      // Capture resolved config for use in injectAssets
       config = resolvedConfig
-    },
-
-    buildStart: async () => {
-      if (config.command === 'serve') {
-        generateHtmlFiles()
-        extensionRollup?.watch()
-      }
-      if (config.command === 'build') {
-        await extensionRollup?.build()
+      // Check to see if one of the plugins is vite:react-refresh
+      if (resolvedConfig.plugins.find(plugin => plugin.name === 'vite:react-refresh')) {
+        // If it is, import it and get the preamble code from it if possible
+        reactPreamble = (await import('@vitejs/plugin-react'))?.default?.preambleCode
+        if (!reactPreamble) {
+          console.warn('Unable to get React refresh preamble')
+        }
       }
     },
 
-    writeBundle: () => {
-      if (config.command === 'build') {
-        generateHtmlFiles()
-      }
+    buildStart(options: InputOptions) {
+      // capture inputOptions for use in generateHtmlFiles in both dev & prod
+      resolvedInputOptions = options
     },
 
-    buildEnd: () => {
-      if (config.command === 'serve') {
-        extensionRollup?.unwatch()
+    writeBundle() {
+      if (!resolvedInputOptions?.input || config.mode !== 'production')
+        return
+
+      try {
+        // would be nice to not have to read the asset manifest from disk but I don't see another way
+        // relevant: https://github.com/vitejs/vite/blob/a9dfce38108e796e0de0e3b43ced34d60883cef3/packages/vite/src/node/ssr/ssrManifestPlugin.ts
+        assetManifest = JSON.parse(
+          fs
+            .readFileSync(
+              path.posix.join(
+                process.cwd(),
+                config.build.outDir,
+                'manifest.json',
+              ),
+            )
+            .toString(),
+        )
       }
+      catch (err) {
+        console.error(
+          'vite-plugin-nodecg: Failed to load manifest.json from build directory. HTML files won\'t be generated.',
+        )
+        return
+      }
+
+      // prod inject
+      generateHTMLFiles()
+    },
+
+    configureServer(server) {
+      if (!server.httpServer)
+        return
+
+      server.httpServer.on('listening', () => {
+        dSrvProtocol = server.config.server.https ? 'https' : 'http'
+        dSrvHost = `${server.config.server.host ?? 'localhost'}:${
+          server.config.server.port ?? '5173'
+        }`
+
+        // fix dev server origin
+        server.config.server.origin = `${dSrvProtocol}://${dSrvHost}`
+
+        // dev inject
+        generateHTMLFiles()
+      })
     },
   }
 }
