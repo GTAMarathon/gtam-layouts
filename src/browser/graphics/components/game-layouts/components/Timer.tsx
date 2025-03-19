@@ -31,7 +31,7 @@ export function Timer({ style }: Props) {
           id="Timer"
           style={{
             fontSize: '2.8em',
-            transition: '1s',
+            transition: 'color 1s',
             marginBottom: '-0.2em',
             color: timerColors[timer.state],
           }}
