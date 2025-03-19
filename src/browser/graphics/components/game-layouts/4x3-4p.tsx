@@ -56,7 +56,7 @@ export function L_4x3_4p() {
       <Player
         style={{
           left: '0px',
-          top: '440px',
+          top: '448px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',
@@ -67,7 +67,7 @@ export function L_4x3_4p() {
       <Player
         style={{
           left: '1306px',
-          top: '440px',
+          top: '448px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',
@@ -78,7 +78,7 @@ export function L_4x3_4p() {
       <Player
         style={{
           left: '0px',
-          top: '949px',
+          top: '957px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',
@@ -89,7 +89,7 @@ export function L_4x3_4p() {
       <Player
         style={{
           left: '1306px',
-          top: '949px',
+          top: '957px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',

@@ -56,7 +56,7 @@ export function L_4x3_Bingo() {
       <Player
         style={{
           left: '0px',
-          top: '440px',
+          top: '450px',
           width: '614px',
           height: '81px',
         }}
@@ -66,7 +66,7 @@ export function L_4x3_Bingo() {
       <Player
         style={{
           left: '1306px',
-          top: '440px',
+          top: '450px',
           width: '614px',
           height: '81px',
         }}
@@ -76,7 +76,7 @@ export function L_4x3_Bingo() {
       <Player
         style={{
           left: '0px',
-          top: '948px',
+          top: '958px',
           width: '614px',
           height: '81px',
         }}

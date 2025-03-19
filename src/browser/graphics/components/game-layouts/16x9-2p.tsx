@@ -71,7 +71,7 @@ export function L_16x9_2p() {
           height: '92px',
           fontSize: '24px',
         }}
-        size={40}
+        size={56}
         team={2}
       />
     </div>

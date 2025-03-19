@@ -56,7 +56,7 @@ export function L_16x9_3p() {
       <Player
         style={{
           left: '7.5px',
-          top: '455px',
+          top: '467px',
           width: '557px',
           height: '94px',
         }}
@@ -66,7 +66,7 @@ export function L_16x9_3p() {
       <Player
         style={{
           left: '1355.5px',
-          top: '455px',
+          top: '467px',
           width: '557px',
           height: '94px',
         }}
@@ -76,7 +76,7 @@ export function L_16x9_3p() {
       <Player
         style={{
           left: '775.5px',
-          top: '455px',
+          top: '467px',
           width: '370px',
           height: '92px',
         }}

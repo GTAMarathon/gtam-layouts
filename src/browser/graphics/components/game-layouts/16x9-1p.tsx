@@ -61,7 +61,7 @@ export function L_16x9_1p() {
           height: '93px',
           fontWeight: 'bold',
         }}
-        size={46}
+        size={56}
         team={1}
       />
     </div>
