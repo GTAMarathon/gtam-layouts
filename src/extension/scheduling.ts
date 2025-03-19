@@ -1,9 +1,6 @@
 import type { Configschema } from '@gtam-layouts/types'
 import { get } from './util/nodecg'
-import {
-  oengusImportStatus,
-  runDataArray,
-} from './util/replicants'
+import { oengusImportStatus, runDataArray } from './util/replicants'
 import { TaggedLogger } from './util/tagged-logger'
 
 const nodecg = get()
@@ -171,6 +168,7 @@ const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
     { gameShort: 'Mafia', gameTwitch: 'Mafia' },
   ],
   ['Mafia II', { gameShort: 'Mafia II', gameTwitch: 'Mafia II' }],
+  ['Mafia 3', { gameShort: 'Mafia 3', gameTwitch: 'Mafia III' }],
   [
     'Mafia: Definitive Edition',
     {
@@ -198,7 +196,10 @@ const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
     { gameShort: 'Retro City Rampage', gameTwitch: 'Retro City Rampage' },
   ],
   ['Saints Row', { gameShort: 'Saints Row', gameTwitch: 'Saints Row (2006)' }],
-  ['Saints Row (2022)', { gameShort: 'Saints Row (2022)', gameTwitch: 'Saints Row' }],
+  [
+    'Saints Row (2022)',
+    { gameShort: 'Saints Row (2022)', gameTwitch: 'Saints Row' },
+  ],
   [
     'Saints Row: The Third',
     { gameShort: 'Saints Row: The Third', gameTwitch: 'Saints Row: The Third' },
@@ -270,6 +271,18 @@ const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
     },
   ],
   ['Paris Chase', { gameShort: 'Paris Chase', gameTwitch: 'Paris Chase' }],
+  [
+    'Max Payne 2: The Fall of Max Payne',
+    {
+      gameShort: 'Max Payne 2',
+      gameTwitch: 'Max Payne 2: The Fall of Max Payne',
+    },
+  ],
+  [
+    'Grand Theft Auto: Tightened Thrice',
+    { gameShort: 'GTA: Tightened Thrice', gameTwitch: 'Grand Theft Auto III' },
+  ],
+  ['Portal 2', { gameShort: 'Portal 2', gameTwitch: 'Portal 2' }],
 ])
 
 oengusImportStatus.on('change', (newVal, oldVal) => {
@@ -286,8 +299,7 @@ oengusImportStatus.on('change', (newVal, oldVal) => {
           const values = gameNameMap.get(runData.game)
           if (values) {
             logger.debug(
-              `[Scheduling] Updating twitch game and game short for ${
-                runData.game}`,
+              `[Scheduling] Updating twitch game and game short for ${runData.game}`,
             )
             runData.gameTwitch = values.gameTwitch
             runData.customData.gameShort = values.gameShort
