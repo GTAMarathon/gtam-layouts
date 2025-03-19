@@ -40,6 +40,7 @@ export interface Configschema {
 				runner4: string;
 				runner5: string;
 				bingoBoard: string;
+				camera: string;
 			};
 			paths: {
 				intermissionVideo: string;

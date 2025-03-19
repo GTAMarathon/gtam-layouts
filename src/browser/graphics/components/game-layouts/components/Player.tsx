@@ -37,11 +37,19 @@ export function Player({ size = 64, team = 1, style }: Props) {
     teamI.current = team - 1
     index.current = 0
     setName(null)
-    const coop = !!(currentRun && currentRun.teams.length === 1 && currentRun.teams[0] && currentRun.teams[0].players.length >= 2)
-    if (coop && currentRun.teams[0] && currentRun.teams[0].players[teamI.current]) {
-      setName(currentRun.teams[0].players[teamI.current]!.name)
+
+    if (!currentRun || !currentRun.teams[teamI.current]) {
+      console.warn(`Invalid team index: ${teamI.current}, available teams: ${currentRun?.teams.length ?? 0}`)
+      return
     }
-    else if (!coop && currentRun && currentRun.teams[0] && currentRun.teams[0].players[teamI.current]) {
+
+    const selectedTeam = currentRun.teams[teamI.current]!
+    const coop = selectedTeam.players.length >= 2 && currentRun.teams.length === 1
+
+    if (coop) {
+      setName(selectedTeam.players[teamI.current]?.name ?? '')
+    }
+    else {
       showNextName()
     }
   }, [currentRun])

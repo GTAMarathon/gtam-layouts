@@ -1,7 +1,7 @@
-@import url('./fonts/alte_bebas.css');
-@import url('./fonts/slope_myriad_impact.css');
-@import url('./fonts/cabin.css');
-@import url('./fonts/europa.css');
+@import url("./fonts/alte_bebas.css");
+@import url("./fonts/slope_myriad_impact.css");
+@import url("./fonts/cabin.css");
+@import url("./fonts/europa.css");
 
 body {
   margin: 0;
@@ -9,7 +9,7 @@ body {
   overflow: hidden;
   color: white;
   font-weight: bold;
-  font-family: 'Europa Grotesk SH DemBol';
+  font-family: "Europa Grotesk SH DemBol";
 }
 
 #backgrounds {
@@ -25,19 +25,31 @@ body {
 }
 
 .stroke {
-  text-shadow: -2px -2px 0 #12222c, 0 -2px 0 #12222c, 2px -2px 0 #12222c,
-    2px 0 0 #12222c, 2px 2px 0 #12222c, 0 2px 0 #12222c, -2px 2px 0 #12222c,
+  text-shadow:
+    -2px -2px 0 #12222c,
+    0 -2px 0 #12222c,
+    2px -2px 0 #12222c,
+    2px 0 0 #12222c,
+    2px 2px 0 #12222c,
+    0 2px 0 #12222c,
+    -2px 2px 0 #12222c,
     -2px 0 0 #12222c;
 }
 
 .stroke-white {
-  text-shadow: -2px -2px 0 white, 0 -2px 0 white, 2px -2px 0 white,
-    2px 0 0 white, 2px 2px 0 white, 0 2px 0 white, -2px 2px 0 white,
+  text-shadow:
+    -2px -2px 0 white,
+    0 -2px 0 white,
+    2px -2px 0 white,
+    2px 0 0 white,
+    2px 2px 0 white,
+    0 2px 0 white,
+    -2px 2px 0 white,
     -2px 0 0 white;
 }
 
 .highlight {
-  color: #c736ff;
+  color: #4fbafe;
 }
 
 #Timer > span,
@@ -52,5 +64,5 @@ body {
 }
 
 .playerName {
-    font-family: 'Underscore', 'Europa Grotesk SH DemBol';
+  font-family: "Underscore", "Europa Grotesk SH DemBol";
 }

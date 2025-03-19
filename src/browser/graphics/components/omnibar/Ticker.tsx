@@ -29,7 +29,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
   }
 
   function genericMessage(message: string) {
-    return <GenericMessage message={message} time={2} onEnd={showNextElement} />
+    return <GenericMessage message={message} time={20} onEnd={showNextElement} />
   }
 
   return (

@@ -1,4 +1,4 @@
-import L_Background from '../../img/game-layouts/4x3-2p.png'
+import L_Background from '../../img/game-layouts/4x3-2p-onsite.png'
 import { Category } from './components/Category'
 import { Estimate } from './components/Estimate'
 import { Game } from './components/Game'
@@ -8,7 +8,7 @@ import '../../css/common.css'
 import '../../css/Flex.css'
 import '../../css/Fade.css'
 
-export function L_4x3_2p() {
+export function L_4x3_2p_Onsite() {
   return (
     <div>
       <div id="backgrounds">
@@ -16,49 +16,49 @@ export function L_4x3_2p() {
       </div>
       <Timer
         style={{
-          left: '1285px',
-          top: '785px',
+          left: '1255px',
+          top: '840px',
           width: '635px',
           height: '150px',
-          fontSize: '36px',
+          fontSize: '30px',
         }}
       />
       <Estimate
         style={{
-          left: '1285px',
-          top: '905px',
+          left: '1255px',
+          top: '930px',
           width: '635px',
           height: '75px',
           fontWeight: 'regular',
-          fontSize: '30px',
+          fontSize: '24px',
         }}
       />
       <Game
         style={{
-          left: '659px',
-          top: '824px',
-          width: '600px',
+          left: '1255px',
+          top: '764px',
+          width: '635px',
           height: '100px',
           fontWeight: 'bold',
         }}
-        size={72}
+        size={56}
       />
       <Category
         style={{
-          left: '652.5px',
-          top: '890px',
-          width: '615px',
+          left: '1255px',
+          top: '805px',
+          width: '635px',
           height: '100px',
           fontWeight: 'bold',
         }}
-        size={44}
+        size={40}
       />
       <Player
         style={{
           left: '12.5px',
           top: '708px',
-          width: '610px',
-          height: '85px',
+          width: '680px',
+          height: '65px',
           fontWeight: 'bold',
         }}
         size={50}
@@ -66,10 +66,10 @@ export function L_4x3_2p() {
       />
       <Player
         style={{
-          left: '1297.5px',
+          left: '1237.5px',
           top: '708px',
-          width: '610px',
-          height: '85px',
+          width: '680px',
+          height: '65px',
           fontWeight: 'bold',
         }}
         size={50}
