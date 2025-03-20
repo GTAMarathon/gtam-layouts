@@ -73,7 +73,7 @@
         },
         "address": {
           "type": "string",
-          "default": "localhost:4444"
+          "default": "ws://localhost:4444"
         },
         "password": {
           "type": "string",
@@ -146,6 +146,10 @@
                 "bingoBoard": {
                   "type": "string",
                   "default": "Bingo Board"
+                },
+                "camera": {
+                  "type": "string",
+                  "default": "Runner Camera"
                 }
               },
               "required": [
@@ -156,7 +160,8 @@
                 "runner3",
                 "runner4",
                 "runner5",
-                "bingoBoard"
+                "bingoBoard",
+                "camera"
               ]
             },
             "paths": {
