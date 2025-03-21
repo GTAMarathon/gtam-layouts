@@ -2,6 +2,7 @@ import L_Background from '../../img/game-layouts/16x9-4p.png'
 import { Category } from './components/Category'
 import { Estimate } from './components/Estimate'
 import { Game } from './components/Game'
+import { MediaBox } from './components/MediaBox'
 import { Player } from './components/Player'
 import { Timer } from './components/Timer'
 import '../../css/common.css'
@@ -92,6 +93,15 @@ export function L_16x9_4p() {
         }}
         size={50}
         team={4}
+      />
+      <MediaBox
+        style={{
+          left: '779.5px',
+          bottom: '75px',
+          width: '360px',
+          height: '249px',
+          fontSize: '30px',
+        }}
       />
     </div>
   )

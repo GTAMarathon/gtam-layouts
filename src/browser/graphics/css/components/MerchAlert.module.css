@@ -1,0 +1,13 @@
+.highlight {
+  color: #4fbafe;
+}
+
+.Flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  text-align: center;
+  margin: auto;
+}

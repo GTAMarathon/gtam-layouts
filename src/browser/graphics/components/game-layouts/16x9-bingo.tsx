@@ -2,6 +2,7 @@ import L_Background from '../../img/game-layouts/16x9-bingo.png'
 import { Category } from './components/Category'
 import { Estimate } from './components/Estimate'
 import { Game } from './components/Game'
+import { MediaBox } from './components/MediaBox'
 import { Player } from './components/Player'
 import { Timer } from './components/Timer'
 import '../../css/common.css'
@@ -82,6 +83,15 @@ export function L_16x9_Bingo() {
         }}
         size={50}
         team={3}
+      />
+      <MediaBox
+        style={{
+          left: '780.5px',
+          bottom: '75px',
+          width: '360px',
+          height: '249px',
+          fontSize: '30px',
+        }}
       />
     </div>
   )
