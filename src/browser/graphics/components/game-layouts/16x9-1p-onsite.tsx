@@ -2,6 +2,7 @@ import L_Background from '../../img/game-layouts/16x9-1p-onsite.png'
 import { Category } from './components/Category'
 import { Estimate } from './components/Estimate'
 import { Game } from './components/Game'
+import { MediaBox } from './components/MediaBox'
 import { Player } from './components/Player'
 import { Timer } from './components/Timer'
 import '../../css/common.css'
@@ -63,6 +64,16 @@ export function L_16x9_1p_Onsite() {
         }}
         size={56}
         team={1}
+      />
+      <MediaBox
+        style={{
+          left: '7.5px',
+          bottom: '75px',
+          width: '365px',
+          height: '598px',
+          fontSize: '30px',
+        }}
+        useWidescreenImages
       />
     </div>
   )
