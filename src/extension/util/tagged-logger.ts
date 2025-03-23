@@ -1,6 +1,6 @@
 import chalk from 'chalk'
-import { get } from './nodecg'
 import dayjs from 'dayjs'
+import { get } from './nodecg'
 
 export class TaggedLogger {
   private readonly nodecg = get()
