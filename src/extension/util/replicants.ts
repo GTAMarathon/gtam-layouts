@@ -18,6 +18,7 @@ import type {
   RunDataActiveRunSurrounding,
 } from 'speedcontrol/types/schemas'
 import { get } from './nodecg'
+import { TiltifyTokenData, TiltifyDonation } from '../../types/custom/Tiltify-Types';
 
 const nodecg = get()
 
@@ -86,3 +87,42 @@ export const currentMediaBoxItem = nodecg.Replicant<MediaBoxItem>(
 export const currentGameLayout = nodecg.Replicant<string>(
   'currentGameLayout',
 )
+
+export const donationTotal = nodecg.Replicant<number>(
+  'donationTotal', 
+  { defaultValue: 0, persistent: false }
+);
+
+export const donationGoals = nodecg.Replicant<Array<{ name: string; amount: number }>>(
+  'donationGoals', 
+  { defaultValue: [], persistent: false }
+);
+
+export const tiltifyTokens = nodecg.Replicant<TiltifyTokenData>(
+  'tiltifyTokens', 
+  {
+    persistent: true,
+    defaultValue: {
+      access_token: '',
+      expires_at: new Date(0)
+    }
+  }
+);
+
+export const donationsToShow = nodecg.Replicant<TiltifyDonation[]>(
+  'donationsToShow',
+  { defaultValue: [], persistent: false }
+);
+
+export const donationsShown = nodecg.Replicant<string[]>(
+  'donationsShown',
+  { defaultValue: [], persistent: true }
+);
+
+export const recentDonations = nodecg.Replicant<TiltifyDonation[]>(
+  'recentDonations',
+  {
+    defaultValue: [],
+    persistent: false
+  }
+);

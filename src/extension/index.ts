@@ -12,4 +12,5 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>) => {
   require('./layouts')
   require('./pollsAndPredictions')
   require('./streamelements')
+  require('./tiltify')
 }
