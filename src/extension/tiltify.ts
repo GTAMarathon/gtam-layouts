@@ -1,6 +1,6 @@
 import { get } from '../extension/util/nodecg';
 import { donationTotal, donationGoals, donationsShown, donationsToShow } from '../extension/util/replicants';
-import { TiltifyClient } from './tiltify-client';
+import { TiltifyClient } from './util/tiltify-client';
 import { Configschema } from '../types/generated/configschema';
 
 const nodecg = get();

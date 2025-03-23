@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { get } from '../extension/util/nodecg';
-import { tiltifyTokens } from '../extension/util/replicants';
-import { Configschema } from '../types/generated/configschema';
+import { get } from './nodecg';
+import { tiltifyTokens } from './replicants';
+import { Configschema } from '../../types/generated/configschema';
 import {
   TiltifyTokenResponse,
   TiltifyCampaignData,
   TiltifyRawDonation,
   TiltifyMilestone,
   TiltifyDonation
-} from '../types/custom/Tiltify-Types';
+} from '../../types/custom/Tiltify-Types';
 
 const nodecg = get();
 const config = (nodecg.bundleConfig as Configschema).tiltify;
