@@ -42,3 +42,8 @@ export type TiltifyMilestone = {
     name: string;
     amount: { value: string };
   };
+
+export interface DonationGoal {
+    name: string;
+    amount: number;
+  }

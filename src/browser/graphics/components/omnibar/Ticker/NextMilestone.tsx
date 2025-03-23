@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AutoTextSize } from 'auto-text-size';
+import { DonationGoal } from '../../../../../types/custom/Tiltify-Types'
 
 interface Props {
   time: number;
@@ -7,7 +8,7 @@ interface Props {
 }
 
 const donationTotal = nodecg.Replicant<number>('donationTotal');
-const donationGoals = nodecg.Replicant<Array<{ name: string; amount: number }>>('donationGoals');
+const donationGoals = nodecg.Replicant<DonationGoal[]>('donationGoals');
 
 export function NextMilestone({ time, onEnd }: Props) {
   const [message, setMessage] = useState('');

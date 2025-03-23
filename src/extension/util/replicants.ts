@@ -18,7 +18,7 @@ import type {
   RunDataActiveRunSurrounding,
 } from 'speedcontrol/types/schemas'
 import { get } from './nodecg'
-import { TiltifyTokenData, TiltifyDonation } from '../../types/custom/Tiltify-Types';
+import { TiltifyTokenData, TiltifyDonation, DonationGoal } from '../../types/custom/Tiltify-Types';
 
 const nodecg = get()
 
@@ -93,8 +93,8 @@ export const donationTotal = nodecg.Replicant<number>(
   { defaultValue: 0, persistent: false }
 );
 
-export const donationGoals = nodecg.Replicant<Array<{ name: string; amount: number }>>(
-  'donationGoals', 
+export const donationGoals = nodecg.Replicant<DonationGoal[]>(
+  'donationGoals',
   { defaultValue: [], persistent: false }
 );
 
