@@ -307,6 +307,17 @@
         }
       },
       "required": ["enabled"]
+    },
+    "tiltify": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enable": { "type": "boolean", "default": true },
+        "clientId": { "type": "string" },
+        "clientSecret": { "type": "string" },
+        "campaign": { "type": "string" }
+      },
+      "required": ["enable", "clientId", "clientSecret", "campaign"]
     }
   },
   "required": [
@@ -317,6 +328,7 @@
     "schedule",
     "betting",
     "hundo",
-    "streamElements"
+    "streamElements",
+    "tiltify"
   ]
 }
