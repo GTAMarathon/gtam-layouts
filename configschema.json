@@ -312,7 +312,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enable": { "type": "boolean", "default": true },
+        "enable": { "type": "boolean", "default": false },
         "clientId": { "type": "string" },
         "clientSecret": { "type": "string" },
         "campaign": { "type": "string" }
