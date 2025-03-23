@@ -1,20 +1,58 @@
-import type { CSSProperties } from 'react'
-import { useRef, useState } from 'react'
-import { CSSTransition, SwitchTransition } from 'react-transition-group'
-import { GenericMessage } from './Ticker/GenericMessage'
-import { NextRun } from './Ticker/NextRun'
+import type { CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { GenericMessage } from './Ticker/GenericMessage';
+import { NextRun } from './Ticker/NextRun';
+import { NextMilestone } from './Ticker//NextMilestone';
+import { TiltifyDonation } from '@gtam-layouts/types/custom/Tiltify-Types';
 
 export function Ticker({ style }: { style: CSSProperties }) {
   const currentComponentIndex = useRef(0)
   const currentComponentContainer = useRef<HTMLSpanElement | null>(null)
-  const [timestamp, setTimestamp] = useState(Date.now())
+  const [timestamp, setTimestamp] = useState(Date.now());
+  const [donationsQueue, setDonationsQueue] = useState<TiltifyDonation[]>([]);
+  const [messageTypes, setMessageTypes] = useState<React.JSX.Element[]>([]);
 
-  const messageTypes: React.JSX.Element[] = [
-    genericMessage('Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
-    genericMessage('Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
-    genericMessage(`Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
-    <NextRun key={timestamp} time={20} onEnd={showNextElement} />,
-  ]
+  const donationsToShow = nodecg.Replicant<TiltifyDonation[]>('donationsToShow', {
+    defaultValue: [],
+    persistent: false
+  });
+  
+  const donationsShown = nodecg.Replicant<string[]>('donationsShown', {
+    defaultValue: [],
+    persistent: true
+  });
+
+  useEffect(() => {
+    NodeCG.waitForReplicants(donationsToShow, donationsShown).then(() => {
+      const handler = (newVal: TiltifyDonation[] = []) => {
+        setDonationsQueue(newVal);
+      };
+      donationsToShow.on('change', handler);
+      return () => donationsToShow.removeListener('change', handler);
+    });
+  }, []);
+
+  useEffect(() => {
+    const newMessages = [
+      ...donationsQueue.map(donation => (
+        <GenericMessage
+          key={donation.id}
+          message={`New <b class="highlight">$${donation.amount.toFixed(0)}</b> donation from <span class="highlight">${donation.name}</span>`}
+          time={20}
+          onEnd={() => handleDonationEnd(donation.id)}
+        />
+      )),
+      genericMessage('Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
+      genericMessage('Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
+      genericMessage(`Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
+      <NextRun key={`run-${timestamp}`} time={20} onEnd={showNextElement} />,
+      <NextMilestone key={`milestone-${timestamp}`} time={20} onEnd={showNextElement} />,
+    ];
+
+    setMessageTypes(newMessages);
+    setCurrentElement(newMessages[0]);
+  }, [donationsQueue, timestamp]);
 
   const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>(messageTypes[0])
 
@@ -26,6 +64,14 @@ export function Ticker({ style }: { style: CSSProperties }) {
 
     setTimestamp(Date.now())
     setCurrentElement(nextElement)
+  }
+
+  function handleDonationEnd(donationId: string) {
+    if (donationsShown.value && donationsToShow.value) {
+      donationsShown.value = [...donationsShown.value, donationId];
+      donationsToShow.value = donationsToShow.value.filter(d => d.id !== donationId);
+    }
+    showNextElement();
   }
 
   function genericMessage(message: string) {

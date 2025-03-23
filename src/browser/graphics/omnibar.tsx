@@ -1,5 +1,6 @@
 import { render } from '../render'
 import { Ticker } from './components/omnibar/Ticker'
+import  DonationTotal from './components/omnibar/Donationtotal'
 import Omnibar_Background from './img/omnibar/omnibar_bg.png'
 import './css/common.css'
 import './css/Flex.css'
@@ -27,6 +28,7 @@ export function Omnibar() {
       >
 
         <Ticker style={{ zIndex: 1, width: '100%' }} />
+        <DonationTotal style={{ zIndex: 1 }} />
       </div>
     </div>
 
