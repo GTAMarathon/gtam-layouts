@@ -317,7 +317,7 @@
         "clientSecret": { "type": "string" },
         "campaign": { "type": "string" }
       },
-      "required": ["enable", "clientId", "clientSecret", "campaign"]
+      "required": ["enable"]
     }
   },
   "required": [
