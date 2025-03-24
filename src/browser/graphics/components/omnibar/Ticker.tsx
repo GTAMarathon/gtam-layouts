@@ -1,37 +1,39 @@
-import type { CSSProperties } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import { GenericMessage } from './Ticker/GenericMessage';
-import { NextRun } from './Ticker/NextRun';
-import { NextMilestone } from './Ticker//NextMilestone';
-import { TiltifyDonation } from '@gtam-layouts/types/custom/Tiltify-Types';
+import type { TiltifyDonation } from '@gtam-layouts/types/custom/Tiltify-Types'
+import type { CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { CSSTransition, SwitchTransition } from 'react-transition-group'
+import { NextMilestone } from './Ticker//NextMilestone'
+import { GenericMessage } from './Ticker/GenericMessage'
+import { NextRun } from './Ticker/NextRun'
 
 export function Ticker({ style }: { style: CSSProperties }) {
   const currentComponentIndex = useRef(0)
   const currentComponentContainer = useRef<HTMLSpanElement | null>(null)
-  const [timestamp, setTimestamp] = useState(Date.now());
-  const [donationsQueue, setDonationsQueue] = useState<TiltifyDonation[]>([]);
-  const [messageTypes, setMessageTypes] = useState<React.JSX.Element[]>([]);
+  const [timestamp, setTimestamp] = useState(Date.now())
+  const [donationsQueue, setDonationsQueue] = useState<TiltifyDonation[]>([])
+  const [messageTypes, setMessageTypes] = useState<React.JSX.Element[]>([])
+  const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>()
+  const messageTypesRef = useRef<React.JSX.Element[]>([])
 
   const donationsToShow = nodecg.Replicant<TiltifyDonation[]>('donationsToShow', {
     defaultValue: [],
-    persistent: false
-  });
-  
+    persistent: false,
+  })
+
   const donationsShown = nodecg.Replicant<string[]>('donationsShown', {
     defaultValue: [],
-    persistent: true
-  });
+    persistent: true,
+  })
 
   useEffect(() => {
     NodeCG.waitForReplicants(donationsToShow, donationsShown).then(() => {
       const handler = (newVal: TiltifyDonation[] = []) => {
-        setDonationsQueue(newVal);
-      };
-      donationsToShow.on('change', handler);
-      return () => donationsToShow.removeListener('change', handler);
-    });
-  }, []);
+        setDonationsQueue(newVal)
+      }
+      donationsToShow.on('change', handler)
+      return () => donationsToShow.removeListener('change', handler)
+    })
+  }, [])
 
   useEffect(() => {
     const newMessages = [
@@ -43,24 +45,27 @@ export function Ticker({ style }: { style: CSSProperties }) {
           onEnd={() => handleDonationEnd(donation.id)}
         />
       )),
-      genericMessage('Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
-      genericMessage('Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
-      genericMessage(`Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
-      <NextRun key={`run-${timestamp}`} time={20} onEnd={showNextElement} />,
-      <NextMilestone key={`milestone-${timestamp}`} time={20} onEnd={showNextElement} />,
-    ];
+      genericMessage('welcome', 'Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
+      genericMessage('merch', 'Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
+      genericMessage('schedule', `Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
+      <NextRun key="next-run" time={20} onEnd={showNextElement} />,
+      <NextMilestone key="next-milestone" time={20} onEnd={showNextElement} />,
+    ]
 
-    setMessageTypes(newMessages);
-    setCurrentElement(newMessages[0]);
-  }, [donationsQueue, timestamp]);
+    setMessageTypes(newMessages)
+    messageTypesRef.current = newMessages
+    setCurrentElement(newMessages[0])
+  }, [donationsQueue])
 
-  const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>(messageTypes[0])
+  useEffect(() => {
+    currentComponentIndex.current = 0
+  }, [messageTypes])
 
   function showNextElement() {
     console.log('Showing next omnibar message')
 
-    currentComponentIndex.current = (currentComponentIndex.current + 1) % messageTypes.length
-    const nextElement = messageTypes[currentComponentIndex.current]
+    currentComponentIndex.current = (currentComponentIndex.current + 1) % messageTypesRef.current.length
+    const nextElement = messageTypesRef.current[currentComponentIndex.current]
 
     setTimestamp(Date.now())
     setCurrentElement(nextElement)
@@ -68,14 +73,14 @@ export function Ticker({ style }: { style: CSSProperties }) {
 
   function handleDonationEnd(donationId: string) {
     if (donationsShown.value && donationsToShow.value) {
-      donationsShown.value = [...donationsShown.value, donationId];
-      donationsToShow.value = donationsToShow.value.filter(d => d.id !== donationId);
+      donationsShown.value = [...donationsShown.value, donationId]
+      donationsToShow.value = donationsToShow.value.filter(d => d.id !== donationId)
     }
-    showNextElement();
+    showNextElement()
   }
 
-  function genericMessage(message: string) {
-    return <GenericMessage message={message} time={20} onEnd={showNextElement} />
+  function genericMessage(key: string, message: string) {
+    return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} />
   }
 
   return (
@@ -92,7 +97,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
     >
       <SwitchTransition mode="out-in">
         <CSSTransition
-          key={timestamp}
+          key={currentElement?.key || 'fallback'}
           nodeRef={currentComponentContainer}
           in={!!currentElement}
           appear
