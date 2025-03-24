@@ -1,4 +1,4 @@
-import type { TiltifyDonation } from '@gtam-layouts/types/custom/Tiltify-Types'
+import type { DonationGoal, TiltifyDonation } from '@gtam-layouts/types/custom/Tiltify-Types'
 import type { CSSProperties } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
@@ -14,6 +14,9 @@ export function Ticker({ style }: { style: CSSProperties }) {
   const [messageTypes, setMessageTypes] = useState<React.JSX.Element[]>([])
   const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>()
   const messageTypesRef = useRef<React.JSX.Element[]>([])
+  const [hasActiveGoals, setHasActiveGoals] = useState(false)
+  const donationTotal = nodecg.Replicant<number>('donationTotal')
+  const donationGoals = nodecg.Replicant<DonationGoal[]>('donationGoals')
 
   const donationsToShow = nodecg.Replicant<TiltifyDonation[]>('donationsToShow', {
     defaultValue: [],
@@ -24,6 +27,17 @@ export function Ticker({ style }: { style: CSSProperties }) {
     defaultValue: [],
     persistent: true,
   })
+
+  useEffect(() => {
+    NodeCG.waitForReplicants(donationGoals).then(() => {
+      const handler = (goals: DonationGoal[] = []) => {
+        const activeGoals = goals.some(goal => (donationTotal.value ?? 0) < goal.amount)
+        setHasActiveGoals(activeGoals)
+      }
+      donationGoals.on('change', handler)
+      return () => donationGoals.removeListener('change', handler)
+    })
+  }, [])
 
   useEffect(() => {
     NodeCG.waitForReplicants(donationsToShow, donationsShown).then(() => {
@@ -49,7 +63,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
       genericMessage('merch', 'Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
       genericMessage('schedule', `Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
       <NextRun key="next-run" time={20} onEnd={showNextElement} />,
-      <NextMilestone key="next-milestone" time={20} onEnd={showNextElement} />,
+      ...(hasActiveGoals ? [<NextMilestone key="next-milestone" time={20} onEnd={showNextElement} />] : []),
     ]
 
     setMessageTypes(newMessages)

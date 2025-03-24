@@ -1,39 +1,40 @@
-import axios from 'axios';
-import { get } from './nodecg';
-import { tiltifyTokens } from './replicants';
-import { Configschema } from '../../types/generated/configschema';
-import {
-  TiltifyTokenResponse,
+import type {
   TiltifyCampaignData,
-  TiltifyRawDonation,
+  TiltifyDonation,
   TiltifyMilestone,
-  TiltifyDonation
-} from '../../types/custom/Tiltify-Types';
+  TiltifyRawDonation,
+  TiltifyTokenResponse,
+} from '../../types/custom/Tiltify-Types'
+import type { Configschema } from '../../types/generated/configschema'
+import axios from 'axios'
+import { get } from './nodecg'
+import { tiltifyTokens } from './replicants'
 
-const nodecg = get();
-const config = (nodecg.bundleConfig as Configschema).tiltify;
+const nodecg = get()
+const config = (nodecg.bundleConfig as Configschema).tiltify
 
 export class TiltifyClient {
-  private readonly clientId: string;
-  private readonly clientSecret: string;
-  public readonly campaignId: string;
-  private readonly TOKEN_EXPIRY_BUFFER = 120;
+  private readonly clientId: string
+  private readonly clientSecret: string
+  public readonly campaignId: string
+  private readonly TOKEN_EXPIRY_BUFFER = 120
 
   constructor() {
-    if (!config?.enable) throw new Error('Tiltify integration disabled');
+    if (!config?.enable)
+      throw new Error('Tiltify integration disabled')
     if (!config.clientId || !config.clientSecret || !config.campaign) {
-      throw new Error('Missing Tiltify configuration values');
+      throw new Error('Missing Tiltify configuration values')
     }
 
-    this.clientId = config.clientId;
-    this.clientSecret = config.clientSecret;
-    this.campaignId = config.campaign;
-    
+    this.clientId = config.clientId
+    this.clientSecret = config.clientSecret
+    this.campaignId = config.campaign
+
     // Initialize replicant with proper type
     tiltifyTokens.value = tiltifyTokens.value || {
       access_token: '',
-      expires_at: new Date(0)
-    };
+      expires_at: new Date(0),
+    }
   }
 
   /**
@@ -42,9 +43,9 @@ export class TiltifyClient {
    */
   public async getValidToken(): Promise<string> {
     if (this.isTokenExpired() || !tiltifyTokens.value?.access_token) {
-      await this.refreshToken();
+      await this.refreshToken()
     }
-    return tiltifyTokens.value!.access_token;
+    return tiltifyTokens.value!.access_token
   }
 
   /**
@@ -52,10 +53,11 @@ export class TiltifyClient {
    * @returns whether or not the token expired.
    */
   private isTokenExpired(): boolean {
-    const expiresAt = tiltifyTokens.value?.expires_at;
-    if (!expiresAt) return true;
-    const expiryDate = typeof expiresAt === 'string' ? new Date(expiresAt) : expiresAt;
-    return Date.now() >= expiryDate.getTime() - this.TOKEN_EXPIRY_BUFFER * 1000;
+    const expiresAt = tiltifyTokens.value?.expires_at
+    if (!expiresAt)
+      return true
+    const expiryDate = typeof expiresAt === 'string' ? new Date(expiresAt) : expiresAt
+    return Date.now() >= expiryDate.getTime() - this.TOKEN_EXPIRY_BUFFER * 1000
   }
 
   /**
@@ -69,19 +71,20 @@ export class TiltifyClient {
           grant_type: 'client_credentials',
           client_id: this.clientId,
           client_secret: this.clientSecret,
-          scope: 'public'
-        }
-      );
+          scope: 'public',
+        },
+      )
 
       tiltifyTokens.value = {
         access_token: data.access_token,
-        expires_at: new Date(Date.now() + (data.expires_in * 1000))
-      };
+        expires_at: new Date(Date.now() + (data.expires_in * 1000)),
+      }
 
-      nodecg.log.info('[Tiltify] Tokens refreshed successfully');
-    } catch (error) {
-      nodecg.log.error('[Tiltify] Failed to refresh token:', error);
-      throw error;
+      nodecg.log.info('[Tiltify] Tokens refreshed successfully')
+    }
+    catch (error) {
+      nodecg.log.error('[Tiltify] Failed to refresh token:', error)
+      throw error
     }
   }
 
@@ -90,12 +93,12 @@ export class TiltifyClient {
    * @returns amount of money.
    */
   public async fetchCampaignTotal(): Promise<number> {
-    const token = await this.getValidToken();
+    const token = await this.getValidToken()
     const { data } = await axios.get<TiltifyCampaignData>(
       `https://v5api.tiltify.com/api/public/campaigns/${this.campaignId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return parseFloat(data.data.total_amount_raised.value);
+      { headers: { Authorization: `Bearer ${token}` } },
+    )
+    return Number.parseFloat(data.data.total_amount_raised.value)
   }
 
   /**
@@ -103,30 +106,30 @@ export class TiltifyClient {
    * @returns all milestones.
    */
   public async fetchMilestones(): Promise<TiltifyMilestone[]> {
-    const token = await this.getValidToken();
+    const token = await this.getValidToken()
     const { data } = await axios.get<{ data: TiltifyMilestone[] }>(
       `https://v5api.tiltify.com/api/public/campaigns/${this.campaignId}/milestones`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return data.data;
+      { headers: { Authorization: `Bearer ${token}` } },
+    )
+    return data.data
   }
 
   /***
    * Fetches a maximum of 5 recent donations.
    */
   public async fetchRecentDonations(limit = 5): Promise<TiltifyDonation[]> {
-    const token = await this.getValidToken();
+    const token = await this.getValidToken()
     const { data } = await axios.get<{ data: TiltifyRawDonation[] }>(
       `https://v5api.tiltify.com/api/public/campaigns/${this.campaignId}/donations?limit=${limit}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+      { headers: { Authorization: `Bearer ${token}` } },
+    )
 
     return data.data.map(d => ({
       id: d.id,
       name: d.donor_name,
-      amount: parseFloat(d.amount.value),
+      amount: Number.parseFloat(d.amount.value),
       currency: d.amount.currency,
-      timestamp: new Date(d.completed_at)
-    }));
+      timestamp: new Date(d.completed_at),
+    }))
   }
 }

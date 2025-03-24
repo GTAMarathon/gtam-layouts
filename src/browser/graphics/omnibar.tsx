@@ -1,6 +1,6 @@
 import { render } from '../render'
+import DonationTotal from './components/omnibar/Donationtotal'
 import { Ticker } from './components/omnibar/Ticker'
-import  DonationTotal from './components/omnibar/Donationtotal'
 import Omnibar_Background from './img/omnibar/omnibar_bg.png'
 import './css/common.css'
 import './css/Flex.css'
