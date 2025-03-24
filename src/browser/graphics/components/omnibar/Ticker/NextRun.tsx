@@ -62,7 +62,7 @@ export function NextRun({ time, onEnd }: Props) {
   return (
     <div style={{ width: '100%' }}>
       <AutoTextSize
-        maxFontSizePx={92}
+        maxFontSizePx={72}
         mode="boxoneline"
         as="div"
         id="NextRun"
