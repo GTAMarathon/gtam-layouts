@@ -20,13 +20,22 @@ export function Omnibar() {
           height: '74px',
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'flex-start',
+          justifyContent: 'flex-end',
           overflow: 'hidden',
-          backgroundColor: 'green',
         }}
       >
-
-        <Ticker style={{ zIndex: 1, width: '100%' }} />
+        <div
+          id="topBorder"
+          style={{
+            backgroundColor: '#4fbafe',
+            position: 'absolute',
+            width: '100%',
+            height: '8px',
+            zIndex: 1,
+          }}
+        >
+        </div>
+        <Ticker style={{ zIndex: 2, width: '1385px', marginTop: '12px' }} />
       </div>
     </div>
 
