@@ -20,10 +20,8 @@ export class TiltifyClient {
   private readonly TOKEN_EXPIRY_BUFFER = 120
 
   constructor() {
-    if (!config?.enable)
-      throw new Error('Tiltify integration disabled')
-    if (!config.clientId || !config.clientSecret || !config.campaign) {
-      throw new Error('Missing Tiltify configuration values')
+    if (config.enable && (!config.clientId || !config.clientSecret || !config.campaign)) {
+      throw new Error('Missing Tiltify configuration values');
     }
 
     this.clientId = config.clientId

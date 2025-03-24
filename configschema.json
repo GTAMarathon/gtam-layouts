@@ -312,12 +312,12 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enable": { "type": "boolean", "default": true },
+        "enable": { "type": "boolean", "default": false },
         "clientId": { "type": "string" },
         "clientSecret": { "type": "string" },
         "campaign": { "type": "string" }
       },
-      "required": ["enable", "clientId", "clientSecret", "campaign"]
+      "required": ["enable"]
     }
   },
   "required": [
