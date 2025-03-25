@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify'
+import parse from 'html-react-parser'
 import { useEffect } from 'react'
 
 interface Props {
@@ -15,13 +17,14 @@ export function GenericMessage({ message, time, onEnd }: Props) {
     }, time * 1000)
 
     return () => clearTimeout(timeout)
-  }, [])
+  }, [onEnd, time])
 
   return (
     <div
       id="GenericMessage"
       style={{ fontSize: '48px' }}
-      dangerouslySetInnerHTML={{ __html: message }}
-    />
+    >
+      {parse(DOMPurify.sanitize(message))}
+    </div>
   )
 }

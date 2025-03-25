@@ -1,5 +1,7 @@
 import type { DonationGoal } from '../../../../../types/custom/Tiltify-Types'
 import { AutoTextSize } from 'auto-text-size'
+import DOMPurify from 'dompurify'
+import parse from 'html-react-parser'
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -77,7 +79,7 @@ export function NextMilestone({ time, onEnd }: Props) {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [onEnd, time])
 
   if (!hasInitialized)
     return null
@@ -89,8 +91,9 @@ export function NextMilestone({ time, onEnd }: Props) {
         mode="box"
         as="div"
         id="NextMilestone"
-        dangerouslySetInnerHTML={{ __html: message }}
-      />
+      >
+        {parse(DOMPurify.sanitize(message))}
+      </AutoTextSize>
     </div>
   )
 }

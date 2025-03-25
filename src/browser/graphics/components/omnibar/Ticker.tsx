@@ -37,7 +37,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
       donationGoals.on('change', handler)
       return () => donationGoals.removeListener('change', handler)
     })
-  }, [])
+  }, [donationGoals, donationTotal.value])
 
   useEffect(() => {
     NodeCG.waitForReplicants(donationsToShow, donationsShown).then(() => {
@@ -47,7 +47,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
       donationsToShow.on('change', handler)
       return () => donationsToShow.removeListener('change', handler)
     })
-  }, [])
+  }, [donationsShown, donationsToShow])
 
   useEffect(() => {
     const newMessages = [
@@ -69,7 +69,19 @@ export function Ticker({ style }: { style: CSSProperties }) {
     setMessageTypes(newMessages)
     messageTypesRef.current = newMessages
     setCurrentElement(newMessages[0])
-  }, [donationsQueue])
+
+    function handleDonationEnd(donationId: string) {
+      if (donationsShown.value && donationsToShow.value) {
+        donationsShown.value = [...donationsShown.value, donationId]
+        donationsToShow.value = donationsToShow.value.filter(d => d.id !== donationId)
+      }
+      showNextElement()
+    }
+
+    function genericMessage(key: string, message: string) {
+      return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} />
+    }
+  }, [donationsQueue, hasActiveGoals, donationsShown, donationsToShow])
 
   useEffect(() => {
     currentComponentIndex.current = 0
@@ -83,18 +95,6 @@ export function Ticker({ style }: { style: CSSProperties }) {
 
     setTimestamp(Date.now())
     setCurrentElement(nextElement)
-  }
-
-  function handleDonationEnd(donationId: string) {
-    if (donationsShown.value && donationsToShow.value) {
-      donationsShown.value = [...donationsShown.value, donationId]
-      donationsToShow.value = donationsToShow.value.filter(d => d.id !== donationId)
-    }
-    showNextElement()
-  }
-
-  function genericMessage(key: string, message: string) {
-    return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} />
   }
 
   return (
