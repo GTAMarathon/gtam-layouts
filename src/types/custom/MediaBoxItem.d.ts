@@ -5,7 +5,7 @@ interface MediaBoxImage {
   url: string | undefined
 }
 
-interface MediaBoxImages {
+export interface MediaBoxImages {
   standard: MediaBoxImage
   widescreen: MediaBoxImage
 }

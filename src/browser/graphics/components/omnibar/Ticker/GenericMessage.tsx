@@ -22,7 +22,7 @@ export function GenericMessage({ message, time, onEnd }: Props) {
   return (
     <div
       id="GenericMessage"
-      style={{ fontSize: '48px' }}
+      style={{ fontSize: '40px' }}
     >
       {parse(DOMPurify.sanitize(message))}
     </div>

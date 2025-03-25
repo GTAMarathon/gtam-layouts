@@ -102,7 +102,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
       id="Ticker"
       style={{
         overflow: 'hidden',
-        flex: 1,
+        flex: '0 0 auto',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
