@@ -32,22 +32,10 @@ export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props)
   const [scrollDistance, setScrollDistance] = useState(0)
   const resizeObserverRef = useRef<ResizeObserver>()
   const [forceKey, setForceKey] = useState(0)
-  const TOTAL_DISPLAY_TIME = 20
-  const START_PAUSE = 2
-  const END_PAUSE = 3
-  const MIN_SCROLL_DURATION = 5
-  const MAX_SCROLL_DURATION = TOTAL_DISPLAY_TIME - START_PAUSE - END_PAUSE
 
-  // Calculate scroll parameters
-  const baseScrollDuration = scrollDistance / 30
-  const scrollDuration = Math.min(
-    Math.max(baseScrollDuration, MIN_SCROLL_DURATION),
-    MAX_SCROLL_DURATION,
-  )
-  const actualEndPause = Math.max(
-    TOTAL_DISPLAY_TIME - START_PAUSE - scrollDuration,
-    0,
-  )
+  const TOTAL_DISPLAY_TIME = 20
+  const START_PAUSE = 1
+  const SCROLL_DURATION = 18
 
   useEffect(() => {
     onScrollingNeeded?.(scrollDistance > 0)
@@ -95,7 +83,8 @@ export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props)
 
         if (textWidth > containerWidth) {
           setScrollDistance(textWidth - (containerWidth - 60))
-        } else {
+        }
+        else {
           setScrollDistance(0)
         }
       }
@@ -151,21 +140,26 @@ export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props)
             display: 'inline-block',
             whiteSpace: 'nowrap',
           }}
-          animate={scrollDistance > 0
-            ? { x: [30, 30, -scrollDistance - 30, -scrollDistance - 30],
-              } : {}}
+          animate={
+            scrollDistance > 0
+              ? {
+                  x: [30, 30, -scrollDistance - 30, -scrollDistance - 30],
+                }
+              : {}
+          }
           transition={
-            scrollDistance > 0 ? {
-              ease: 'linear',
-              duration: START_PAUSE + scrollDuration + actualEndPause,
-              times: [
-                0,
-                START_PAUSE / (START_PAUSE + scrollDuration + actualEndPause),
-                (START_PAUSE + scrollDuration) / (START_PAUSE + scrollDuration + actualEndPause),
-                1
-              ],
-              repeat: Infinity,
-            } : {}
+            scrollDistance > 0
+              ? {
+                  ease: 'linear',
+                  duration: TOTAL_DISPLAY_TIME,
+                  times: [
+                    0,
+                    START_PAUSE / TOTAL_DISPLAY_TIME,
+                    (START_PAUSE + SCROLL_DURATION) / TOTAL_DISPLAY_TIME,
+                    1,
+                  ],
+                }
+              : {}
           }
           dangerouslySetInnerHTML={{ __html: msg }}
         />

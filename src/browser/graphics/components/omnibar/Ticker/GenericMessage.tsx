@@ -46,8 +46,8 @@ export function GenericMessage({ message, time, onEnd, onScrollingNeeded }: Prop
   return (
     <div ref={containerRef} style={{ overflow: 'hidden', width: '100%' }}>
       <AutoTextSize
-        maxFontSizePx={72}
-        minFontSizePx={24}
+        maxFontSizePx={64}
+        minFontSizePx={38}
         mode="box"
         style={{ display: 'inline-block' }}
       >
