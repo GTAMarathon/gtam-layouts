@@ -27,11 +27,12 @@ interface Props {
 
 export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props) {
   const [msg, setMsg] = useState('')
+  const [scrollDistance, setScrollDistance] = useState(0)
+  const [forceKey, setForceKey] = useState(0)
+
+  const resizeObserverRef = useRef<ResizeObserver>()
   const textRef = useRef<HTMLDivElement>(null)
   const localContainerRef = useRef<HTMLDivElement>(null)
-  const [scrollDistance, setScrollDistance] = useState(0)
-  const resizeObserverRef = useRef<ResizeObserver>()
-  const [forceKey, setForceKey] = useState(0)
 
   const TOTAL_DISPLAY_TIME = 20
   const START_PAUSE = 1
@@ -52,7 +53,7 @@ export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props)
         const timeToRun = Helpers.timeToRun(nextRun)
         if (timeToRun.length > 0) {
           setMsg(
-            `AAAAAAAAAA!!!AAAAAAAAAAAAAAAAAAAAAAA!!!!!!!!!!!!!!!!!!!!!!AAAAAAAAAAAAAA!!!!!!!!!!!!!!!!!!!!!!AAAAAAAAAAAAA!!!!!!Next run in <span class="highlight">${timeToRun}</span> - ${nextRun.customData['gameShort'] ?? nextRun.game} ${nextRun.category} by <span class="highlight">${Helpers.formatPlayers(nextRun)}</span>`,
+            `Next run in <span class="highlight">${timeToRun}</span> - ${nextRun.customData['gameShort'] ?? nextRun.game} ${nextRun.category} by <span class="highlight">${Helpers.formatPlayers(nextRun)}</span>`,
           )
         }
         else {
