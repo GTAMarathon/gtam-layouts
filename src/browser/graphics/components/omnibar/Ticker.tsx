@@ -31,7 +31,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
   }
 
   function genericMessage(message: string) {
-    return <GenericMessage message={message} time={20} onEnd={showNextElement} onScrollingNeeded={setNeedsScrolling} />
+    return <GenericMessage message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
   }
 
   return (

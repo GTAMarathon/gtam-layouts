@@ -118,8 +118,8 @@ export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props)
       }}
     >
       <AutoTextSize
-        maxFontSizePx={72}
-        minFontSizePx={24}
+        maxFontSizePx={46}
+        minFontSizePx={38}
         mode="box"
         onResize={() => {
           setTimeout(() => {
