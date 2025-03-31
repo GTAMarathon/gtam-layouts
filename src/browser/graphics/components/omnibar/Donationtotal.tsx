@@ -50,20 +50,22 @@ const DonationTotalComponent: React.FC<DonationTotalProps> = ({ style }) => {
   return (
     <div
       style={{
-        fontSize: '3em',
-        color: 'black',
-        backgroundColor: '#00ff82',
+        position: 'absolute',
+        left: '193px',
+        top: '41px',
+        transform: 'translateY(-50%)',
+        width: '185px',
+        height: '57px',
         display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
-        float: 'right',
+        fontSize: '2.5em',
+        color: 'black',
+        fontFamily: 'slope_operaregular',
         ...style,
       }}
     >
-      <div
-        id="Total"
-        ref={totalRef}
-        style={{ marginLeft: '20px', marginRight: '20px' }}
-      >
+      <div id="Total" ref={totalRef}>
         {`$${dataRef.current.total.toLocaleString('en-US', {
           maximumFractionDigits: 0,
           minimumFractionDigits: 0,
