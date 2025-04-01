@@ -43,7 +43,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
     setCurrentElement(newMessages[0])
 
     function genericMessage(key: string, message: string) {
-      return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} />
+      return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
     }
   }, [hasActiveGoals])
 
@@ -58,10 +58,6 @@ export function Ticker({ style }: { style: CSSProperties }) {
     const nextElement = messageTypesRef.current[currentComponentIndex.current]
 
     setCurrentElement(nextElement)
-  }
-
-  function genericMessage(message: string) {
-    return <GenericMessage message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
   }
 
   return (
