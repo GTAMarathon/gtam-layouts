@@ -16,6 +16,8 @@ export function Ticker({ style }: { style: CSSProperties }) {
   const [hasActiveGoals, setHasActiveGoals] = useState(false)
   const donationTotal = nodecg.Replicant<number>('donationTotal')
   const donationGoals = nodecg.Replicant<DonationGoal[]>('donationGoals')
+  const tickerContainerRef = useRef<HTMLDivElement | null>(null)
+  const [needsScrolling, setNeedsScrolling] = useState(false)
 
   useEffect(() => {
     NodeCG.waitForReplicants(donationGoals).then(() => {
@@ -42,7 +44,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
     setCurrentElement(newMessages[0])
 
     function genericMessage(key: string, message: string) {
-      return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} />
+      return <GenericMessage message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
     }
   }, [hasActiveGoals])
 
@@ -56,7 +58,6 @@ export function Ticker({ style }: { style: CSSProperties }) {
     currentComponentIndex.current = (currentComponentIndex.current + 1) % messageTypesRef.current.length
     const nextElement = messageTypesRef.current[currentComponentIndex.current]
 
-    setTimestamp(Date.now())
     setCurrentElement(nextElement)
   }
 
@@ -67,24 +68,23 @@ export function Ticker({ style }: { style: CSSProperties }) {
         overflow: 'hidden',
         flex: '0 0 auto',
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: needsScrolling ? 'flex-start' : 'center',
         alignItems: 'center',
         ...style,
       }}
+      ref={tickerContainerRef}
     >
       <SwitchTransition mode="out-in">
         <CSSTransition
-          key={currentElement?.key || 'fallback'}
+          key={currentComponentIndex.current}
           nodeRef={currentComponentContainer}
-          in={!!currentElement}
-          appear
           timeout={1000}
           classNames={{
             enter: 'animate__animated animate__slideInUp',
             exit: 'animate__animated animate__slideOutUp',
           }}
         >
-          <span key={timestamp} ref={currentComponentContainer}>
+          <span ref={currentComponentContainer}>
             {currentElement ?? <span />}
           </span>
         </CSSTransition>
