@@ -16,6 +16,8 @@ export function Ticker({ style }: { style: CSSProperties }) {
   const [hasActiveGoals, setHasActiveGoals] = useState(false)
   const donationTotal = nodecg.Replicant<number>('donationTotal')
   const donationGoals = nodecg.Replicant<DonationGoal[]>('donationGoals')
+  const tickerContainerRef = useRef<HTMLDivElement | null>(null)
+  const [needsScrolling, setNeedsScrolling] = useState(false)
 
   useEffect(() => {
     NodeCG.waitForReplicants(donationGoals).then(() => {
@@ -33,7 +35,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
       genericMessage('welcome', 'Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
       genericMessage('merch', 'Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
       genericMessage('schedule', `Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
-      <NextRun key="next-run" time={20} onEnd={showNextElement} />,
+      <NextRun key={currentComponentIndex.current} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />,
       ...(hasActiveGoals ? [<NextMilestone key="next-milestone" time={20} onEnd={showNextElement} />] : []),
     ]
 
@@ -56,8 +58,11 @@ export function Ticker({ style }: { style: CSSProperties }) {
     currentComponentIndex.current = (currentComponentIndex.current + 1) % messageTypesRef.current.length
     const nextElement = messageTypesRef.current[currentComponentIndex.current]
 
-    setTimestamp(Date.now())
     setCurrentElement(nextElement)
+  }
+
+  function genericMessage(message: string) {
+    return <GenericMessage message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
   }
 
   return (
@@ -67,24 +72,23 @@ export function Ticker({ style }: { style: CSSProperties }) {
         overflow: 'hidden',
         flex: '0 0 auto',
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: needsScrolling ? 'flex-start' : 'center',
         alignItems: 'center',
         ...style,
       }}
+      ref={tickerContainerRef}
     >
       <SwitchTransition mode="out-in">
         <CSSTransition
-          key={currentElement?.key || 'fallback'}
+          key={currentComponentIndex.current}
           nodeRef={currentComponentContainer}
-          in={!!currentElement}
-          appear
           timeout={1000}
           classNames={{
             enter: 'animate__animated animate__slideInUp',
             exit: 'animate__animated animate__slideOutUp',
           }}
         >
-          <span key={timestamp} ref={currentComponentContainer}>
+          <span ref={currentComponentContainer}>
             {currentElement ?? <span />}
           </span>
         </CSSTransition>
