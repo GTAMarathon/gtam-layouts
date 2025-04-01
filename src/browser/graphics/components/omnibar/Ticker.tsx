@@ -15,7 +15,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
     genericMessage('Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
     genericMessage('Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
     genericMessage(`Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
-    <NextRun key={timestamp} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />,
+    <NextRun key={currentComponentIndex.current} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />,
   ]
 
   const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>(messageTypes[0])
