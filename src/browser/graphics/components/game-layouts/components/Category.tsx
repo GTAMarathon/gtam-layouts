@@ -32,7 +32,7 @@ export function Category({ style, size = 64 }: Props) {
             >
               <AutoTextSize
                 as="div"
-                style={{ fontSize: '1.3em', width: '100%' }}
+                style={{ fontSize: '1.3em', width: '100%', color: '#a4a4a4', fontFamily: 'Bebas Neue' }}
                 maxFontSizePx={size}
                 mode="box"
               >
