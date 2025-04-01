@@ -57,6 +57,13 @@ export function Ticker({ style }: { style: CSSProperties }) {
     currentComponentIndex.current = (currentComponentIndex.current + 1) % messageTypesRef.current.length
     const nextElement = messageTypesRef.current[currentComponentIndex.current]
 
+    if (nextElement!.type !== NextMilestone) {
+      setNeedsScrolling(true)
+    }
+    else {
+      setNeedsScrolling(false)
+    }
+
     setCurrentElement(nextElement)
   }
 
