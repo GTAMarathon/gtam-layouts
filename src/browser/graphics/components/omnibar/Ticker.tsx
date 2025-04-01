@@ -9,7 +9,6 @@ import { NextRun } from './Ticker/NextRun'
 export function Ticker({ style }: { style: CSSProperties }) {
   const currentComponentIndex = useRef(0)
   const currentComponentContainer = useRef<HTMLSpanElement | null>(null)
-  const [timestamp, setTimestamp] = useState(Date.now())
   const [messageTypes, setMessageTypes] = useState<React.JSX.Element[]>([])
   const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>()
   const messageTypesRef = useRef<React.JSX.Element[]>([])
