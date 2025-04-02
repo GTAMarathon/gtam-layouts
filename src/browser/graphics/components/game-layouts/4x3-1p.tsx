@@ -18,7 +18,7 @@ export function L_4x3_1p() {
       <Timer
         style={{
           left: '0px',
-          top: '476px',
+          top: '479px',
           width: '570px',
           height: '75px',
           fontSize: '26px',
@@ -27,7 +27,7 @@ export function L_4x3_1p() {
       <Estimate
         style={{
           left: '0px',
-          top: '542px',
+          top: '545px',
           width: '570px',
           height: '65px',
           fontWeight: 'regular',
@@ -37,7 +37,7 @@ export function L_4x3_1p() {
       <Game
         style={{
           left: '12.5px',
-          top: '342px',
+          top: '345px',
           width: '550px',
           height: '75px',
           fontWeight: 'bold',
@@ -47,7 +47,7 @@ export function L_4x3_1p() {
       <Category
         style={{
           left: '0px',
-          top: '400px',
+          top: '403px',
           width: '570px',
           height: '62px',
           fontWeight: 'bold',

@@ -57,7 +57,7 @@ export function L_4x3_1p_OnSite() {
       <Player
         style={{
           left: '12.5px',
-          top: '396px',
+          top: '393px',
           width: '550px',
           height: '91px',
           fontWeight: 'bold',

@@ -57,23 +57,23 @@ export function L_4x3_2p_Onsite() {
       <Player
         style={{
           left: '12.5px',
-          top: '708px',
+          top: '714px',
           width: '680px',
           height: '65px',
           fontWeight: 'bold',
         }}
-        size={50}
+        size={38}
         team={1}
       />
       <Player
         style={{
           left: '1237.5px',
-          top: '708px',
+          top: '714px',
           width: '680px',
           height: '65px',
           fontWeight: 'bold',
         }}
-        size={50}
+        size={38}
         team={2}
       />
       <MediaBox
