@@ -7,18 +7,15 @@ import { Helpers } from '../helpers'
 import useCurrentRun from '../hooks/useCurrentRun'
 import useNextRun from '../hooks/useNextRun'
 import { render } from '../render'
+import { MediaBox } from './components/game-layouts/components/MediaBox'
 import { UpcomingRun } from './components/intermission/UpcomingRun'
 import Intermission_Box1 from './img/intermission/bgs/1box.png'
 import Intermission_Box2 from './img/intermission/bgs/2box.png'
 import Intermission_Box3 from './img/intermission/bgs/3box.png'
-import Intermission_MarathonEnd from './img/intermission/bgs/marathonend.png'
 import Intermission_Label_Intermission from './img/intermission/labels/intermission.png'
-import Intermission_Label_StreamEnd from './img/intermission/labels/stream_ending.png'
-import Intermission_Label_StreamStart from './img/intermission/labels/stream_starting.png'
 import './css/common.css'
 import './css/Flex.css'
 import './css/Fade.css'
-import { MediaBox } from './components/game-layouts/components/MediaBox'
 
 type IntermissionType =
   | 'START OF MARATHON'
@@ -202,31 +199,10 @@ export function Intermission() {
         <img
           className="bg"
           style={{
-            display: ['START OF MARATHON', 'START OF DAY'].includes(intermissionType as string) ? 'inline' : 'none',
-          }}
-          src={Intermission_Label_StreamStart}
-        />
-        <img
-          className="bg"
-          style={{
-            display: intermissionType === 'END OF DAY' ? 'inline' : 'none',
-          }}
-          src={Intermission_Label_StreamEnd}
-        />
-        <img
-          className="bg"
-          style={{
-            display: ['INTERMISSION', 'FINAL RUN'].includes(intermissionType as string) ? 'inline' : 'none',
+          // display: ['INTERMISSION', 'FINAL RUN'].includes(intermissionType as string) ? 'inline' : 'none',
             zIndex: 0,
           }}
           src={Intermission_Label_Intermission}
-        />
-        <img
-          className="bg"
-          style={{
-            display: intermissionType === 'END OF MARATHON' ? 'inline' : 'none',
-          }}
-          src={Intermission_MarathonEnd}
         />
       </div>
 

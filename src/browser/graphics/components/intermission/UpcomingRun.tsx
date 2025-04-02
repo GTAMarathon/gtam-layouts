@@ -56,7 +56,7 @@ export function UpcomingRun({ run, style }: Props) {
                   marginBottom: '-1px',
                 }}
               >
-                {run.game}
+                {run.game!.length < 50 ? run.game : run.customData['gameShort']}
               </AutoTextSize>
               <AutoTextSize
                 id="category"
