@@ -11,6 +11,7 @@ git clone --recurse-submodules https://github.com/GTAMarathon/gtam-layouts
 
 Install dependencies *(this step requires the [build tools for node-gyp](https://github.com/nodejs/node-gyp#installation) on Node.js 20+)*:
 ```sh
+cd gtam-layouts
 npm install
 ```
 
