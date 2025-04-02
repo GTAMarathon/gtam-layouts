@@ -17,6 +17,8 @@ export function Ticker({ style }: { style: CSSProperties }) {
   const donationGoals = nodecg.Replicant<DonationGoal[]>('donationGoals')
   const tickerContainerRef = useRef<HTMLDivElement | null>(null)
   const [needsScrolling, setNeedsScrolling] = useState(false)
+  const tickerContainerRef = useRef<HTMLDivElement | null>(null)
+  const [needsScrolling, setNeedsScrolling] = useState(false)
 
   useEffect(() => {
     NodeCG.waitForReplicants(donationGoals).then(() => {
@@ -35,6 +37,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
       genericMessage('merch', 'Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
       genericMessage('schedule', `Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
       <NextRun key={currentComponentIndex.current} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />,
+      <NextRun key={currentComponentIndex.current} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />,
       ...(hasActiveGoals ? [<NextMilestone key="next-milestone" time={20} onEnd={showNextElement} />] : []),
     ]
 
@@ -43,6 +46,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
     setCurrentElement(newMessages[0])
 
     function genericMessage(key: string, message: string) {
+      return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
       return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
     }
   }, [hasActiveGoals])
@@ -56,6 +60,13 @@ export function Ticker({ style }: { style: CSSProperties }) {
 
     currentComponentIndex.current = (currentComponentIndex.current + 1) % messageTypesRef.current.length
     const nextElement = messageTypesRef.current[currentComponentIndex.current]
+
+    if (nextElement!.type !== NextMilestone) {
+      setNeedsScrolling(true)
+    }
+    else {
+      setNeedsScrolling(false)
+    }
 
     setCurrentElement(nextElement)
   }
