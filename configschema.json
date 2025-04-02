@@ -123,6 +123,14 @@
                   "type": "string",
                   "default": "Music"
                 },
+                "onsite_runner1": {
+                  "type": "string",
+                  "default": "Runner 1"
+                },
+                "onsite_runner2": {
+                  "type": "string",
+                  "default": "Runner 2"
+                },
                 "runner1": {
                   "type": "string",
                   "default": "Feed 1"
@@ -155,6 +163,8 @@
               "required": [
                 "intermissionVideo",
                 "intermissionMusic",
+                "onsite_runner1",
+                "onsite_runner2",
                 "runner1",
                 "runner2",
                 "runner3",
