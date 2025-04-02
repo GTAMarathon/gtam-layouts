@@ -48,6 +48,8 @@ interface GameLayoutSceneItemIds {
   feed2: number | undefined
   feed3: number | undefined
   feed4: number | undefined
+  onsite_feed1: number | undefined
+  onsite_feed2: number | undefined
   camera: number | undefined
 }
 
@@ -83,6 +85,8 @@ class OBSUtility extends obsWebsocketJs {
       feed2: undefined,
       feed3: undefined,
       feed4: undefined,
+      onsite_feed1: undefined,
+      onsite_feed2: undefined,
       camera: undefined,
     }
     await this.call('GetSceneItemId', {
@@ -147,6 +151,34 @@ class OBSUtility extends obsWebsocketJs {
       .catch((err) => {
         this.logger.warn(
           '[OBS] Couldn\'t get the ID for the runner 4 feed: ',
+          err,
+        )
+      })
+
+    await this.call('GetSceneItemId', {
+      sceneName: gameLayoutScene,
+      sourceName: config.obs.names.sources.onsite_runner1,
+    })
+      .then((data) => {
+        ids.onsite_feed1 = data.sceneItemId
+      })
+      .catch((err) => {
+        this.logger.warn(
+          'Couldn\'t get the ID for the on-site runner 1 feed: ',
+          err,
+        )
+      })
+
+    await this.call('GetSceneItemId', {
+      sceneName: gameLayoutScene,
+      sourceName: config.obs.names.sources.onsite_runner2,
+    })
+      .then((data) => {
+        ids.onsite_feed2 = data.sceneItemId
+      })
+      .catch((err) => {
+        this.logger.warn(
+          'Couldn\'t get the ID for the on-site runner 2 feed: ',
           err,
         )
       })
@@ -273,6 +305,22 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            false,
+          ).catch(() => {})
+        }
+
         break
       case '4x3-1p':
         // (Un)hide not required sources, and set the transform properties where required
@@ -347,6 +395,22 @@ class OBSUtility extends obsWebsocketJs {
           this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.camera,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
             false,
           ).catch(() => {})
         }
@@ -449,6 +513,43 @@ class OBSUtility extends obsWebsocketJs {
           }).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            true,
+          ).catch(() => {})
+
+          await this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 1010,
+            positionX: 574,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 1010,
+            sourceWidth: 1346,
+            width: 1346,
+          }).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            false,
+          ).catch(() => {})
+        }
+
         break
       case '4x3-2p':
         if (sceneItemIds.feed1) {
@@ -543,6 +644,22 @@ class OBSUtility extends obsWebsocketJs {
           this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.camera,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
             false,
           ).catch(() => {})
         }
@@ -666,6 +783,64 @@ class OBSUtility extends obsWebsocketJs {
           }).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            true,
+          ).catch(() => {})
+
+          this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 720,
+            positionX: 0,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 720,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            true,
+          ).catch(() => {})
+
+          this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 720,
+            positionX: 960,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 720,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {})
+        }
+
         break
       case '4x3-3p':
         if (sceneItemIds.feed1) {
@@ -784,6 +959,22 @@ class OBSUtility extends obsWebsocketJs {
           this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.camera,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
             false,
           ).catch(() => {})
         }
@@ -934,6 +1125,22 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            false,
+          ).catch(() => {})
+        }
+
         break
       case '16x9-1p':
         // (Un)hide not required sources, and set the transform properties where required
@@ -1008,6 +1215,22 @@ class OBSUtility extends obsWebsocketJs {
           this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.camera,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
             false,
           ).catch(() => {})
         }
@@ -1111,6 +1334,43 @@ class OBSUtility extends obsWebsocketJs {
           }).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            true,
+          ).catch(() => {})
+
+          await this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 864,
+            positionX: 384,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 864,
+            sourceWidth: 1536,
+            width: 1536,
+          }).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            false,
+          ).catch(() => {})
+        }
+
         break
 
       case '16x9-2p':
@@ -1206,6 +1466,22 @@ class OBSUtility extends obsWebsocketJs {
           this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.camera,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
             false,
           ).catch(() => {})
         }
@@ -1328,6 +1604,64 @@ class OBSUtility extends obsWebsocketJs {
           }).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            true,
+          ).catch(() => {})
+
+          this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 540,
+            positionX: 0,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 540,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            true,
+          ).catch(() => {})
+
+          this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed2, {
+            alignment: 5,
+            boundsAlignment: 0,
+            boundsHeight: 1,
+            boundsType: 'OBS_BOUNDS_NONE',
+            boundsWidth: 1,
+            cropBottom: 0,
+            cropLeft: 0,
+            cropRight: 0,
+            cropTop: 0,
+            height: 540,
+            positionX: 960,
+            positionY: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            sourceHeight: 540,
+            sourceWidth: 960,
+            width: 960,
+          }).catch(() => {})
+        }
+
         break
       case '16x9-3p':
         if (sceneItemIds.feed1) {
@@ -1446,6 +1780,22 @@ class OBSUtility extends obsWebsocketJs {
           this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.camera,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
             false,
           ).catch(() => {})
         }
@@ -1596,6 +1946,22 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            false,
+          ).catch(() => {})
+        }
+
         break
       case '4x3-bingo':
         if (sceneItemIds.feed1) {
@@ -1742,6 +2108,22 @@ class OBSUtility extends obsWebsocketJs {
           ).catch(() => {})
         }
 
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
+            false,
+          ).catch(() => {})
+        }
+
         break
       case '16x9-bingo':
         if (sceneItemIds.feed1) {
@@ -1884,6 +2266,22 @@ class OBSUtility extends obsWebsocketJs {
           this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.camera,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed1) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed1,
+            false,
+          ).catch(() => {})
+        }
+
+        if (sceneItemIds.onsite_feed2) {
+          this.toggleSourceVisibility(
+            gameLayout,
+            sceneItemIds.onsite_feed2,
             false,
           ).catch(() => {})
         }
