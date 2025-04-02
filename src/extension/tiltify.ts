@@ -1,6 +1,6 @@
 import type { Configschema } from '../types/generated/configschema'
 import { get } from '../extension/util/nodecg'
-import { donationGoals, donationsShown, donationsToShow, donationTotal } from '../extension/util/replicants'
+import { donationGoals, donationQueue, donationTotal, processedDonations } from '../extension/util/replicants'
 import { TiltifyClient } from './util/tiltify-client'
 
 const nodecg = get()
@@ -86,16 +86,20 @@ async function updateMilestones(client: TiltifyClient): Promise<void> {
 async function updateRecentDonations(client: TiltifyClient): Promise<void> {
   try {
     const donations = await client.fetchRecentDonations(5)
-
-    const newDonations = donations.filter(donation =>
-      !donationsShown.value.includes(donation.id),
+    const newDonations = donations.filter(d =>
+      !processedDonations.value.includes(d.id),
     )
 
     if (newDonations.length > 0) {
-      donationsToShow.value = [
+      donationQueue.value = [
         ...newDonations.reverse(),
-        ...donationsToShow.value,
-      ].slice(0, 5)
+        ...donationQueue.value,
+      ]
+
+      processedDonations.value = [
+        ...newDonations.map(d => d.id),
+        ...processedDonations.value,
+      ].slice(0, 100)
     }
   }
   catch (error) {
