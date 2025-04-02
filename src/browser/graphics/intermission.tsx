@@ -11,15 +11,14 @@ import { UpcomingRun } from './components/intermission/UpcomingRun'
 import Intermission_Box1 from './img/intermission/bgs/1box.png'
 import Intermission_Box2 from './img/intermission/bgs/2box.png'
 import Intermission_Box3 from './img/intermission/bgs/3box.png'
-import Intermission_Fade from './img/intermission/bgs/fade.png'
 import Intermission_MarathonEnd from './img/intermission/bgs/marathonend.png'
-import Intermission_MediaBox_Logo from './img/intermission/bgs/mediabox-logo.png'
 import Intermission_Label_Intermission from './img/intermission/labels/intermission.png'
 import Intermission_Label_StreamEnd from './img/intermission/labels/stream_ending.png'
 import Intermission_Label_StreamStart from './img/intermission/labels/stream_starting.png'
 import './css/common.css'
 import './css/Flex.css'
 import './css/Fade.css'
+import { MediaBox } from './components/game-layouts/components/MediaBox'
 
 type IntermissionType =
   | 'START OF MARATHON'
@@ -185,26 +184,17 @@ export function Intermission() {
           <>
             <img
               className="bg"
-              style={{ zIndex: 10 }}
-              src={Intermission_MediaBox_Logo}
-            />
-            <img
-              className="bg"
-              src={Intermission_Fade}
-            />
-            <img
-              className="bg"
-              style={{ display: intermissionRunData.length === 1 ? 'inline' : 'none' }}
+              style={{ display: intermissionRunData.length === 1 ? 'inline' : 'none', zIndex: 1 }}
               src={Intermission_Box1}
             />
             <img
               className="bg"
-              style={{ display: intermissionRunData.length === 2 ? 'inline' : 'none' }}
+              style={{ display: intermissionRunData.length === 2 ? 'inline' : 'none', zIndex: 1 }}
               src={Intermission_Box2}
             />
             <img
               className="bg"
-              style={{ display: intermissionRunData.length > 2 ? 'inline' : 'none' }}
+              style={{ display: intermissionRunData.length > 2 ? 'inline' : 'none', zIndex: 1 }}
               src={Intermission_Box3}
             />
           </>
@@ -227,6 +217,7 @@ export function Intermission() {
           className="bg"
           style={{
             display: ['INTERMISSION', 'FINAL RUN'].includes(intermissionType as string) ? 'inline' : 'none',
+            zIndex: 0,
           }}
           src={Intermission_Label_Intermission}
         />
@@ -249,26 +240,13 @@ export function Intermission() {
             width: '887px',
           }}
         >
-          <p
-            style={{
-              lineHeight: '5px',
-              fontFamily: 'slope_operaregular',
-              fontSize: '30px',
-              overflow: 'visible',
-              whiteSpace: 'nowrap',
-              position: 'absolute',
-              top: '0px',
-              left: '280px',
-            }}
-          >
-            {intermissionRunData[0].etaUntil}
-          </p>
           <UpcomingRun
             run={intermissionRunData[0].run}
             style={{
               position: 'absolute',
               top: '65px',
-              height: '102px',
+              left: '-10px',
+              height: '62px',
               width: '887px',
               lineHeight: '40px',
               overflow: 'hidden',
@@ -286,14 +264,15 @@ export function Intermission() {
               <p
                 style={{
                   position: 'absolute',
-                  top: '35px',
+                  top: '10px',
+                  left: '-10px',
                   lineHeight: '5px',
                   fontFamily: 'slope_operaregular',
                   fontSize: '30px',
                   overflow: 'visible',
                   whiteSpace: 'nowrap',
                   marginTop: '160px',
-                  color: '#C736FF',
+                  color: '#ffe400',
                 }}
                 ref={run1PlayersRef}
               >
@@ -317,22 +296,25 @@ export function Intermission() {
           <p
             style={{
               lineHeight: '5px',
-              fontFamily: 'slope_operaregular',
+              fontFamily: 'Bebas Neue',
               fontSize: '30px',
               overflow: 'visible',
               whiteSpace: 'nowrap',
               position: 'absolute',
-              top: '0px',
-              left: '430px',
+              top: '-60px',
+              left: '340px',
             }}
           >
+            in
+            {' '}
             {intermissionRunData[1].etaUntil}
           </p>
           <UpcomingRun
             run={intermissionRunData[1].run}
             style={{
               position: 'absolute',
-              top: '65px',
+              top: '-8px',
+              left: '-11px',
               height: '102px',
               width: '887px',
               lineHeight: '40px',
@@ -351,14 +333,15 @@ export function Intermission() {
               <p
                 style={{
                   position: 'absolute',
-                  top: '35px',
+                  top: '-45px',
+                  left: '-11px',
                   lineHeight: '5px',
                   fontFamily: 'slope_operaregular',
                   fontSize: '30px',
                   overflow: 'visible',
                   whiteSpace: 'nowrap',
                   marginTop: '160px',
-                  color: '#C736FF',
+                  color: '#ffe400',
                 }}
                 ref={run2PlayersRef}
               >
@@ -382,22 +365,25 @@ export function Intermission() {
           <p
             style={{
               lineHeight: '5px',
-              fontFamily: 'slope_operaregular',
+              fontFamily: 'Bebas Neue',
               fontSize: '30px',
               overflow: 'visible',
               whiteSpace: 'nowrap',
               position: 'absolute',
-              top: '0px',
-              left: '225px',
+              top: '-112px',
+              left: '170px',
             }}
           >
+            in
+            {' '}
             {intermissionRunData[2].etaUntil}
           </p>
           <UpcomingRun
             run={intermissionRunData[2].run}
             style={{
               position: 'absolute',
-              top: '65px',
+              top: '-60px',
+              left: '-11px',
               height: '102px',
               width: '887px',
               lineHeight: '40px',
@@ -416,14 +402,15 @@ export function Intermission() {
               <p
                 style={{
                   position: 'absolute',
-                  top: '35px',
+                  top: '-100px',
+                  left: '-11px',
                   lineHeight: '5px',
                   fontFamily: 'slope_operaregular',
                   fontSize: '30px',
                   overflow: 'visible',
                   whiteSpace: 'nowrap',
                   marginTop: '160px',
-                  color: '#C736FF',
+                  color: '#ffe400',
                 }}
                 ref={run3PlayersRef}
               >
@@ -433,6 +420,16 @@ export function Intermission() {
           </SwitchTransition>
         </div>
       )}
+
+      <MediaBox
+        style={{
+          left: '1200.5px',
+          bottom: '255px',
+          width: '551px',
+          height: '534px',
+          fontSize: '30px',
+        }}
+      />
 
       <CSSTransition
         nodeRef={adTimerRef}
