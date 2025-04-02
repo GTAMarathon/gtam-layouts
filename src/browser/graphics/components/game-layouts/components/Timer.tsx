@@ -1,16 +1,17 @@
 import type { CSSProperties } from 'react'
 import type { Timer as TimerType } from 'speedcontrol/types'
 import { useReplicant } from '@nodecg/react-hooks'
+import 'animate.css'
 
 interface Props {
   style?: CSSProperties
 }
 
 const timerColors = {
-  stopped: '#a3a3a3',
-  running: '#C736FF',
-  paused: '#a304e2',
-  finished: '#ffd557',
+  stopped: '#a4a4a4',
+  running: '#ffe400',
+  paused: '#a4a4a4',
+  finished: '#ffe400',
 }
 
 export function Timer({ style }: Props) {
@@ -29,6 +30,7 @@ export function Timer({ style }: Props) {
       && (
         <div
           id="Timer"
+          className={timer.state === 'finished' ? 'animate__animated animate__flash animate__infinite animate__slower' : ''}
           style={{
             fontSize: '2.8em',
             transition: 'color 1s',

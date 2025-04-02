@@ -57,31 +57,32 @@ export function L_4x3_Bingo() {
       <Player
         style={{
           left: '0px',
-          top: '450px',
+          top: '458px',
           width: '614px',
           height: '81px',
+          fontWeight: 'bold',
         }}
-        size={36}
+        size={25}
         team={1}
       />
       <Player
         style={{
           left: '1306px',
-          top: '450px',
+          top: '458px',
           width: '614px',
           height: '81px',
         }}
-        size={36}
+        size={25}
         team={2}
       />
       <Player
         style={{
           left: '0px',
-          top: '958px',
+          top: '965px',
           width: '614px',
           height: '81px',
         }}
-        size={36}
+        size={25}
         team={3}
       />
       <MediaBox

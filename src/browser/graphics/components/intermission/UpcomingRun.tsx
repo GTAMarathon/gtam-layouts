@@ -53,10 +53,10 @@ export function UpcomingRun({ run, style }: Props) {
                 mode="boxoneline"
                 style={{
                   width: `${bigWidth}px`,
-                  marginBottom: '-5px',
+                  marginBottom: '-1px',
                 }}
               >
-                {run.game}
+                {run.game!.length < 50 ? run.game : run.customData['gameShort']}
               </AutoTextSize>
               <AutoTextSize
                 id="category"
@@ -67,6 +67,8 @@ export function UpcomingRun({ run, style }: Props) {
                 style={{
                   width: `${bigWidth}px`,
                   marginBottom: '-5px',
+                  fontFamily: 'Bebas Neue',
+                  color: '#a4a4a4',
                 }}
               >
                 {run.category}

@@ -18,7 +18,7 @@ export function L_4x3_2p() {
       <Timer
         style={{
           left: '1285px',
-          top: '785px',
+          top: '796px',
           width: '635px',
           height: '150px',
           fontSize: '36px',
@@ -27,7 +27,7 @@ export function L_4x3_2p() {
       <Estimate
         style={{
           left: '1285px',
-          top: '905px',
+          top: '916px',
           width: '635px',
           height: '75px',
           fontWeight: 'regular',
@@ -37,27 +37,27 @@ export function L_4x3_2p() {
       <Game
         style={{
           left: '659px',
-          top: '824px',
+          top: '852px',
           width: '600px',
           height: '100px',
           fontWeight: 'bold',
         }}
-        size={72}
+        size={60}
       />
       <Category
         style={{
           left: '652.5px',
-          top: '890px',
+          top: '900px',
           width: '615px',
           height: '100px',
           fontWeight: 'bold',
         }}
-        size={44}
+        size={40}
       />
       <Player
         style={{
           left: '12.5px',
-          top: '708px',
+          top: '723px',
           width: '610px',
           height: '85px',
           fontWeight: 'bold',
@@ -68,7 +68,7 @@ export function L_4x3_2p() {
       <Player
         style={{
           left: '1297.5px',
-          top: '708px',
+          top: '723px',
           width: '610px',
           height: '85px',
           fontWeight: 'bold',

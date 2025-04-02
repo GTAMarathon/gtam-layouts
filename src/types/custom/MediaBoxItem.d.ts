@@ -1,3 +1,4 @@
+import type { DonationQueueItem } from './DonationQueueItem'
 import type { BitsQueueItem, MerchQueueItem, SubQueueItem } from './index'
 
 interface MediaBoxImage {
@@ -11,6 +12,6 @@ export interface MediaBoxImages {
 }
 
 export interface MediaBoxItem {
-  type: 'image' | 'sub' | 'cheer' | 'merch'
-  data: BitsQueueItem | SubQueueItem | MerchQueueItem | MediaBoxImages
+  type: 'image' | 'sub' | 'cheer' | 'merch' | 'donation'
+  data: BitsQueueItem | SubQueueItem | MerchQueueItem | MediaBoxImages | DonationQueueItem
 }

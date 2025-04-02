@@ -8,8 +8,12 @@ interface Props {
 
 export function MediaBoxImage({ images, useWidescreenImages }: Props) {
   const image = useMemo(() => {
-    return useWidescreenImages ? images.widescreen : images.standard
+    if (useWidescreenImages && images.widescreen?.url){
+      return images.widescreen
+    }
+    return images.standard
   }, [images, useWidescreenImages])
+
   return (
     <div
       id="MediaBoxImage"
@@ -24,12 +28,12 @@ export function MediaBoxImage({ images, useWidescreenImages }: Props) {
         margin: 'auto',
       }}
     >
-      {image && image.name && (
+      {image?.url && (
         <img
-          key={image.name}
+          key={image.url}
           src={image.url}
           style={{
-            maxWidth: '100%',
+            maxWidth: '90%',
             maxHeight: '100%',
             width: 'auto',
             height: 'auto',

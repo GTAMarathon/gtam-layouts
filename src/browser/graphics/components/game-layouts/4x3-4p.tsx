@@ -18,7 +18,7 @@ export function L_4x3_4p() {
       <Timer
         style={{
           left: '745px',
-          top: '527px',
+          top: '538px',
           width: '426px',
           height: '100px',
           fontSize: '40px',
@@ -27,7 +27,7 @@ export function L_4x3_4p() {
       <Estimate
         style={{
           left: '628px',
-          top: '625px',
+          top: '636px',
           width: '664px',
           height: '75px',
           fontWeight: 'regular',
@@ -57,45 +57,45 @@ export function L_4x3_4p() {
       <Player
         style={{
           left: '0px',
-          top: '448px',
+          top: '458px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',
         }}
-        size={36}
+        size={25}
         team={1}
       />
       <Player
         style={{
           left: '1306px',
-          top: '448px',
+          top: '458px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',
         }}
-        size={36}
+        size={25}
         team={2}
       />
       <Player
         style={{
           left: '0px',
-          top: '957px',
+          top: '965px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',
         }}
-        size={36}
+        size={25}
         team={3}
       />
       <Player
         style={{
           left: '1306px',
-          top: '957px',
+          top: '965px',
           width: '614px',
           height: '81px',
           fontWeight: 'bold',
         }}
-        size={36}
+        size={25}
         team={4}
       />
       <MediaBox

@@ -21,7 +21,7 @@ export class TiltifyClient {
 
   constructor() {
     if (config.enable && (!config.clientId || !config.clientSecret || !config.campaign)) {
-      throw new Error('Missing Tiltify configuration values');
+      throw new Error('Missing Tiltify configuration values')
     }
 
     this.clientId = config.clientId

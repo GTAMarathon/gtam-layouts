@@ -18,26 +18,26 @@ export function L_16x9_4p() {
       <Timer
         style={{
           left: '777px',
-          top: '557px',
+          top: '560px',
           width: '366px',
           height: '80px',
-          fontSize: '32px',
+          fontSize: '28px',
         }}
       />
       <Estimate
         style={{
           left: '777px',
-          top: '630px',
+          top: '633px',
           width: '366px',
           height: '55px',
           fontWeight: 'regular',
-          fontSize: '28px',
+          fontSize: '24px',
         }}
       />
       <Game
         style={{
           left: '798px',
-          top: '246px',
+          top: '266px',
           width: '326px',
           height: '65px',
           fontWeight: 'bold',
@@ -47,17 +47,17 @@ export function L_16x9_4p() {
       <Category
         style={{
           left: '798px',
-          top: '320px',
+          top: '318px',
           width: '326px',
           height: '50px',
           fontWeight: 'bold',
         }}
-        size={44}
+        size={40}
       />
       <Player
         style={{
           left: '0px',
-          top: '427px',
+          top: '429px',
           width: '768px',
           height: '107px',
         }}
@@ -67,7 +67,7 @@ export function L_16x9_4p() {
       <Player
         style={{
           left: '1152px',
-          top: '427px',
+          top: '429px',
           width: '768px',
           height: '107px',
         }}

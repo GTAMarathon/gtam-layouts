@@ -57,34 +57,34 @@ export function L_4x3_3p() {
       <Player
         style={{
           left: '0px',
-          top: '473px',
+          top: '480px',
           width: '643px',
           height: '81px',
           fontWeight: 'bold',
         }}
-        size={50}
+        size={44}
         team={1}
       />
       <Player
         style={{
           left: '643px',
-          top: '473px',
+          top: '480px',
           width: '640px',
           height: '81px',
           fontWeight: 'bold',
         }}
-        size={50}
+        size={44}
         team={2}
       />
       <Player
         style={{
           left: '1280px',
-          top: '473px',
+          top: '480px',
           width: '640px',
           height: '81px',
           fontWeight: 'bold',
         }}
-        size={50}
+        size={44}
         team={3}
       />
       <MediaBox

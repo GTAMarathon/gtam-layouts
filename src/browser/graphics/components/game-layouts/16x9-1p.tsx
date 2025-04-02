@@ -56,13 +56,13 @@ export function L_16x9_1p() {
       />
       <Player
         style={{
-          left: '10px',
-          top: '240px',
+          left: '0px',
+          top: '252px',
           width: '365px',
           height: '93px',
           fontWeight: 'bold',
         }}
-        size={56}
+        size={45}
         team={1}
       />
       <MediaBox

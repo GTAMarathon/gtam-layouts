@@ -1,8 +1,9 @@
-import type { BitsQueueItem, MediaBoxImages, MediaBoxItem, SubQueueItem } from '@gtam-layouts/types'
+import type { BitsQueueItem, DonationQueueItem, MediaBoxImages, MediaBoxItem, SubQueueItem } from '@gtam-layouts/types'
 import type { CSSProperties } from 'react'
 import { useReplicant } from '@nodecg/react-hooks'
 import { useEffect, useRef } from 'react'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
+import { MediaBoxDonation } from './MediaBox/Donation'
 import { MediaBoxImage } from './MediaBox/Image'
 import { MediaBoxTwitchBits } from './MediaBox/TwitchBits'
 import { MediaBoxTwitchSub } from './MediaBox/TwitchSub'
@@ -51,7 +52,7 @@ export function MediaBox({ useWidescreenImages = false, style }: Props) {
         >
           <SwitchTransition mode="out-in">
             <CSSTransition
-              key={timestamp.current}
+              key={`${currentComponent.type}-${JSON.stringify(currentComponent.data)}`}
               nodeRef={componentDivRef}
               in
               appear
@@ -71,6 +72,9 @@ export function MediaBox({ useWidescreenImages = false, style }: Props) {
                 )}
                 {currentComponent.type === 'sub' && (
                   <MediaBoxTwitchSub subInfo={currentComponent.data as SubQueueItem} />
+                )}
+                {currentComponent.type === 'donation' && (
+                  <MediaBoxDonation donationInfo={currentComponent.data as DonationQueueItem} />
                 )}
               </div>
             </CSSTransition>

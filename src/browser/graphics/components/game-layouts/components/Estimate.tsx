@@ -20,7 +20,7 @@ export function Estimate({ style }: Props) {
       {currentRun && currentRun.estimate && (
         <div
           id="Time"
-          style={{ fontSize: '1.8em', marginBottom: '-0.2em' }}
+          style={{ fontSize: '1.3em', marginBottom: '-0.2em', color: '#a4a4a4', fontFamily: 'Bebas Neue' }}
         >
           EST:&nbsp;
           {currentRun.estimate}

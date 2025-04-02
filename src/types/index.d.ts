@@ -1,5 +1,6 @@
 export * from './custom/Asset'
 export * from './custom/BitsQueueItem'
+export * from './custom/DonationQueueItem'
 export * from './custom/HundoTrackerPlayer'
 export * from './custom/MediaBoxItem'
 export * from './custom/MerchQueueItem'

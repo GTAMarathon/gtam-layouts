@@ -57,7 +57,7 @@ export function L_16x9_2p_Onsite() {
       <Player
         style={{
           left: '12.5px',
-          top: '540px',
+          top: '544px',
           width: '671px',
           height: '92px',
           fontSize: '24px',
@@ -68,7 +68,7 @@ export function L_16x9_2p_Onsite() {
       <Player
         style={{
           left: '1236.5px',
-          top: '540px',
+          top: '544px',
           width: '671px',
           height: '92px',
           fontSize: '24px',

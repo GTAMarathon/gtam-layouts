@@ -93,49 +93,49 @@ const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
   [
     'Grand Theft Auto III: The Definitive Edition',
     {
-      gameShort: 'GTA III Definitive Edition',
+      gameShort: 'GTA III - DE',
       gameTwitch: 'Grand Theft Auto III: The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto III - The Definitive Edition',
     {
-      gameShort: 'GTA III Definitive Edition',
+      gameShort: 'GTA III - DE',
       gameTwitch: 'Grand Theft Auto III: The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto III – The Definitive Edition',
     {
-      gameShort: 'GTA III Definitive Edition',
+      gameShort: 'GTA III - DE ',
       gameTwitch: 'Grand Theft Auto III: The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: Vice City - The Definitive Edition',
     {
-      gameShort: 'GTA: VC Definitive Edition',
+      gameShort: 'GTA: Vice City - DE',
       gameTwitch: 'Grand Theft Auto: Vice City – The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: Vice City – The Definitive Edition',
     {
-      gameShort: 'GTA: VC Definitive Edition',
+      gameShort: 'GTA: Vice City - DE',
       gameTwitch: 'Grand Theft Auto: Vice City – The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: San Andreas - The Definitive Edition',
     {
-      gameShort: 'GTA: SA Definitive Edition',
+      gameShort: 'GTA: San Andreas - DE',
       gameTwitch: 'Grand Theft Auto: San Andreas – The Definitive Edition',
     },
   ],
   [
     'Grand Theft Auto: San Andreas – The Definitive Edition',
     {
-      gameShort: 'GTA: SA Definitive Edition',
+      gameShort: 'GTA: San Andreas - DE',
       gameTwitch: 'Grand Theft Auto: San Andreas – The Definitive Edition',
     },
   ],

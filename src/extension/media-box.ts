@@ -1,5 +1,6 @@
 import {
   currentMediaBoxItem,
+  donationQueue,
   merchImages,
   merchImagesWidescreen,
   merchPurchaseQueue,
@@ -9,22 +10,36 @@ import {
   twitchSubQueue,
 } from '@gtam-layouts/util/replicants'
 import { klona as clone } from 'klona/json'
+import { get } from '../extension/util/nodecg'
 
 type MediaBoxStages = 'MerchImage' | 'SponsorImage'
+const nodecg = get()
 
 let sponsorIndex = 0
 let merchIndex = 0
 let lastStage: MediaBoxStages = 'MerchImage'
 let timeout: NodeJS.Timeout
 
-const isTwitchSubQueued = twitchSubQueue.value && twitchSubQueue.value.length > 0
-const isTwitchBitsQueued = twitchBitsQueue.value && twitchBitsQueue.value.length > 0
-const isMerchQueued = merchPurchaseQueue.value && merchPurchaseQueue.value.length > 0
-
 function setNextMediaBoxItem(): void {
+  const isDonationQueued = donationQueue.value && donationQueue.value.length > 0
+  const isTwitchSubQueued = twitchSubQueue.value && twitchSubQueue.value.length > 0
+  const isTwitchBitsQueued = twitchBitsQueue.value && twitchBitsQueue.value.length > 0
+  const isMerchQueued = merchPurchaseQueue.value && merchPurchaseQueue.value.length > 0
   clearTimeout(timeout)
   timeout = setTimeout(setNextMediaBoxItem, 20000)
-  if (isTwitchSubQueued) {
+
+  if (isDonationQueued) {
+    nodecg.log.info('[MediaBox] Processing donation')
+    const donation = donationQueue.value!.shift()
+    if (donation) {
+      currentMediaBoxItem.value = {
+        type: 'donation',
+        data: clone(donation),
+      }
+    }
+  }
+  else if (isTwitchSubQueued) {
+    nodecg.log.info('[MediaBox] Processing sub')
     const sub = twitchSubQueue.value!.shift()
     if (sub) {
       currentMediaBoxItem.value = {
@@ -34,6 +49,7 @@ function setNextMediaBoxItem(): void {
     }
   }
   else if (isTwitchBitsQueued) {
+    nodecg.log.info('[MediaBox] Processing bits')
     const bits = twitchBitsQueue.value!.shift()
     if (bits) {
       currentMediaBoxItem.value = {
@@ -43,6 +59,7 @@ function setNextMediaBoxItem(): void {
     }
   }
   else if (isMerchQueued) {
+    nodecg.log.info('[MediaBox] Processing merch')
     const merch = merchPurchaseQueue.value!.shift()
     if (merch) {
       currentMediaBoxItem.value = {
@@ -52,6 +69,7 @@ function setNextMediaBoxItem(): void {
     }
   }
   else if (lastStage === 'MerchImage') {
+    nodecg.log.info('[MediaBox] Processing Sponsor Image')
     lastStage = 'SponsorImage'
     sponsorIndex++
     if (sponsorIndex >= sponsorImages.value!.length) {
@@ -81,6 +99,7 @@ function setNextMediaBoxItem(): void {
     }
   }
   else if (lastStage === 'SponsorImage') {
+    nodecg.log.info('[MediaBox] Processing Merch image')
     lastStage = 'MerchImage'
     merchIndex++
 

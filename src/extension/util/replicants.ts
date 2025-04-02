@@ -1,6 +1,7 @@
 import type {
   Asset,
   BitsQueueItem,
+  DonationQueueItem,
   GameLayouts,
   HundoTrackerData,
   MediaBoxItem,
@@ -17,7 +18,7 @@ import type {
   OengusImportStatus,
   RunDataActiveRunSurrounding,
 } from 'speedcontrol/types/schemas'
-import type { DonationGoal, TiltifyDonation, TiltifyTokenData } from '../../types/custom/Tiltify-Types'
+import type { DonationGoal, TiltifyTokenData } from '../../types/custom/Tiltify-Types'
 import { get } from './nodecg'
 
 const nodecg = get()
@@ -53,6 +54,10 @@ export const runDataArray = nodecg.Replicant<RunDataArray>(
 )
 export const gameLayouts = nodecg.Replicant<GameLayouts>(
   'gameLayouts',
+)
+export const donationQueue = nodecg.Replicant<DonationQueueItem[]>(
+  'donationQueue',
+  { defaultValue: [] },
 )
 export const twitchSubQueue = nodecg.Replicant<SubQueueItem[]>(
   'twitchSubQueue',
@@ -109,20 +114,10 @@ export const tiltifyTokens = nodecg.Replicant<TiltifyTokenData>(
   },
 )
 
-export const donationsToShow = nodecg.Replicant<TiltifyDonation[]>(
-  'donationsToShow',
-  { defaultValue: [], persistent: false },
-)
-
-export const donationsShown = nodecg.Replicant<string[]>(
-  'donationsShown',
-  { defaultValue: [], persistent: true },
-)
-
-export const recentDonations = nodecg.Replicant<TiltifyDonation[]>(
-  'recentDonations',
+export const processedDonations = nodecg.Replicant<string[]>(
+  'processedDonations',
   {
     defaultValue: [],
-    persistent: false,
+    persistent: true,
   },
 )
