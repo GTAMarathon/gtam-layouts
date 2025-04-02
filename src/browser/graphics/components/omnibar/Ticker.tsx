@@ -9,7 +9,6 @@ import { NextRun } from './Ticker/NextRun'
 export function Ticker({ style }: { style: CSSProperties }) {
   const currentComponentIndex = useRef(0)
   const currentComponentContainer = useRef<HTMLSpanElement | null>(null)
-  const [timestamp, setTimestamp] = useState(Date.now())
   const [messageTypes, setMessageTypes] = useState<React.JSX.Element[]>([])
   const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>()
   const messageTypesRef = useRef<React.JSX.Element[]>([])
@@ -35,7 +34,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
       genericMessage('welcome', 'Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
       genericMessage('merch', 'Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
       genericMessage('schedule', `Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
-      <NextRun key="next-run" time={20} onEnd={showNextElement} />,
+      <NextRun key={currentComponentIndex.current} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />,
       ...(hasActiveGoals ? [<NextMilestone key="next-milestone" time={20} onEnd={showNextElement} />] : []),
     ]
 
@@ -44,7 +43,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
     setCurrentElement(newMessages[0])
 
     function genericMessage(key: string, message: string) {
-      return <GenericMessage message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
+      return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
     }
   }, [hasActiveGoals])
 
