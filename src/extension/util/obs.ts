@@ -225,8 +225,8 @@ class OBSUtility extends obsWebsocketJs {
     const sceneItemIds = await this.getGameLayoutSceneItemIds()
     const gameLayout = config.obs.names.scenes.gameLayout
     // Set used audio to feed 1
-    this.muteAudio().catch(() => {})
-    this.unmuteAudio().catch(() => {})
+    this.muteAudio().catch(() => { })
+    this.unmuteAudio().catch(() => { })
     switch (layout) {
       case '3x2-1p':
         // (Un)hide not required sources, and set the transform properties where required
@@ -241,7 +241,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           // Set the feed's transform properties
           await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -262,7 +262,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 960,
             sourceWidth: 1440,
             width: 1440,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -270,7 +270,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -278,7 +278,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -286,7 +286,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -294,7 +294,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -302,7 +302,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -310,7 +310,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -318,7 +318,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -335,7 +335,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           // Set the feed's transform properties
           await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -356,7 +356,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 1010,
             sourceWidth: 1346,
             width: 1346,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -364,7 +364,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -372,7 +372,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -380,7 +380,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -388,7 +388,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -396,7 +396,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -404,7 +404,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -412,45 +412,18 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
       case '4x3-1p-onsite':
         // (Un)hide not required sources, and set the transform properties where required
         if (sceneItemIds.feed1) {
-          // Need to set the width/height in the browser source settings too
-          await this.call('SetInputSettings', {
-            inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 1346, height: 1010 },
-          })
-          // Make the feed visible
           await this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.feed1,
-            true,
-          ).catch(() => {})
-          // Set the feed's transform properties
-          await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
-            alignment: 5,
-            boundsAlignment: 0,
-            boundsHeight: 1,
-            boundsType: 'OBS_BOUNDS_NONE',
-            boundsWidth: 1,
-            cropBottom: 0,
-            cropLeft: 0,
-            cropRight: 0,
-            cropTop: 0,
-            height: 1010,
-            positionX: 574,
-            positionY: 0,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            sourceHeight: 1010,
-            sourceWidth: 1346,
-            width: 1346,
-          }).catch(() => {})
+            false,
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -458,7 +431,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -466,7 +439,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -474,7 +447,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -482,7 +455,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -490,7 +463,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           this.setSceneItemTransform(gameLayout, sceneItemIds.camera, {
             alignment: 5,
             boundsAlignment: 0,
@@ -510,7 +483,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 388,
             sourceWidth: 690,
             width: 690,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -518,7 +491,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
 
           await this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
             alignment: 5,
@@ -539,7 +512,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 1010,
             sourceWidth: 1346,
             width: 1346,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -547,7 +520,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -557,7 +530,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 960, height: 720 },
@@ -581,7 +554,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 720,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -589,7 +562,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 960, height: 720 },
@@ -613,7 +586,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 720,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -621,7 +594,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -629,7 +602,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -637,7 +610,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -645,7 +618,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -653,7 +626,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -661,74 +634,26 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
 
       case '4x3-2p-onsite':
         if (sceneItemIds.feed1) {
-          this.toggleSourceVisibility(
+          await this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.feed1,
-            true,
-          ).catch(() => {})
-          await this.call('SetInputSettings', {
-            inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 960, height: 720 },
-          })
-          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
-            alignment: 5,
-            boundsAlignment: 0,
-            boundsHeight: 1,
-            boundsType: 'OBS_BOUNDS_NONE',
-            boundsWidth: 1,
-            cropBottom: 0,
-            cropLeft: 0,
-            cropRight: 0,
-            cropTop: 0,
-            height: 720,
-            positionX: 0,
-            positionY: 0,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            sourceHeight: 720,
-            sourceWidth: 960,
-            width: 960,
-          }).catch(() => {})
+            false,
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
-          this.toggleSourceVisibility(
+          await this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.feed2,
-            true,
-          ).catch(() => {})
-          await this.call('SetInputSettings', {
-            inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 960, height: 720 },
-          })
-          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
-            alignment: 5,
-            boundsAlignment: 0,
-            boundsHeight: 1,
-            boundsType: 'OBS_BOUNDS_NONE',
-            boundsWidth: 1,
-            cropBottom: 0,
-            cropLeft: 0,
-            cropRight: 0,
-            cropTop: 0,
-            height: 720,
-            positionX: 960,
-            positionY: 0,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            sourceHeight: 720,
-            sourceWidth: 960,
-            width: 960,
-          }).catch(() => {})
+            false,
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -736,7 +661,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -744,7 +669,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -752,7 +677,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -760,7 +685,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           this.setSceneItemTransform(gameLayout, sceneItemIds.camera, {
             alignment: 5,
             boundsAlignment: 0,
@@ -780,7 +705,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 286,
             sourceWidth: 506,
             width: 506,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -788,7 +713,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
 
           this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
             alignment: 5,
@@ -809,7 +734,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 720,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -817,7 +742,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
 
           this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed2, {
             alignment: 5,
@@ -838,7 +763,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 720,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         break
@@ -848,7 +773,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 640, height: 480 },
@@ -872,7 +797,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 480,
             sourceWidth: 640,
             width: 640,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -880,7 +805,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 640, height: 480 },
@@ -904,7 +829,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 480,
             sourceWidth: 640,
             width: 640,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -912,7 +837,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
             inputSettings: { width: 640, height: 480 },
@@ -936,7 +861,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 480,
             sourceWidth: 640,
             width: 640,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -944,7 +869,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -952,7 +877,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -960,7 +885,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -968,7 +893,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -976,7 +901,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -986,7 +911,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 614, height: 461 },
@@ -1010,7 +935,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 460,
             sourceWidth: 614,
             width: 614,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -1018,7 +943,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 614, height: 460 },
@@ -1042,7 +967,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 460,
             sourceWidth: 614,
             width: 614,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -1050,7 +975,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
             inputSettings: { width: 614, height: 460 },
@@ -1074,7 +999,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 460,
             sourceWidth: 614,
             width: 614,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -1082,7 +1007,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner4,
             inputSettings: { width: 614, height: 460 },
@@ -1106,7 +1031,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 460,
             sourceWidth: 614,
             width: 614,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -1114,7 +1039,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -1122,7 +1047,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -1130,7 +1055,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -1138,7 +1063,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -1155,7 +1080,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           // Set the feed's transform properties
           await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
             alignment: 5,
@@ -1176,7 +1101,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 864,
             sourceWidth: 1536,
             width: 1536,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -1184,7 +1109,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -1192,7 +1117,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -1200,7 +1125,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -1208,7 +1133,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -1216,7 +1141,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -1224,7 +1149,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -1232,7 +1157,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -1240,38 +1165,11 @@ class OBSUtility extends obsWebsocketJs {
       case '16x9-1p-onsite':
         // (Un)hide not required sources, and set the transform properties where required
         if (sceneItemIds.feed1) {
-          // Need to set the width/height in the browser source settings too
-          await this.call('SetInputSettings', {
-            inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 1536, height: 864 },
-          })
-          // Make the feed visible
           await this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.feed1,
-            true,
-          ).catch(() => {})
-          // Set the feed's transform properties
-          await this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
-            alignment: 5,
-            boundsAlignment: 0,
-            boundsHeight: 1,
-            boundsType: 'OBS_BOUNDS_NONE',
-            boundsWidth: 1,
-            cropBottom: 0,
-            cropLeft: 0,
-            cropRight: 0,
-            cropTop: 0,
-            height: 864,
-            positionX: 384,
-            positionY: 0,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            sourceHeight: 864,
-            sourceWidth: 1536,
-            width: 1536,
-          }).catch(() => {})
+            false,
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -1279,7 +1177,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -1287,7 +1185,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -1295,7 +1193,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -1303,7 +1201,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -1311,7 +1209,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           this.setSceneItemTransform(gameLayout, sceneItemIds.camera, {
             alignment: 5,
             boundsAlignment: 0,
@@ -1331,7 +1229,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 306,
             sourceWidth: 544,
             width: 544,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -1339,7 +1237,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
 
           await this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
             alignment: 5,
@@ -1360,7 +1258,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 864,
             sourceWidth: 1536,
             width: 1536,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -1368,7 +1266,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -1379,7 +1277,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 960, height: 540 },
@@ -1403,7 +1301,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 540,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -1411,7 +1309,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 960, height: 540 },
@@ -1435,7 +1333,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 540,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -1443,7 +1341,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -1451,7 +1349,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -1459,7 +1357,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -1467,7 +1365,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -1475,7 +1373,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -1483,73 +1381,25 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
       case '16x9-2p-onsite':
         if (sceneItemIds.feed1) {
-          this.toggleSourceVisibility(
+          await this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.feed1,
-            true,
-          ).catch(() => {})
-          await this.call('SetInputSettings', {
-            inputName: config.obs.names.sources.runner1,
-            inputSettings: { width: 960, height: 540 },
-          })
-          this.setSceneItemTransform(gameLayout, sceneItemIds.feed1, {
-            alignment: 5,
-            boundsAlignment: 0,
-            boundsHeight: 1,
-            boundsType: 'OBS_BOUNDS_NONE',
-            boundsWidth: 1,
-            cropBottom: 0,
-            cropLeft: 0,
-            cropRight: 0,
-            cropTop: 0,
-            height: 540,
-            positionX: 0,
-            positionY: 0,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            sourceHeight: 540,
-            sourceWidth: 960,
-            width: 960,
-          }).catch(() => {})
+            false,
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
-          this.toggleSourceVisibility(
+          await this.toggleSourceVisibility(
             gameLayout,
             sceneItemIds.feed2,
-            true,
-          ).catch(() => {})
-          await this.call('SetInputSettings', {
-            inputName: config.obs.names.sources.runner2,
-            inputSettings: { width: 960, height: 540 },
-          })
-          this.setSceneItemTransform(gameLayout, sceneItemIds.feed2, {
-            alignment: 5,
-            boundsAlignment: 0,
-            boundsHeight: 1,
-            boundsType: 'OBS_BOUNDS_NONE',
-            boundsWidth: 1,
-            cropBottom: 0,
-            cropLeft: 0,
-            cropRight: 0,
-            cropTop: 0,
-            height: 540,
-            positionX: 960,
-            positionY: 0,
-            rotation: 0,
-            scaleX: 1,
-            scaleY: 1,
-            sourceHeight: 540,
-            sourceWidth: 960,
-            width: 960,
-          }).catch(() => {})
+            false,
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -1557,7 +1407,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -1565,7 +1415,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -1573,7 +1423,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -1581,7 +1431,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           this.setSceneItemTransform(gameLayout, sceneItemIds.camera, {
             alignment: 5,
             boundsAlignment: 0,
@@ -1601,7 +1451,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 461,
             sourceWidth: 820,
             width: 820,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -1609,7 +1459,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
 
           this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed1, {
             alignment: 5,
@@ -1630,7 +1480,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 540,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -1638,7 +1488,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
 
           this.setSceneItemTransform(gameLayout, sceneItemIds.onsite_feed2, {
             alignment: 5,
@@ -1659,7 +1509,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 540,
             sourceWidth: 960,
             width: 960,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         break
@@ -1669,7 +1519,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 833, height: 469 },
@@ -1693,7 +1543,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 469,
             sourceWidth: 833,
             width: 833,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -1701,7 +1551,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 833, height: 469 },
@@ -1725,7 +1575,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 469,
             sourceWidth: 833,
             width: 833,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -1733,7 +1583,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
             inputSettings: { width: 833, height: 469 },
@@ -1757,7 +1607,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 469,
             sourceWidth: 833,
             width: 833,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -1765,7 +1615,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -1773,7 +1623,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -1781,7 +1631,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -1789,7 +1639,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -1797,7 +1647,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -1807,7 +1657,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 768, height: 432 },
@@ -1831,7 +1681,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 432,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -1839,7 +1689,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 768, height: 432 },
@@ -1863,7 +1713,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 432,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -1871,7 +1721,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
             inputSettings: { width: 768, height: 432 },
@@ -1895,7 +1745,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 432,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -1903,7 +1753,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner4,
             inputSettings: { width: 768, height: 432 },
@@ -1927,7 +1777,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 432,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -1935,7 +1785,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -1943,7 +1793,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -1951,7 +1801,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -1959,7 +1809,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -1969,7 +1819,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 614, height: 461 },
@@ -1993,7 +1843,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 461,
             sourceWidth: 614,
             width: 614,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -2001,7 +1851,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 615, height: 461 },
@@ -2025,7 +1875,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 461,
             sourceWidth: 615,
             width: 615,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -2033,7 +1883,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
             inputSettings: { width: 614, height: 461 },
@@ -2057,7 +1907,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 461,
             sourceWidth: 614,
             width: 614,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -2065,7 +1915,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -2073,7 +1923,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.bingoBoard,
             inputSettings: { width: 614, height: 505 },
@@ -2097,7 +1947,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 505,
             sourceWidth: 614,
             width: 614,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -2105,7 +1955,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -2113,7 +1963,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -2121,7 +1971,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -2131,7 +1981,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed1,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner1,
             inputSettings: { width: 768, height: 432 },
@@ -2155,7 +2005,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 432,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed2) {
@@ -2163,7 +2013,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed2,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner2,
             inputSettings: { width: 768, height: 432 },
@@ -2187,7 +2037,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 432,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed3) {
@@ -2195,7 +2045,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed3,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.runner3,
             inputSettings: { width: 768, height: 432 },
@@ -2219,7 +2069,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 432,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.feed4) {
@@ -2227,7 +2077,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.feed4,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.bingoBoard) {
@@ -2235,7 +2085,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.bingoBoard,
             true,
-          ).catch(() => {})
+          ).catch(() => { })
           await this.call('SetInputSettings', {
             inputName: config.obs.names.sources.bingoBoard,
             inputSettings: { width: 768, height: 505 },
@@ -2259,7 +2109,7 @@ class OBSUtility extends obsWebsocketJs {
             sourceHeight: 505,
             sourceWidth: 768,
             width: 768,
-          }).catch(() => {})
+          }).catch(() => { })
         }
 
         if (sceneItemIds.camera) {
@@ -2267,7 +2117,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.camera,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed1) {
@@ -2275,7 +2125,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed1,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         if (sceneItemIds.onsite_feed2) {
@@ -2283,7 +2133,7 @@ class OBSUtility extends obsWebsocketJs {
             gameLayout,
             sceneItemIds.onsite_feed2,
             false,
-          ).catch(() => {})
+          ).catch(() => { })
         }
 
         break
@@ -2448,64 +2298,64 @@ class OBSUtility extends obsWebsocketJs {
       case 1: {
         await this.changeScene(config.obs.names.scenes.gameLayout)
         this.toggleSourceAudio(config.obs.names.sources.runner1, false).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner2, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner3, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner4, true).catch(
-          () => {},
+          () => { },
         )
         break
       }
       case 2: {
         await this.changeScene(config.obs.names.scenes.gameLayout)
         this.toggleSourceAudio(config.obs.names.sources.runner1, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner2, false).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner3, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner4, true).catch(
-          () => {},
+          () => { },
         )
         break
       }
       case 3: {
         await this.changeScene(config.obs.names.scenes.gameLayout)
         this.toggleSourceAudio(config.obs.names.sources.runner1, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner2, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner3, false).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner4, true).catch(
-          () => {},
+          () => { },
         )
         break
       }
       case 4: {
         await this.changeScene(config.obs.names.scenes.gameLayout)
         this.toggleSourceAudio(config.obs.names.sources.runner1, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner2, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner3, true).catch(
-          () => {},
+          () => { },
         )
         this.toggleSourceAudio(config.obs.names.sources.runner4, false).catch(
-          () => {},
+          () => { },
         )
         break
       }
@@ -2651,8 +2501,7 @@ class OBSUtility extends obsWebsocketJs {
                 selected: false,
                 value:
                   `${config.obs.names.paths.intermissionVideo
-                  }/${
-                    videoFile}`,
+                  }/${videoFile}`,
               },
             ],
             shuffle: true,
@@ -2759,7 +2608,7 @@ class OBSUtility extends obsWebsocketJs {
    */
   async muteAudio(): Promise<void> {
     config.obs.names.audioToMute.forEach((source) => {
-      this.toggleSourceAudio(source, true).catch(() => {})
+      this.toggleSourceAudio(source, true).catch(() => { })
     })
   }
 
@@ -2768,7 +2617,7 @@ class OBSUtility extends obsWebsocketJs {
    */
   async unmuteAudio(): Promise<void> {
     config.obs.names.audioToUnmute.forEach((source) => {
-      this.toggleSourceAudio(source, false).catch(() => {})
+      this.toggleSourceAudio(source, false).catch(() => { })
     })
   }
 }
