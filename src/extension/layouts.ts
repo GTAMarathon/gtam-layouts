@@ -63,10 +63,6 @@ nodecg.listenFor('endOfMarathon', async (data, ack) => {
 })
 
 nodecg.listenFor('nextRun', async (data, ack) => {
-  nodecg.sendMessageToBundle('importOengusSchedule', 'nodecg-speedcontrol', {
-    marathonShort: config.schedule.marathonShort,
-    useJapanese: false,
-  })
   nodecg.sendMessage('clearIntermission')
   await new Promise(f => setTimeout(f, 60))
 
