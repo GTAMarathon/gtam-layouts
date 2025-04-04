@@ -62,7 +62,7 @@ nodecg.listenFor('endOfMarathon', async (data, ack) => {
   }
 })
 
-nodecg.listenFor('nextRun', async (data, ack) => {
+nodecg.listenFor('switchToIntermission', async (data, ack) => {
   nodecg.sendMessage('clearIntermission')
   await new Promise(f => setTimeout(f, 60))
 
