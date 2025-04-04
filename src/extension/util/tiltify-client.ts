@@ -20,7 +20,7 @@ export class TiltifyClient {
   private readonly TOKEN_EXPIRY_BUFFER = 120
 
   constructor() {
-    if (config.enable && (!config.clientId || !config.clientSecret || !config.campaign)) {
+    if (!config.clientId || !config.clientSecret || !config.campaign) {
       throw new Error('Missing Tiltify configuration values')
     }
 
