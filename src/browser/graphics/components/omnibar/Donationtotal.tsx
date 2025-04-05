@@ -29,7 +29,7 @@ const DonationTotalComponent: React.FC<DonationTotalProps> = ({ style }) => {
         ease: 'power4',
         onUpdate: () => {
           if (totalRef.current) {
-            totalRef.current.innerHTML = `$${dataRef.current.total.toLocaleString('en-US', {
+            totalRef.current.innerHTML = `${dataRef.current.total.toLocaleString('en-GB', {
               maximumFractionDigits: 0,
               minimumFractionDigits: 0,
             })}`
@@ -51,11 +51,11 @@ const DonationTotalComponent: React.FC<DonationTotalProps> = ({ style }) => {
     <div
       style={{
         position: 'absolute',
-        left: '193px',
-        top: '41px',
+        left: '214px',
+        top: '33px',
         transform: 'translateY(-50%)',
-        width: '185px',
-        height: '57px',
+        width: '135px',
+        height: '50px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -66,7 +66,7 @@ const DonationTotalComponent: React.FC<DonationTotalProps> = ({ style }) => {
       }}
     >
       <div id="Total" ref={totalRef}>
-        {`$${dataRef.current.total.toLocaleString('en-US', {
+        {`${dataRef.current.total.toLocaleString('en-GB', {
           maximumFractionDigits: 0,
           minimumFractionDigits: 0,
         })}`}
