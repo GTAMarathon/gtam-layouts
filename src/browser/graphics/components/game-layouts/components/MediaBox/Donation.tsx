@@ -25,9 +25,16 @@ export function MediaBoxDonation({ donationInfo }: Props) {
           <span style={{ fontWeight: 'normal' }}>
             New
             {' '}
-            <b style={{ color: '#ffe400', fontFamily: 'Slope Opera', fontSize: '2rem' }}>
-              $
+            <b
+              style={{
+                color: '#ffe400',
+                fontFamily: 'slope_operaregular',
+                fontSize: '2rem',
+              }}
+            >
               {amount}
+              {' '}
+              GBP
             </b>
             {' '}
             donation from
