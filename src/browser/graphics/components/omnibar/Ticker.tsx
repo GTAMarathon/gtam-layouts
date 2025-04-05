@@ -1,5 +1,6 @@
 import type { DonationGoal } from '@gtam-layouts/types/custom/Tiltify-Types'
 import type { CSSProperties } from 'react'
+import { useReplicant } from '@nodecg/react-hooks'
 import { useEffect, useRef, useState } from 'react'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { NextMilestone } from './Ticker//NextMilestone'
@@ -10,7 +11,9 @@ export function Ticker({ style }: { style: CSSProperties }) {
   const currentComponentIndex = useRef(0)
   const currentComponentContainer = useRef<HTMLSpanElement | null>(null)
   const [messageTypes, setMessageTypes] = useState<React.JSX.Element[]>([])
-  const [currentElement, setCurrentElement] = useState<React.JSX.Element | undefined>()
+  const [currentElement, setCurrentElement] = useState<
+    React.JSX.Element | undefined
+  >()
   const messageTypesRef = useRef<React.JSX.Element[]>([])
   const [hasActiveGoals, setHasActiveGoals] = useState(false)
   const donationTotal = nodecg.Replicant<number>('donationTotal')
@@ -18,10 +21,14 @@ export function Ticker({ style }: { style: CSSProperties }) {
   const tickerContainerRef = useRef<HTMLDivElement | null>(null)
   const [needsScrolling, setNeedsScrolling] = useState(false)
 
+  const [currentOBSScene] = useReplicant<string>('currentOBSScene')
+
   useEffect(() => {
     NodeCG.waitForReplicants(donationGoals).then(() => {
       const handler = (goals: DonationGoal[] = []) => {
-        const activeGoals = goals.some(goal => (donationTotal.value ?? 0) < goal.amount)
+        const activeGoals = goals.some(
+          goal => (donationTotal.value ?? 0) < goal.amount,
+        )
         setHasActiveGoals(activeGoals)
       }
       donationGoals.on('change', handler)
@@ -31,11 +38,38 @@ export function Ticker({ style }: { style: CSSProperties }) {
 
   useEffect(() => {
     const newMessages = [
-      genericMessage('welcome', 'Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!'),
-      genericMessage('merch', 'Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!'),
-      genericMessage('schedule', `Type <span class="highlight">!schedule</span> in the chat to see what's on next!`),
-      <NextRun key={currentComponentIndex.current} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />,
-      ...(hasActiveGoals ? [<NextMilestone key="next-milestone" time={20} onEnd={showNextElement} />] : []),
+      genericMessage(
+        'welcome',
+        'Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!',
+      ),
+      genericMessage(
+        'merch',
+        'Check out the merch store over at <span class="highlight">merch.gtamarathon.com</span>!',
+      ),
+      genericMessage(
+        'schedule',
+        `Type <span class="highlight">!schedule</span> in the chat to see what's on next!`,
+      ),
+      ...(currentOBSScene !== nodecg.bundleConfig.obs.names.scenes.intermission
+        ? [
+            <NextRun
+              key={currentComponentIndex.current}
+              time={20}
+              onEnd={showNextElement}
+              containerRef={tickerContainerRef}
+              onScrollingNeeded={setNeedsScrolling}
+            />,
+          ]
+        : []),
+      ...(hasActiveGoals
+        ? [
+            <NextMilestone
+              key="next-milestone"
+              time={20}
+              onEnd={showNextElement}
+            />,
+          ]
+        : []),
     ]
 
     setMessageTypes(newMessages)
@@ -43,9 +77,18 @@ export function Ticker({ style }: { style: CSSProperties }) {
     setCurrentElement(newMessages[0])
 
     function genericMessage(key: string, message: string) {
-      return <GenericMessage key={key} message={message} time={20} onEnd={showNextElement} containerRef={tickerContainerRef} onScrollingNeeded={setNeedsScrolling} />
+      return (
+        <GenericMessage
+          key={key}
+          message={message}
+          time={20}
+          onEnd={showNextElement}
+          containerRef={tickerContainerRef}
+          onScrollingNeeded={setNeedsScrolling}
+        />
+      )
     }
-  }, [hasActiveGoals])
+  }, [hasActiveGoals, currentOBSScene])
 
   useEffect(() => {
     currentComponentIndex.current = 0
@@ -54,7 +97,8 @@ export function Ticker({ style }: { style: CSSProperties }) {
   function showNextElement() {
     console.log('Showing next omnibar message')
 
-    currentComponentIndex.current = (currentComponentIndex.current + 1) % messageTypesRef.current.length
+    currentComponentIndex.current
+      = (currentComponentIndex.current + 1) % messageTypesRef.current.length
     const nextElement = messageTypesRef.current[currentComponentIndex.current]
 
     if (nextElement!.type === NextMilestone) {
@@ -92,7 +136,6 @@ export function Ticker({ style }: { style: CSSProperties }) {
           </span>
         </CSSTransition>
       </SwitchTransition>
-
     </div>
   )
 }
