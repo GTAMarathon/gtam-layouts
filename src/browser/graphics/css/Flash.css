@@ -1,0 +1,13 @@
+@keyframes flashColor {
+    0%, 100% {
+      color: #ffe400;
+    }
+    50% {
+      color: #ffffff;
+    }
+  }
+  
+  .timer-flash {
+    animation: flashColor 1.5s infinite;
+  }
+  

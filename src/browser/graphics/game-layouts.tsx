@@ -6,6 +6,7 @@ import { defaultCode, layoutsList } from './components/game-layouts/layouts'
 import './css/common.css'
 import './css/Flex.css'
 import './css/Fade.css'
+import './css/Flash.css'
 
 interface CurrentLayout {
   code: string
