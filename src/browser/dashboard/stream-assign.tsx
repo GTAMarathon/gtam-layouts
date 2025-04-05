@@ -49,7 +49,7 @@ export function StreamAssign() {
 
   const assign = (stream: Stream) => {
     nodecg.sendMessage('assignStreamToRunner', {
-      runner: selectedPlayer?.name,
+      runner: selectedPlayer,
       stream,
     })
 
