@@ -36,7 +36,7 @@ export function Omnibar() {
           }}
         >
         </div>
-        <Ticker style={{ zIndex: 2, width: '1385px', marginTop: '12px' }} />
+        <Ticker style={{ zIndex: 2, width: '1315px', marginTop: '12px' }} />
         <DonationTotal style={{ zIndex: 2 }} />
       </div>
     </div>

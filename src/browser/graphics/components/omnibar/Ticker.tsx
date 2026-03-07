@@ -40,7 +40,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
     const newMessages = [
       genericMessage(
         'welcome',
-        'Welcome to <span class="highlight">GTAMarathon 2025</span>! Enjoy the show!',
+        'Welcome to <span class="highlight">GTAMarathon 2026</span>! Enjoy the show!',
       ),
       genericMessage(
         'merch',

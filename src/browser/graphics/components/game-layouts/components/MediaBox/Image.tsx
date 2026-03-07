@@ -8,7 +8,7 @@ interface Props {
 
 export function MediaBoxImage({ images, useWidescreenImages }: Props) {
   const image = useMemo(() => {
-    if (useWidescreenImages && images.widescreen?.url){
+    if (useWidescreenImages && images.widescreen?.url) {
       return images.widescreen
     }
     return images.standard
