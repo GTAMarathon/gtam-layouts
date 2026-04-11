@@ -165,7 +165,7 @@ export class TiltifyClient {
               amount: Number.parseFloat(option.amount_raised.value),
               currency: goal.amount_raised.currency,
             }
-          }),
+          }).sort((a, b) => b.amount - a.amount),
         }
       })
 
