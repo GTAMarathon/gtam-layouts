@@ -18,7 +18,7 @@ import type {
   OengusImportStatus,
   RunDataActiveRunSurrounding,
 } from 'speedcontrol/types/schemas'
-import type { DonationGoal, TiltifyTokenData } from '../../types/custom/Tiltify-Types'
+import type { DonationGoal, TiltifyPoll, TiltifyTokenData } from '../../types/custom/Tiltify-Types'
 import { get } from './nodecg'
 
 const nodecg = get()
@@ -121,3 +121,8 @@ export const processedDonations = nodecg.Replicant<string[]>(
     persistent: true,
   },
 )
+
+export const polls = nodecg.Replicant<TiltifyPoll[]>('polls', {
+  defaultValue: [],
+  persistent: true,
+})

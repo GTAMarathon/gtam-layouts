@@ -1,6 +1,6 @@
 import type { Configschema } from '../types/generated/configschema'
-import { get } from '../extension/util/nodecg'
-import { donationGoals, donationQueue, donationTotal, processedDonations } from '../extension/util/replicants'
+import { get } from './util/nodecg'
+import { donationGoals, donationQueue, donationTotal, polls, processedDonations } from './util/replicants'
 import { TiltifyClient } from './util/tiltify-client'
 
 const nodecg = get()
@@ -29,13 +29,15 @@ async function initializeTiltify(): Promise<void> {
     await updateDonationTotal(client)
     await updateMilestones(client)
     await updateRecentDonations(client)
+    await updatePolls(client)
 
     // Setup intervals
     const totalInterval = setInterval(() => updateDonationTotal(client), 15000)
     const goalsInterval = setInterval(() => updateMilestones(client), 1800000)
     const donationsInterval = setInterval(() => updateRecentDonations(client), 300000)
+    const pollsInterval = setInterval(() => updatePolls(client), 30000)
 
-    updateIntervals.push(totalInterval, goalsInterval, donationsInterval)
+    updateIntervals.push(totalInterval, goalsInterval, donationsInterval, pollsInterval)
 
     nodecg.log.info('[Tiltify] Integration initialized successfully')
   }
@@ -104,5 +106,20 @@ async function updateRecentDonations(client: TiltifyClient): Promise<void> {
   }
   catch (error) {
     nodecg.log.error('[Tiltify] Failed to update recent donations:', error)
+  }
+}
+
+/**
+ * Updates polls.
+ * @param client The client to update donations for.
+ */
+async function updatePolls(client: TiltifyClient): Promise<void> {
+  try {
+    const newPolls = await client.fetchPolls()
+
+    polls.value = newPolls
+  }
+  catch (error) {
+    nodecg.log.error('[Tiltify] Failed to update goals:', error)
   }
 }
