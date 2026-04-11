@@ -35,8 +35,8 @@ export function NextMilestone({ time, onEnd }: Props) {
           const formattedGoal = nextGoal.amount.toLocaleString('en-US', { maximumFractionDigits: 0 })
           setMessage(
             `Next goal: ${nextGoal.name} - `
-            + `<span class="highlight">$${formattedTotal}</span>/`
-            + `<span class="highlight">$${formattedGoal}</span>`,
+            + `<span class="highlight">£${formattedTotal}</span>/`
+            + `<span class="highlight">£${formattedGoal}</span>`,
           )
           setHasInitialized(true)
         }
