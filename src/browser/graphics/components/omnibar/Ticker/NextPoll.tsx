@@ -1,22 +1,9 @@
-import type { RunData } from 'speedcontrol/types'
-import type { RunDataActiveRunSurrounding } from 'speedcontrol/types/schemas'
+import type { TiltifyPoll } from '@gtam-layouts/types/custom/Tiltify-Types'
 import { AutoTextSize } from 'auto-text-size'
 import { motion } from 'framer-motion'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Helpers } from '../../../../helpers'
 
-const runDataArray = nodecg.Replicant<RunData[]>(
-  'runDataArray',
-  'nodecg-speedcontrol',
-)
-const runDataActiveRunSurrounding = nodecg.Replicant<RunDataActiveRunSurrounding>(
-  'runDataActiveRunSurrounding',
-  'nodecg-speedcontrol',
-)
-
-function getNextRun() {
-  return (runDataArray.value ?? []).find(run => run.id === runDataActiveRunSurrounding.value?.next)
-}
+const polls = nodecg.Replicant<TiltifyPoll[]>('polls')
 
 interface Props {
   time: number
@@ -25,7 +12,7 @@ interface Props {
   containerRef: React.RefObject<HTMLDivElement>
 }
 
-export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props) {
+export function NextPoll({ time, onEnd, containerRef, onScrollingNeeded }: Props) {
   const [msg, setMsg] = useState('')
   const [scrollDistance, setScrollDistance] = useState(0)
   const [forceKey, setForceKey] = useState(0)
@@ -47,24 +34,16 @@ export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props)
   }, [msg])
 
   useLayoutEffect(() => {
-    NodeCG.waitForReplicants(runDataArray, runDataActiveRunSurrounding).then(() => {
-      const nextRun = getNextRun()
-      if (nextRun) {
-        const timeToRun = Helpers.timeToRun(nextRun)
-        if (timeToRun.length > 0) {
-          setMsg(
-            `Next run in <span class="highlight">${timeToRun}</span> - ${nextRun.customData['gameShort'] ?? nextRun.game} ${nextRun.category} by <span class="highlight">${Helpers.formatPlayers(nextRun)}</span>`,
-          )
-        }
-        else {
-          setMsg(
-            `Next run - ${nextRun.customData['gameShort'] ?? nextRun.game} ${nextRun.category} by <span class="highlight">${Helpers.formatPlayers(nextRun)}</span>`,
-          )
-        }
-      }
-      else {
+    NodeCG.waitForReplicants(polls).then(() => {
+      const poll = polls.value?.[0]
+      if (!poll) {
         onEnd()
+        return
       }
+
+      const pollOptions = poll.options.map(option => `${option.name} - <span class="highlight">${option.amount} ${option.currency}</span>`)
+
+      setMsg(`Next bidwar: ${poll.name} - ${pollOptions.join(',  ')}`)
     })
 
     const exitTimeout = setTimeout(() => {
@@ -105,7 +84,7 @@ export function NextRun({ time, onEnd, containerRef, onScrollingNeeded }: Props)
 
   return (
     <div
-      key={`next-run-${forceKey}`}
+      key={`next-poll-${forceKey}`}
       ref={localContainerRef}
       style={{
         width: '100%',

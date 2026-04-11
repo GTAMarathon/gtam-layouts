@@ -1,10 +1,11 @@
-import type { DonationGoal } from '@gtam-layouts/types/custom/Tiltify-Types'
+import type { DonationGoal, TiltifyPoll } from '@gtam-layouts/types/custom/Tiltify-Types'
 import type { CSSProperties } from 'react'
 import { useReplicant } from '@nodecg/react-hooks'
 import { useEffect, useRef, useState } from 'react'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
-import { NextMilestone } from './Ticker//NextMilestone'
 import { GenericMessage } from './Ticker/GenericMessage'
+import { NextMilestone } from './Ticker/NextMilestone'
+import { NextPoll } from './Ticker/NextPoll'
 import { NextRun } from './Ticker/NextRun'
 
 export function Ticker({ style }: { style: CSSProperties }) {
@@ -16,8 +17,10 @@ export function Ticker({ style }: { style: CSSProperties }) {
   >()
   const messageTypesRef = useRef<React.JSX.Element[]>([])
   const [hasActiveGoals, setHasActiveGoals] = useState(false)
+  const [hasActivePolls, setHasActivePolls] = useState(false)
   const donationTotal = nodecg.Replicant<number>('donationTotal')
   const donationGoals = nodecg.Replicant<DonationGoal[]>('donationGoals')
+  const polls = nodecg.Replicant<TiltifyPoll[]>('polls')
   const tickerContainerRef = useRef<HTMLDivElement | null>(null)
   const [needsScrolling, setNeedsScrolling] = useState(false)
 
@@ -37,6 +40,17 @@ export function Ticker({ style }: { style: CSSProperties }) {
   }, [donationGoals, donationTotal.value])
 
   useEffect(() => {
+    NodeCG.waitForReplicants(polls).then(() => {
+      const handler = (polls: TiltifyPoll[] = []) => {
+        const hasActivePolls = polls.some(poll => poll.active)
+        setHasActivePolls(hasActivePolls)
+      }
+      polls.on('change', handler)
+      return () => polls.removeListener('change', handler)
+    })
+  }, [polls, donationTotal.value])
+
+  useEffect(() => {
     const newMessages = [
       genericMessage(
         'welcome',
@@ -54,7 +68,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
         ? [
             <NextRun
               key={currentComponentIndex.current}
-              time={20}
+              time={2}
               onEnd={showNextElement}
               containerRef={tickerContainerRef}
               onScrollingNeeded={setNeedsScrolling}
@@ -65,8 +79,19 @@ export function Ticker({ style }: { style: CSSProperties }) {
         ? [
             <NextMilestone
               key="next-milestone"
+              time={2}
+              onEnd={showNextElement}
+            />,
+          ]
+        : []),
+      ...(hasActivePolls
+        ? [
+            <NextPoll
+              key="next-poll"
               time={20}
               onEnd={showNextElement}
+              containerRef={tickerContainerRef}
+              onScrollingNeeded={setNeedsScrolling}
             />,
           ]
         : []),
@@ -81,14 +106,14 @@ export function Ticker({ style }: { style: CSSProperties }) {
         <GenericMessage
           key={key}
           message={message}
-          time={20}
+          time={2}
           onEnd={showNextElement}
           containerRef={tickerContainerRef}
           onScrollingNeeded={setNeedsScrolling}
         />
       )
     }
-  }, [hasActiveGoals, currentOBSScene])
+  }, [hasActiveGoals, currentOBSScene, hasActivePolls])
 
   useEffect(() => {
     currentComponentIndex.current = 0
