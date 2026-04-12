@@ -270,15 +270,10 @@
         "enable": {
           "type": "boolean",
           "default": false
-        },
-        "marathonShort": {
-          "type": "string",
-          "default": ""
         }
       },
       "required": [
-        "enable",
-        "marathonShort"
+        "enable"
       ]
     },
     "hundo": {
@@ -316,18 +311,31 @@
           "default": false
         }
       },
-      "required": ["enabled"]
+      "required": [
+        "enabled"
+      ]
     },
     "tiltify": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enable": { "type": "boolean", "default": false },
-        "clientId": { "type": "string" },
-        "clientSecret": { "type": "string" },
-        "campaign": { "type": "string" }
+        "enable": {
+          "type": "boolean",
+          "default": false
+        },
+        "clientId": {
+          "type": "string"
+        },
+        "clientSecret": {
+          "type": "string"
+        },
+        "campaign": {
+          "type": "string"
+        }
       },
-      "required": ["enable"]
+      "required": [
+        "enable"
+      ]
     }
   },
   "required": [

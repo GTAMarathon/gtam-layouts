@@ -65,7 +65,6 @@ export interface Configschema {
 	};
 	schedule: {
 		enable: boolean;
-		marathonShort: string;
 	};
 	hundo: {
 		enabled: boolean;
