@@ -2,6 +2,8 @@ import type {
   TiltifyCampaignData,
   TiltifyDonation,
   TiltifyMilestone,
+  TiltifyPoll,
+  TiltifyPollData,
   TiltifyRawDonation,
   TiltifyTokenResponse,
 } from '../../types/custom/Tiltify-Types'
@@ -129,5 +131,50 @@ export class TiltifyClient {
       currency: d.amount.currency,
       timestamp: new Date(d.completed_at),
     }))
+  }
+
+  /**
+   * Fetches all goals
+   * @returns all goals.
+   */
+  public async fetchPolls(): Promise<TiltifyPoll[]> {
+    const token = await this.getValidToken()
+    let hasMore: boolean = true
+    let cursorPosition: string | null = null
+
+    const goals: TiltifyPoll[] = []
+
+    while (hasMore) {
+      const response = await axios.get<TiltifyPollData>(
+        `https://v5api.tiltify.com/api/public/campaigns/${this.campaignId}/polls`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      const { data, metadata } = response.data
+
+      const formattedGoals = data.map((goal) => {
+        return {
+          id: goal.id,
+          name: goal.name,
+          active: goal.active,
+          amount: Number.parseFloat(goal.amount_raised.value),
+          currency: goal.amount_raised.currency,
+          options: goal.options.map((option) => {
+            return {
+              id: option.id,
+              name: option.name,
+              amount: Number.parseFloat(option.amount_raised.value),
+              currency: goal.amount_raised.currency,
+            }
+          }).sort((a, b) => b.amount - a.amount),
+        }
+      })
+
+      goals.push(...formattedGoals)
+
+      cursorPosition = metadata.after
+      hasMore = cursorPosition !== null
+    }
+
+    return goals
   }
 }

@@ -47,3 +47,48 @@ export interface DonationGoal {
   name: string
   amount: number
 }
+
+export interface TiltifyPollData {
+  data: {
+    active: boolean
+    id: string
+    name: string
+    options: {
+      id: string
+      name: string
+      inserted_at: string
+      updated_at: string
+      amount_raised: {
+        value: string
+        currency: string
+      }
+      legacy_id: number
+    }[]
+    inserted_at: string
+    updated_at: string
+    amount_raised: {
+      value: string
+      currency: string
+    }
+    legacy_id: number
+  }[]
+  metadata: {
+    after: string | null
+    limit: number
+    before: string | null
+  }
+}
+
+export interface TiltifyPoll {
+  id: string
+  name: string
+  active: boolean
+  amount: number
+  currency: string
+  options: {
+    id: string
+    name: string
+    amount: number
+    currency: string
+  }[]
+}
