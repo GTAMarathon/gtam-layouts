@@ -68,7 +68,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
         ? [
             <NextRun
               key={currentComponentIndex.current}
-              time={2}
+              time={20}
               onEnd={showNextElement}
               containerRef={tickerContainerRef}
               onScrollingNeeded={setNeedsScrolling}
@@ -79,7 +79,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
         ? [
             <NextMilestone
               key="next-milestone"
-              time={2}
+              time={20}
               onEnd={showNextElement}
             />,
           ]
@@ -106,7 +106,7 @@ export function Ticker({ style }: { style: CSSProperties }) {
         <GenericMessage
           key={key}
           message={message}
-          time={2}
+          time={20}
           onEnd={showNextElement}
           containerRef={tickerContainerRef}
           onScrollingNeeded={setNeedsScrolling}
