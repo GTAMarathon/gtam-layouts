@@ -35,7 +35,8 @@ export function NextPoll({ time, onEnd, containerRef, onScrollingNeeded }: Props
 
   useLayoutEffect(() => {
     NodeCG.waitForReplicants(polls).then(() => {
-      const poll = polls.value?.[0]
+      const activePolls = (polls.value ?? []).filter(poll => poll.active)
+      const poll = activePolls[0]
       if (!poll) {
         onEnd()
         return
