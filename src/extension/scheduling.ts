@@ -46,11 +46,11 @@ const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
   }],
   ['Grand Theft Auto: The Lost and Damned', {
     gameShort: 'GTA IV: TLaD',
-    gameTwitch: 'Grand Theft Auto IV: The Lost and Damned',
+    gameTwitch: 'Grand Theft Auto IV',
   }],
   ['Grand Theft Auto IV: The Lost and Damned', {
     gameShort: 'GTA IV: TLaD',
-    gameTwitch: 'Grand Theft Auto IV: The Lost and Damned',
+    gameTwitch: 'Grand Theft Auto IV',
   }],
   ['Grand Theft Auto: Chinatown Wars', {
     gameShort: 'GTA: Chinatown Wars',
@@ -58,7 +58,7 @@ const gameNameMap = new Map<string, { gameShort: string, gameTwitch: string }>([
   }],
   ['Grand Theft Auto: The Ballad of Gay Tony', {
     gameShort: 'GTA IV: TBoGT',
-    gameTwitch: 'Grand Theft Auto IV: The Ballad of Gay Tony',
+    gameTwitch: 'Grand Theft Auto IV',
   }],
   ['Grand Theft Auto V', {
     gameShort: 'GTA V',
