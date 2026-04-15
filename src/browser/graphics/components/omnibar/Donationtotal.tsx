@@ -9,7 +9,7 @@ const donationTotal = nodecg.Replicant<number>('donationTotal')
 
 const DonationTotalComponent: React.FC<DonationTotalProps> = ({ style }) => {
   const totalRef = useRef<HTMLDivElement | null>(null)
-  const dataRef = useRef({ total: donationTotal.value ?? 0 })
+  const dataRef = useRef({ total: Math.floor(donationTotal.value ?? 0) })
 
   useEffect(() => {
     if (!donationTotal || !donationTotal.on)
@@ -25,11 +25,11 @@ const DonationTotalComponent: React.FC<DonationTotalProps> = ({ style }) => {
       gsap.to(dataRef.current, {
         duration: 2,
         total: newVal,
-        roundProps: 'total',
         ease: 'power4',
         onUpdate: () => {
           if (totalRef.current) {
-            totalRef.current.innerHTML = `${dataRef.current.total.toLocaleString('en-GB', {
+            const floored = Math.floor(dataRef.current.total)
+            totalRef.current.innerHTML = `${floored.toLocaleString('en-GB', {
               maximumFractionDigits: 0,
               minimumFractionDigits: 0,
             })}`
