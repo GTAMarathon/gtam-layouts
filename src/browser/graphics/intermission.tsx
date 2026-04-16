@@ -220,9 +220,9 @@ export function Intermission() {
             run={intermissionRunData[0].run}
             style={{
               position: 'absolute',
-              top: '65px',
+              top: '47px',
               left: '-10px',
-              height: '62px',
+              height: '102px',
               width: '887px',
               lineHeight: '40px',
               overflow: 'hidden',
