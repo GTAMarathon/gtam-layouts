@@ -11,7 +11,7 @@ interface Props {
 
 export function UpcomingRun({ run, style }: Props) {
   const bigFontSize = 56
-  const bigWidth = 872
+  const bigWidth = 692
   const catRatio = 0.75
   const minSizeRatio = 0.4
 
